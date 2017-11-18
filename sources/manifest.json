@@ -1,22 +1,19 @@
 {
   "manifest_version": 2,
-
-  "name": "Getting started example",
-  "description": "This extension allows the user to change the background color of the current page.",
+  "name": "Tabs box",
+  "description": "This extension allows the user to put tabs into tab boxes.",
   "version": "1.0",
-
   "browser_action": {
     "default_icon": "icon.png"
   },
-
   "permissions": [
     "activeTab",
     "tabs",
-    "storage",
-    "chrome-extension://*/"
+    "storage"
   ],
-
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "popup.js"
+    ]
   }
 }
