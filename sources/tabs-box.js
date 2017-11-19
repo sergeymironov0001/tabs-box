@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
 
 function outputTabsInfo(tabsInfo) {
     var newHTML = $.map(tabsInfo, function (tabInfo) {
-        return ('<a href="' + tabInfo.url + '" target="_blank" >' +
+        return ('<a href="' + tabInfo.url + '" target="_blank" title="' + tabInfo.title + '">' +
             '<div class="tab">' +
             '<div class="tab-favicon">' +
             '<img src="' + tabInfo.faviconUrl + '"/>' +
@@ -37,9 +37,11 @@ function outputTabsInfo(tabsInfo) {
 }
 
 chrome.runtime.sendMessage({"type": "tabs-box:box-created"}, function (tabInfo) {
-    console.log(new URL(tabInfo.url));
-    tabsInfo.push(tabInfo);
-    outputTabsInfo(tabsInfo);
+    // console.log(new URL(tabInfo.url));
+    if (tabInfo !== undefined) {
+        tabsInfo.push(tabInfo);
+        outputTabsInfo(tabsInfo);
+    }
 });
 
 //
