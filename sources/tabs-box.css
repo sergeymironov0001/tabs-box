@@ -1,0 +1,56 @@
+.tab {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    padding: 5px 0 0 0;
+    width: 154px;
+    height: 128px;
+    display: inline-block;
+    margin: 5px;
+    /*background-color: #E8E8E8;*/
+}
+
+.tab-favicon {
+    width: 16px;
+    height: 16px;
+    /*display: inline-block;*/
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    float: left;
+}
+
+.tab-favicon img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.tab-title {
+    height: 15px;
+    /*left: 31px;*/
+    /*line-height: 14px;*/
+    overflow: hidden;
+    padding-left: 5px;
+    /*!*position: absolute;*!*/
+    /*text-overflow: ellipsis;*/
+    /*top: 9px;*/
+    /*width: 120px;*/
+    /*width: 100%;*/
+}
+
+.tab-thumb {
+    /*height: 100%;*/
+    /*width: 154px;*/
+    /*height: 96px;*/
+    height: calc(100% - 21px);
+}
+
+.tab-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
