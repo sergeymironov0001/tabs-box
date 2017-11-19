@@ -9,25 +9,34 @@ chrome.browserAction.onClicked.addListener(function (activeTab) {
     // alert(activeTab.url);
 
     if (tabsBoxes.length === 0) {
-        chrome.tabs.create({
-                'url': chrome.extension.getURL('tabs-box.html'),
-                'active': false,
-                'selected': false
-            },
-            function (tab) {
-                var createTabListener = function (request, sender, sendResponse) {
-                    if (request.hasOwnProperty("type") && request.type === "tabs-box:box-created") {
-                        sendResponse(getTabInfo(activeTab));
-                    }
-                    chrome.runtime.onMessage.removeListener(createTabListener);
-                };
-                chrome.runtime.onMessage.addListener(createTabListener);
-                tabsBoxes.push(tabBox(tab.id));
-            });
+        chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT, function (dataUrl) {
+            chrome.tabs.create({
+                    'url': chrome.extension.getURL('tabs-box.html'),
+                    'active': false,
+                    'selected': false
+                },
+                function (tab) {
+                    var createTabListener = function (request, sender, sendResponse) {
+                        if (request.hasOwnProperty("type") && request.type === "tabs-box:box-created") {
+                            var tabInfo = getTabInfo(activeTab);
+                            tabInfo.thumbImgUrl = dataUrl;
+                            sendResponse(tabInfo);
+                        }
+                        chrome.runtime.onMessage.removeListener(createTabListener);
+                        // closeTab(activeTab.id);
+                    };
+                    chrome.runtime.onMessage.addListener(createTabListener);
+                    tabsBoxes.push(tabBox(tab.id));
+                });
+        });
     } else {
-        putTabInBox(getTabInfo(activeTab));
+        chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT, function (dataUrl) {
+            var tabInfo = getTabInfo(activeTab);
+            tabInfo.thumbImgUrl = dataUrl;
+            putTabInBox(tabInfo);
+            // closeTab(activeTab.id);
+        });
     }
-    // closeTab(activeTab.id);
 });
 
 chrome.tabs.onRemoved.addListener(function callback(tabId) {
@@ -46,9 +55,26 @@ function tabBox(id) {
 function getTabInfo(tab) {
     return {
         "url": tab.url,
-        "title": tab.title
+        "title": tab.title,
+        "faviconUrl": getFaviconUrl(tab),
+        "tab": tab
     };
 }
+
+function getFaviconUrl(tab) {
+    // var origin = new URL(url).origin;
+    // return 'https://s2.googleusercontent.com/s2/favicons?domain_url=' + origin + '&amp;alt=s&amp;sz=32';
+    return tab.favIconUrl;
+}
+
+// function getThumbUrlFunction(tab) {
+//     return function () {
+//         tab.captureVisibleTab(function (dataUrl) {
+//         })
+//     }
+//     // var origin = new URL(url).origin;
+//     // return 'chrome-search://thumb2/' + origin + '?fb=https://www.google.com/webpagethumbnail?c=63&d=' + url + '&r=4&s=154:96&a=JWEfHGnW1RHbkebZG_oGo6Z_LV8'
+// }
 
 function putTabInBox(tabInfo) {
     chrome.runtime.sendMessage({

@@ -13,13 +13,31 @@ chrome.runtime.onMessage.addListener(
 
 function outputTabsInfo(tabsInfo) {
     var newHTML = $.map(tabsInfo, function (tabInfo) {
-        return ('<li><a href="' + tabInfo.url + '" target="_blank" >' + tabInfo.title + '</a></li>');
+        return ('<a href="' + tabInfo.url + '" target="_blank" >' +
+            '<div class="tab">' +
+            '<div class="tab-favicon">' +
+            '<img src="' + tabInfo.faviconUrl + '"/>' +
+            '</div>' +
+            '<div class="tab-title">' + tabInfo.title + '</div>' +
+            '<div class="tab-thumb">' +
+            '<img id="thumb-' + tabInfo.tab.id + '" src="' + tabInfo.thumbImgUrl + '"/>' +
+            '</div>' +
+            '</div>' +
+            '</a>');
     });
-    $("#urls-list").html(newHTML.join(""));
+    $("#box").html(newHTML.join(""));
+
+    // tabsInfo.forEach(function (tabInfo) {
+    //     console.log(tabInfo);
+    //     tabInfo.tab.captureVisibleTab(null, {}, function (dataUrl) {
+    //         console.log(dataUrl);
+    //         $("#thumb-" + tabsInfo.tab.id).src = dataUrl;
+    //     })
+    // });
 }
 
 chrome.runtime.sendMessage({"type": "tabs-box:box-created"}, function (tabInfo) {
-    console.log(tabInfo);
+    console.log(new URL(tabInfo.url));
     tabsInfo.push(tabInfo);
     outputTabsInfo(tabsInfo);
 });
