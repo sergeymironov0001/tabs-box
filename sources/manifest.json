@@ -4,7 +4,14 @@
   "description": "This extension allows the user to put tabs into tab boxes.",
   "version": "1.0",
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "icons/icon32.png"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "24": "icons/icon24.png",
+    "32": "icons/icon32.png",
+    "64": "icons/icon64.png",
+    "128": "icons/icon128.png"
   },
   "permissions": [
     "activeTab",
