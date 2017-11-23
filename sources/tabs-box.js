@@ -3,13 +3,23 @@ var tabsInfo = [];
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.hasOwnProperty("type") && request.type === "tabs-box:put-in-box") {
+
+            if (!tabWithTheSameUrlAlreadyExists(tabsInfo, request.tabInfo)) {
+                tabsInfo.push(request.tabInfo);
+            }
             // alert(request.url);
-            tabsInfo.push(request.tabInfo);
             outputTabsInfo(tabsInfo)
         }
         sendResponse({});
     }
 );
+
+function tabWithTheSameUrlAlreadyExists(tabsArray, newTab) {
+    var tabsWithTheSameUrl = tabsArray.filter(function (e) {
+        return e.url === newTab.url;
+    });
+    return tabsWithTheSameUrl.length !== 0;
+}
 
 function outputTabsInfo(tabsInfo) {
     var newHTML = $.map(tabsInfo, function (tabInfo) {
