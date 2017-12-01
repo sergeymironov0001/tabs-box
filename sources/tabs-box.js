@@ -24,14 +24,19 @@ function tabWithTheSameUrlAlreadyExists(tabsArray, newTab) {
 function outputTabsInfo(tabsInfo) {
     var newHTML = $.map(tabsInfo, function (tabInfo) {
         return ('<a href="' + tabInfo.url + '" target="_blank" title="' + tabInfo.title + '">' +
-            '<div class="tab">' +
-            '<div class="tab-favicon">' +
-            '<img src="' + tabInfo.faviconUrl + '"/>' +
-            '</div>' +
-            '<div class="tab-title">' + tabInfo.title + '</div>' +
-            '<div class="tab-thumb">' +
-            '<img id="thumb-' + tabInfo.tab.id + '" src="' + tabInfo.thumbImgUrl + '"/>' +
-            '</div>' +
+            '<div class="tab container m-1">' +
+            '   <div class="row">' +
+            '       <div class="col-md-2 p-1 m-0 tab-favicon">' +
+            '           <img src="' + tabInfo.faviconUrl + '"/>' +
+            '       </div>' +
+            '       <div class="tab-title col-md-8 p-1 m-0" >' + tabInfo.title + '</div>' +
+            // '       <div class="col-md-2 m-1"><div class="span1"/></div>' +
+            '   </div>' +
+            '   <div class="row">' +
+            '       <div>' +
+            '           <img id="thumb-' + tabInfo.tab.id + '" src="' + tabInfo.thumbImgUrl + '"/>' +
+            '       </div>' +
+            '   </div>' +
             '</div>' +
             '</a>');
     });

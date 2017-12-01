@@ -1,35 +1,42 @@
 .tab {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-    padding: 5px 0 0 0;
+    /*padding: 5px 0 0 0;*/
     width: 204px;
     height: 128px;
     display: inline-block;
-    margin: 5px;
+    /*margin: 5px;*/
     /*background-color: #E8E8E8;*/
 }
 
 .tab-favicon {
-    width: 16px;
-    height: 16px;
+    /*width: 16px;*/
+    /*height: 16px;*/
     /*display: inline-block;*/
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    float: left;
+    /*margin-right: 5px;*/
+    /*margin-bottom: 5px;*/
+    /*margin-left: 5px;*/
+    /*float: left;*/
 }
 
 .tab-favicon img {
     display: block;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
+    margin-top: 5px;
+    /*width: 100%;*/
+    /*height: auto;*/
+    width: 16px;
+    height: 16px;
 }
 
 .tab-title {
-    height: 15px;
+    /*height: 15px;*/
     /*left: 31px;*/
     /*line-height: 14px;*/
     overflow: hidden;
-    margin-right: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*margin-right: 5px;*/
     /*!*position: absolute;*!*/
     /*text-overflow: ellipsis;*/
     /*top: 9px;*/
