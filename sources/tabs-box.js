@@ -54,6 +54,16 @@ chrome.runtime.sendMessage({"type": "tabs-box:box-created"}, function (tabInfo) 
     }
 });
 
+var tabsBoxName = "Tabs Box";
+
+$(document).ready(function () {
+    $('#tabs-box-name-input')
+        .focusout(function () {
+            tabsBoxName = $(this).val();
+        })
+        .val(tabsBoxName);
+});
+
 //
 // /**
 //  * Get the current URL.

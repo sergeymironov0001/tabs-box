@@ -3,14 +3,22 @@
 <html>
 <head>
     <title>Tabs-box</title>
-    <script src="third-party/jquery-3.2.1.min.js"></script>
-    <script src="tabs-box.js"></script>
+    <link href="third-party/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="tabs-box.css">
     <link rel="icon" type="image/png" href="icons/icon32.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-<div id="container">
+<div id="container" class="container-fluid">
+    <div class="container">
+        <div class="form-group mt-1 control-group">
+            <input id="tabs-box-name-input" type="text" class="form-control text-center"/>
+        </div>
+    </div>
+</div>
+
+<div class="container">
     <div id="box">
         <!--<ul id="urls-list">-->
         <!--</ul>-->
@@ -18,5 +26,9 @@
         <!--</a>-->
     </div>
 </div>
+</div>
+<script src="third-party/jquery-3.2.1.min.js"></script>
+<script src="third-party/bootstrap/js/bootstrap.min.js"></script>
+<script src="tabs-box.js"></script>
 </body>
 </html>
