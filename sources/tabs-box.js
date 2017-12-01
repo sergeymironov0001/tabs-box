@@ -56,13 +56,22 @@ chrome.runtime.sendMessage({"type": "tabs-box:box-created"}, function (tabInfo) 
 
 var tabsBoxName = "Tabs Box";
 
+
+function changeTabTitle(text) {
+    $('head title', window.parent.document).text(text);
+}
+
 $(document).ready(function () {
+    changeTabTitle(tabsBoxName);
+
     $('#tabs-box-name-input')
         .focusout(function () {
             tabsBoxName = $(this).val();
+            changeTabTitle(tabsBoxName);
         })
         .val(tabsBoxName);
 });
+
 
 //
 // /**
