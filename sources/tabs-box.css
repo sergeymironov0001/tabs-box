@@ -1,3 +1,12 @@
+body {
+    background-color: hsl(0, 0%, 7%);
+}
+
+#tabs-box-name-input {
+    background-color: hsl(0, 0%, 7%);
+    color: hsl(0, 0%, 53.3%);
+}
+
 .tab {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
     /*padding: 5px 0 0 0;*/
@@ -64,10 +73,6 @@
     display: block;
     width: 100%;
     height: auto;
-}
-
-tab-box-name-container {
-    margin-top: 5px;
 }
 
 img {
