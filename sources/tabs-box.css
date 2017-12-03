@@ -18,6 +18,15 @@
     /*float: left;*/
 }
 
+.tab-close {
+    padding: 4px;
+    padding-top: 3px;
+}
+
+.tab-close-button {
+    /*float: none;*/
+}
+
 .tab-favicon img {
     display: block;
     margin-left: auto;

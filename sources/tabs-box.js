@@ -5,6 +5,7 @@ chrome.runtime.onMessage.addListener(
         if (request.hasOwnProperty("type") && request.type === "tabs-box:put-in-box") {
 
             if (!tabWithTheSameUrlAlreadyExists(tabsInfo, request.tabInfo)) {
+                request.tabInfo.id = generateUniqueId();
                 tabsInfo.push(request.tabInfo);
             }
             // alert(request.url);
@@ -13,6 +14,14 @@ chrome.runtime.onMessage.addListener(
         sendResponse({});
     }
 );
+
+function generateUniqueId() {
+    return Math.random().toString(36).substr(2, 16);
+}
+
+function deleteTabsInfo(tabsInfo, tabInfo) {
+    tabsInfo.splice(tabsInfo.indexOf(tabInfo), 1);
+}
 
 function tabWithTheSameUrlAlreadyExists(tabsArray, newTab) {
     var tabsWithTheSameUrl = tabsArray.filter(function (e) {
@@ -24,13 +33,17 @@ function tabWithTheSameUrlAlreadyExists(tabsArray, newTab) {
 function outputTabsInfo(tabsInfo) {
     var newHTML = $.map(tabsInfo, function (tabInfo) {
         return ('<a href="' + tabInfo.url + '" target="_blank" title="' + tabInfo.title + '">' +
-            '<div class="tab container m-1">' +
+            '<div id="' + tabInfo.id + '" class="tab container m-1">' +
             '   <div class="row">' +
             '       <div class="col-md-2 p-1 m-0 tab-favicon">' +
             '           <img src="' + tabInfo.faviconUrl + '"/>' +
             '       </div>' +
-            '       <div class="tab-title col-md-8 p-1 m-0" >' + tabInfo.title + '</div>' +
-            // '       <div class="col-md-2 m-1"><div class="span1"/></div>' +
+            '       <div class="tab-title col-md-8 p-1 m-0">' + tabInfo.title + '</div>' +
+            '       <div class="col-md-2 p-1 m-0 tab-close">' +
+            '           <button id="close-' + tabInfo.id + '" type="button" class="close tab-close-button" aria-label="Close">' +
+            '               &times;' +
+            '           </button>' +
+            '       </div>' +
             '   </div>' +
             '   <div class="row">' +
             '       <div>' +
@@ -41,6 +54,15 @@ function outputTabsInfo(tabsInfo) {
             '</a>');
     });
     $("#box").html(newHTML.join(""));
+    tabsInfo.forEach(function (tabInfo, i, arr) {
+        console.log(tabInfo.id);
+        $("#close-" + tabInfo.id).click(function (e) {
+            e.preventDefault();
+            $("#" + tabInfo.id).remove();
+            deleteTabsInfo(tabsInfo, tabInfo.id);
+        });
+    });
+
 
     // tabsInfo.forEach(function (tabInfo) {
     //     console.log(tabInfo);
