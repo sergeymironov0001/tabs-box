@@ -1,0 +1,15 @@
+body {
+    height: 514px;
+    width: 260px;
+    overflow-x: hidden;
+}
+
+#crete-new-tab-box-button {
+    width: 100%;
+}
+
+.btn {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
