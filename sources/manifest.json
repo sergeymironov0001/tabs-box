@@ -17,8 +17,9 @@
   ],
   "background": {
     "scripts": [
-      "js/background.js",
-      "js/tabs-boxes.js"
+      "js/tabs-box/boxes.js",
+      "js/tabs-box/notifications.js",
+      "js/background.js"
     ]
   },
   "browser_action": {
