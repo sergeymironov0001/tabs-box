@@ -5,16 +5,15 @@ function outputTabsInfo(box) {
         return Mustache.to_html(tabSnapshotTemplate, tab);
     });
     $("#box").html(tabsInfoHtml.join(""));
+}
 
-    box.getTabs().forEach(function (tab, i, arr) {
-        $("#box")
-            .on("click", "#close-" + tab.id, function (e) {
-                console.log("Delete tab " + tab.id);
-                e.preventDefault();
-                $("#" + tab.id).remove();
-                box.deleteTab(tab);
-            });
-    });
+function addTabEventListener(box, tab) {
+    $("#box")
+        .on("click", "#close-" + tab.id, function (e) {
+            e.preventDefault();
+            $("#" + tab.id).remove();
+            box.deleteTab(tab);
+        });
 }
 
 $(document).ready(function () {
@@ -38,10 +37,12 @@ $(document).ready(function () {
         box.putTabInBox(tab);
 
         Tabs.changeTabTitle(box.name);
+        addTabEventListener(box, tab);
         outputTabsInfo(box);
 
         Notifications.addPutTabInBoxListener(box.id, function (tab) {
             box.putTabInBox(tab);
+            addTabEventListener(box, tab);
             outputTabsInfo(box);
         });
     });
