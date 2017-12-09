@@ -1,14 +1,14 @@
 function putTabIntoNewBox(boxes, activeTab) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         Tabs.createNewTab(function (createdTabsBox) {
-                Notifications.createTabBoxListener(createdTabsBox.id, function (sendResponse) {
-                    var box = Boxes.createBox(createdTabsBox.id);
-                    box.tab = Tabs.createTabInfo(activeTab, dataUrl);
+                var box = Boxes.createBox(createdTabsBox.id);
+                box.tab = Tabs.createTabInfo(activeTab, dataUrl);
+                boxes.push(box);
+                outputBoxes(boxes);
+                Boxes.saveBoxes(boxes);
 
+                Notifications.createTabBoxListener(createdTabsBox.id, function (sendResponse) {
                     sendResponse(box);
-                    boxes.push(box);
-                    outputBoxes(boxes);
-                    Boxes.saveBoxes(boxes);
                 });
             }
         );

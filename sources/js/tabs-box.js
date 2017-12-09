@@ -41,9 +41,7 @@ $(document).ready(function () {
 
     $('#tabs-box-name-input').focusout(function () {
         box.name = $(this).val();
-
         Notifications.sendBoxNameChanged(box);
-
         Tabs.changeTabTitle(box.name);
     }).val(box.name);
 
