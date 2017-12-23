@@ -1,52 +1,62 @@
 var boxTemplate;
 
-function putTabIntoNewBox(boxes, activeTab) {
-    Tabs.getCurrentTabPicture(function (dataUrl) {
-        Tabs.createNewTab(function (createdTabsBox) {
-                var box = Boxes.createBox(createdTabsBox.id);
-                box.tab = Tabs.createTabInfo(activeTab, dataUrl);
-                boxes.push(box);
-                outputBoxes(boxes);
-                Boxes.saveBoxes(boxes);
-
-                Notifications.createTabBoxListener(createdTabsBox.id, function (sendResponse) {
-                    sendResponse(box);
-                });
-            }
-        );
+function selectBoxTab(boxId) {
+    Tabs.getBoxTab(boxId, function (tab) {
+        if (tab) {
+            Tabs.selectTab(tab.id);
+        } else {
+            Tabs.createBoxTab(boxId, function (newTab) {
+                // Tabs.selectTab(newTab.id);
+            });
+        }
     });
 }
 
-function putTabIntoExistingBox(tab, boxId) {
+function putTabToNewBox(boxes, activeTab) {
+    var box = boxes.addNewBox();
+
+    Tabs.getCurrentTabPicture(function (dataUrl) {
+        var tabInfo = Tabs.createTabInfo(activeTab, dataUrl);
+        boxes.putTabToBox(box.id, tabInfo);
+        selectBoxTab(box.id);
+        outputBoxes(boxes);
+    });
+}
+
+function putTabToExistingBox(boxes, boxId, tab) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = Tabs.createTabInfo(tab, dataUrl);
-
-        Notifications.sendPutTabInBox(boxId, tabInfo, function (response) {
-            // Tabs.closeTab(tab.id);
-        });
+        boxes.putTabToBox(boxId, tabInfo);
+        // selectBoxTab(boxId);
+        // Tabs.closeTab(tab.id);
     });
 }
 
 function outputBoxes(boxes) {
-    var boxesHtml = $.map(boxes, function (box) {
+    console.log("Output boxes");
+    console.log(boxes.getBoxes());
+    var boxesHtml = $.map(boxes.getBoxes(), function (box) {
+        console.log("Output box");
+        console.log(box);
         return Mustache.to_html(boxTemplate, box);
     });
     $("#boxes").html(boxesHtml.join(""));
 
-    boxes.forEach(function (box, i, arr) {
+    boxes.getBoxes().forEach(function (box, i, arr) {
         $("#boxes")
             .on("click", "#add-to-box-" + box.id, function () {
                 Tabs.getCurrentTab(function (tab) {
-                    putTabIntoExistingBox(tab, box.id);
+                    putTabToExistingBox(boxes, box.id, tab);
                 });
             })
             .on("click", "#switch-to-box-" + box.id, function () {
-                Tabs.selectTab(box.id);
+                selectBoxTab(box.id);
             })
             .on("click", "#close-box-" + box.id, function () {
-                Boxes.closeBox(boxes, box.id);
+                console.log("close box " + box.id)
+                boxes.removeBox(box);
                 outputBoxes(boxes);
-                Tabs.closeTab(box.id);
+                Tabs.closeBoxTab(box.id);
             });
     });
 }
@@ -54,14 +64,14 @@ function outputBoxes(boxes) {
 $(document).ready(function () {
     Templates.loadPopupBoxTemplate(function (template) {
         boxTemplate = template;
-    });
 
-    Boxes.getBoxes(function (boxes) {
-        outputBoxes(boxes);
+        Boxes.loadBoxes(function (boxes) {
+            outputBoxes(boxes);
 
-        $('#crete-new-tab-box-button').click(function (e) {
-            Tabs.getCurrentTab(function (tab) {
-                putTabIntoNewBox(boxes, tab);
+            $('#crete-new-tab-box-button').click(function (e) {
+                Tabs.getCurrentTab(function (tab) {
+                    putTabToNewBox(boxes, tab);
+                });
             });
         });
     });

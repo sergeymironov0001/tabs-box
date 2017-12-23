@@ -17,8 +17,9 @@
   ],
   "background": {
     "scripts": [
-      "js/tabs-box/boxes.js",
       "js/tabs-box/notifications.js",
+      "js/tabs-box/box.js",
+      "js/tabs-box/boxes.js",
       "js/background.js"
     ]
   },

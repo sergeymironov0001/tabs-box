@@ -1,76 +1,129 @@
-// var TabsBoxes = (function () {
-//     var instance;
-//
-//     function createInstance() {
-//         return {};
-//     }
-//
-//     return {
-//         getInstance: function () {
-//             if (!instance) {
-//                 instance = createInstance();
-//             }
-//             return instance;
-//         }
-//     };
-// })();
+function Boxes(boxesInfo) {
+    this.boxes = [];
 
-function Boxes() {
+    if (boxesInfo) {
+        var self = this;
+        boxesInfo.forEach(function (boxInfo) {
+            _addNewBox(self.boxes, _createBox(boxInfo));
+        });
+    }
+
+    function _createBox(boxInfo) {
+        var box = new Box(boxInfo.id, boxInfo.name, boxInfo.tabs);
+        box.init();
+        return box;
+    }
+
+    function _addNewBox(boxes, box) {
+        boxes.push(box);
+        return true;
+    }
+
+    function _removeBox(boxes, boxId) {
+        console.log("Remove box with id " + boxId);
+        var box = _getBoxById(boxes, boxId);
+        console.log(" box " + box);
+        if (box !== null) {
+            boxes.splice(boxes.indexOf(box), 1);
+            console.log("Box removed");
+            return true;
+        }
+        return false;
+    }
+
+    function _getBoxById(boxes, id) {
+        var foundBoxes = boxes.filter(function (box) {
+            return box.id === id;
+        });
+        if (foundBoxes.length !== 0) {
+            return foundBoxes[0];
+        }
+        return null;
+    }
+
+    this.getBoxes = function () {
+        return this.boxes;
+    };
+
+    this.addNewBox = function () {
+        var box = new Box();
+        box.init();
+        if (_addNewBox(this.boxes, box)) {
+            this.saveBoxes();
+            Notifications.sendNewBoxAdded(box);
+        }
+        return box;
+    };
+
+    this.addBox = function (boxInfo) {
+        var box = _createBox(boxInfo);
+        if (_addNewBox(this.boxes, box)) {
+            this.saveBoxes();
+            Notifications.sendNewBoxAdded(box);
+        }
+        return box;
+    };
+
+    this.saveBoxes = function () {
+        var self = this;
+        chrome.storage.local.set({tabsBoxes: this.boxes}, function () {
+            console.log("Boxes saved:");
+            console.log(self.boxes);
+        });
+    };
+
+    this.getBoxById = function (id) {
+        return _getBoxById(this.boxes, id);
+    };
+
+    this.changeBoxName = function (boxId, boxName) {
+        var box = this.getBoxById(boxId);
+        if (box && box !== null) {
+            box.changeName(boxName);
+            this.saveBoxes();
+        }
+    };
+
+    this.putTabToBox = function (boxId, tab) {
+        var box = this.getBoxById(boxId);
+        if (box && box !== null) {
+            box.putTabToBox(tab);
+            this.saveBoxes();
+        }
+    };
+
+    this.removeTabFromBox = function (boxId, tab) {
+        var box = this.getBoxById(boxId);
+        if (box && box !== null) {
+            box.removeTabFromBox(tab);
+            this.saveBoxes();
+        }
+    };
+
+    this.removeBox = function (box) {
+        if (_removeBox(this.boxes, box.id)) {
+            this.saveBoxes();
+            Notifications.sendBoxRemoved(box);
+        }
+    };
+
+    this.init = function () {
+        var self = this;
+        Notifications.addNewBoxAddedListener(function (boxInfo) {
+            var box = _createBox(boxInfo);
+            _addNewBox(self.boxes, box);
+        });
+
+        Notifications.addBoxRemovedListener(function (box) {
+            _removeBox(self.boxes, box.id);
+        });
+    };
 }
 
-Boxes.createBox = function (boxId) {
-    var boxName = "Tabs box";
-    return {
-        id: boxId,
-        name: boxName
-    };
-};
-
-Boxes.getBoxes = function (callBack) {
-    Boxes.loadBoxes(callBack);
-};
-
-Boxes.loadBoxes = function (getBoxesCallback) {
+Boxes.loadBoxes = function (callback) {
     chrome.storage.local.get(["tabsBoxes"], function (item) {
-        getBoxesCallback(item.tabsBoxes);
-    });
-};
-
-Boxes.saveBoxes = function (boxes) {
-    chrome.storage.local.set({tabsBoxes: boxes}, function () {
-        console.log("Boxes saved:");
-        console.log(boxes);
-    });
-};
-
-Boxes.getBoxById = function (boxes, id) {
-    var boxes = boxes.filter(function (box) {
-        return box.id === id;
-    });
-    if (boxes.length !== 0) {
-        return boxes[0];
-    }
-    return null;
-};
-
-Boxes.changeBoxName = function (boxes, boxId, boxName) {
-    var box = Boxes.getBoxById(boxes, boxId);
-    box.name = boxName;
-};
-
-Boxes.closeBox = function (boxes, boxId) {
-    var box = Boxes.getBoxById(boxes, boxId);
-    if (box !== null) {
-        boxes.splice(boxes.indexOf(box), 1);
-        Boxes.saveBoxes(boxes);
-    }
-};
-
-Boxes.deleteBox = function (boxId) {
-    Boxes.loadBoxes(function (boxes) {
-        boxes = boxes.filter(function (box) {
-            return box.id !== boxId;
-        });
-        Boxes.saveBoxes(boxes);
+        var boxes = new Boxes(item.tabsBoxes);
+        boxes.init();
+        callback(boxes);
     });
 };

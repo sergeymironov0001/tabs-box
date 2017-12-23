@@ -14,6 +14,14 @@ Tabs.closeTab = function (tabId) {
     })
 };
 
+Tabs.closeBoxTab = function (boxId) {
+    Tabs.getBoxTab(boxId, function (tab) {
+        if (tab) {
+            Tabs.closeTab(tab.id);
+        }
+    });
+};
+
 Tabs.createTabInfo = function (tab, thumbImgUrl) {
     return {
         url: tab.url,
@@ -41,9 +49,32 @@ Tabs.getCurrentTabPicture = function (callback) {
     });
 };
 
-Tabs.createNewTab = function (callback) {
+Tabs.getTabById = function (tabId, callback) {
+    chrome.tabs.get(tabId, function (tabInfo) {
+        console.log(tabInfo);
+        callback(tabInfo);
+    });
+};
+
+Tabs.getBoxTab = function (boxId, callback) {
+    var extId = chrome.runtime.id;
+    console.log("ext " + extId);
+    var url = 'chrome-extension://' + extId + '/html/tabs-box.html?boxId=' + boxId;
+    console.log("var url: " + url);
+    chrome.tabs.query({url: url},
+        function (tabs) {
+            console.log("Tabs with id: ");
+            if (tabs && tabs.length > 0) {
+                callback(tabs[0]);
+            } else {
+                callback(undefined);
+            }
+        });
+};
+
+Tabs.createBoxTab = function (boxId, callback) {
     chrome.tabs.create({
-            'url': chrome.extension.getURL('html/tabs-box.html'),
+            'url': chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId),
             'active': false,
             'selected': false
         },

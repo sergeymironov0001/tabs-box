@@ -1,18 +1,31 @@
 var tabSnapshotTemplate;
 
+function getUrlParam(name) {
+    if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+        return decodeURIComponent(name[1]);
+}
+
 function outputTabsInfo(box) {
-    var tabsInfoHtml = $.map(box.getTabs(), function (tab) {
+    console.log(box);
+    var tabsInfoHtml = $.map(box.tabs, function (tab) {
         return Mustache.to_html(tabSnapshotTemplate, tab);
     });
     $("#box").html(tabsInfoHtml.join(""));
 }
 
-function addTabEventListener(box, tab) {
+function addTabEventListeners(boxes, box) {
+    box.tabs.forEach(function (tab) {
+        addTabEventListener(boxes, box, tab);
+    });
+}
+
+function addTabEventListener(boxes, box, tab) {
     $("#box")
         .on("click", "#close-" + tab.id, function (e) {
+            console.log("Delete tab");
             e.preventDefault();
             $("#" + tab.id).remove();
-            box.deleteTab(tab);
+            boxes.removeTabFromBox(box.id, tab);
         });
 }
 
@@ -21,29 +34,24 @@ $(document).ready(function () {
         tabSnapshotTemplate = template;
     });
 
-    var box = new Box();
-    Tabs.changeTabTitle(box.name);
+    Boxes.loadBoxes(function (boxes) {
+        var boxId = getUrlParam("boxId");
+        var box = boxes.getBoxById(boxId);
 
-    $('#tabs-box-name-input').focusout(function () {
-        box.name = $(this).val();
-        Notifications.sendBoxNameChanged(box);
-        Tabs.changeTabTitle(box.name);
-    }).val(box.name);
-
-    // Send notification to popup what new box was created
-    Notifications.notifyBoxWasCreated(function (boxId, boxName, tab) {
-        box.id = boxId;
-        box.name = boxName;
-        box.putTabInBox(tab);
+        $('#tabs-box-name-input').focusout(function () {
+            console.log("Change name");
+            var name = $(this).val();
+            boxes.changeBoxName(boxId, name);
+            Tabs.changeTabTitle(box.name);
+        }).val(box.name);
 
         Tabs.changeTabTitle(box.name);
-        addTabEventListener(box, tab);
         outputTabsInfo(box);
+        addTabEventListeners(boxes, box);
 
-        Notifications.addPutTabInBoxListener(box.id, function (tab) {
-            box.putTabInBox(tab);
-            addTabEventListener(box, tab);
+        Notifications.addPutTabToBoxListener(box.id, function (tab) {
             outputTabsInfo(box);
+            addTabEventListener(boxes, box, tab);
         });
     });
 });
