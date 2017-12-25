@@ -20,12 +20,9 @@ function Boxes(boxesInfo) {
     }
 
     function _removeBox(boxes, boxId) {
-        console.log("Remove box with id " + boxId);
         var box = _getBoxById(boxes, boxId);
-        console.log(" box " + box);
         if (box !== null) {
             boxes.splice(boxes.indexOf(box), 1);
-            console.log("Box removed");
             return true;
         }
         return false;
@@ -46,29 +43,23 @@ function Boxes(boxesInfo) {
     };
 
     this.addNewBox = function () {
+        console.log("Adding new box...");
         var box = new Box();
         box.init();
         if (_addNewBox(this.boxes, box)) {
             this.saveBoxes();
             Notifications.sendNewBoxAdded(box);
+            console.log("New box=" + box + "was added");
+            return box;
         }
-        return box;
-    };
-
-    this.addBox = function (boxInfo) {
-        var box = _createBox(boxInfo);
-        if (_addNewBox(this.boxes, box)) {
-            this.saveBoxes();
-            Notifications.sendNewBoxAdded(box);
-        }
-        return box;
+        return undefined;
     };
 
     this.saveBoxes = function () {
+        console.log("Saving boxes=" + this.boxes + " ...");
         var self = this;
         chrome.storage.local.set({tabsBoxes: this.boxes}, function () {
-            console.log("Boxes saved:");
-            console.log(self.boxes);
+            console.log("Boxes=" + self.boxes + " was saved");
         });
     };
 
@@ -77,33 +68,41 @@ function Boxes(boxesInfo) {
     };
 
     this.changeBoxName = function (boxId, boxName) {
+        console.log("Changing name of the box with id=" + boxId + " to '" + boxName + "' ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
             box.changeName(boxName);
             this.saveBoxes();
+            console.log("Box name with id=" + boxId + " was changed to '" + boxName + "'")
         }
     };
 
     this.putTabToBox = function (boxId, tab) {
+        console.log("Putting tab=" + tab + " to the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
             box.putTabToBox(tab);
             this.saveBoxes();
+            console.log("Tab=" + tab + " was put to the box with id=" + boxId);
         }
     };
 
     this.removeTabFromBox = function (boxId, tab) {
+        console.log("Removing tab=" + tab + " from the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
             box.removeTabFromBox(tab);
             this.saveBoxes();
+            console.log("Tab=" + tab + " was removed form the box with id=" + boxId);
         }
     };
 
     this.removeBox = function (box) {
+        console.log("Removing box=" + box + " ...")
         if (_removeBox(this.boxes, box.id)) {
             this.saveBoxes();
             Notifications.sendBoxRemoved(box);
+            console.log("Box=" + box + " was removed ")
         }
     };
 
@@ -121,9 +120,11 @@ function Boxes(boxesInfo) {
 }
 
 Boxes.loadBoxes = function (callback) {
+    console.log("Loading boxes from the store...");
     chrome.storage.local.get(["tabsBoxes"], function (item) {
         var boxes = new Boxes(item.tabsBoxes);
         boxes.init();
+        console.log("Boxes=" + boxes + " was loaded from the store");
         callback(boxes);
     });
 };
