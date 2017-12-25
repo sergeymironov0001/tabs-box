@@ -1,19 +1,22 @@
 var tabSnapshotTemplate;
+var searchQuery;
 
 function getUrlParam(name) {
     if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
         return decodeURIComponent(name[1]);
 }
 
-function outputTabsInfo(box) {
-    console.log(box);
-    var tabsInfoHtml = $.map(box.tabs, function (tab) {
+function outputTabs(searchQuery, tabs) {
+    if (searchQuery) {
+        tabs = searchTabs(searchQuery, tabs);
+    }
+    var tabsInfoHtml = $.map(tabs, function (tab) {
         return Mustache.to_html(tabSnapshotTemplate, tab);
     });
     $("#box").html(tabsInfoHtml.join(""));
 }
 
-function addTabEventListeners(boxes, box) {
+function addTabsEventListeners(boxes, box) {
     box.tabs.forEach(function (tab) {
         addTabEventListener(boxes, box, tab);
     });
@@ -22,11 +25,18 @@ function addTabEventListeners(boxes, box) {
 function addTabEventListener(boxes, box, tab) {
     $("#box")
         .on("click", "#close-" + tab.id, function (e) {
-            console.log("Delete tab");
             e.preventDefault();
             $("#" + tab.id).remove();
             boxes.removeTabFromBox(box.id, tab);
         });
+}
+
+function searchTabs(query, tabs) {
+    var q = query.toLowerCase();
+    return tabs.filter(function (tab) {
+        return tab.url.toLowerCase().indexOf(q) !== -1 ||
+            tab.title.toLowerCase().indexOf(q) !== -1;
+    });
 }
 
 $(document).ready(function () {
@@ -39,18 +49,22 @@ $(document).ready(function () {
         var box = boxes.getBoxById(boxId);
 
         $('#tabs-box-name-input').focusout(function () {
-            console.log("Change name");
             var name = $(this).val();
             boxes.changeBoxName(boxId, name);
             Tabs.changeTabTitle(box.name);
         }).val(box.name);
 
+        $('#tabs-search').on('input', function (e) {
+            searchQuery = $(this).val();
+            outputTabs(searchQuery, box.getTabs());
+        });
+
         Tabs.changeTabTitle(box.name);
-        outputTabsInfo(box);
-        addTabEventListeners(boxes, box);
+        outputTabs(searchQuery, box.getTabs());
+        addTabsEventListeners(boxes, box);
 
         Notifications.addPutTabToBoxListener(box.id, function (tab) {
-            outputTabsInfo(box);
+            outputTabs(searchQuery, box.getTabs());
             addTabEventListener(boxes, box, tab);
         });
     });
