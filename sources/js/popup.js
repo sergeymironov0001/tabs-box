@@ -12,14 +12,22 @@ function selectBoxTab(boxId) {
     });
 }
 
+function createNewEmptyBox(boxes) {
+    var box = boxes.addNewBox();
+    outputBoxes(boxes);
+    addBoxButtonsEventListeners(boxes, box);
+    selectBoxTab(box.id);
+}
+
 function putTabToNewBox(boxes, activeTab) {
     var box = boxes.addNewBox();
+    outputBoxes(boxes);
+    addBoxButtonsEventListeners(boxes, box);
 
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = Tabs.createTabInfo(activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
         selectBoxTab(box.id);
-        outputBoxes(boxes);
     });
 }
 
@@ -33,32 +41,34 @@ function putTabToExistingBox(boxes, boxId, tab) {
 }
 
 function outputBoxes(boxes) {
-    console.log("Output boxes");
-    console.log(boxes.getBoxes());
     var boxesHtml = $.map(boxes.getBoxes(), function (box) {
-        console.log("Output box");
-        console.log(box);
         return Mustache.to_html(boxTemplate, box);
     });
     $("#boxes").html(boxesHtml.join(""));
+}
 
-    boxes.getBoxes().forEach(function (box, i, arr) {
-        $("#boxes")
-            .on("click", "#add-to-box-" + box.id, function () {
-                Tabs.getCurrentTab(function (tab) {
-                    putTabToExistingBox(boxes, box.id, tab);
-                });
-            })
-            .on("click", "#switch-to-box-" + box.id, function () {
-                selectBoxTab(box.id);
-            })
-            .on("click", "#close-box-" + box.id, function () {
-                console.log("close box " + box.id)
-                boxes.removeBox(box);
-                outputBoxes(boxes);
-                Tabs.closeBoxTab(box.id);
-            });
+function addButtonsEventListeners(boxes) {
+    boxes.getBoxes().forEach(function (box) {
+        addBoxButtonsEventListeners(boxes, box);
     });
+}
+
+function addBoxButtonsEventListeners(boxes, box) {
+    console.log("Box buttons event listener " + box.id);
+    $("#boxes")
+        .on("click", "#add-to-box-" + box.id, function () {
+            Tabs.getCurrentTab(function (tab) {
+                putTabToExistingBox(boxes, box.id, tab);
+            });
+        })
+        .on("click", "#switch-to-box-" + box.id, function () {
+            selectBoxTab(box.id);
+        })
+        .on("click", "#close-box-" + box.id, function () {
+            boxes.removeBox(box);
+            outputBoxes(boxes);
+            Tabs.closeBoxTab(box.id);
+        });
 }
 
 $(document).ready(function () {
@@ -67,8 +77,12 @@ $(document).ready(function () {
 
         Boxes.loadBoxes(function (boxes) {
             outputBoxes(boxes);
+            addButtonsEventListeners(boxes);
 
-            $('#crete-new-tab-box-button').click(function (e) {
+            $('#crete-empty-tab-box-button').click(function (e) {
+                createNewEmptyBox(boxes);
+            });
+            $('#put-tab-to-new-box-button').click(function (e) {
                 Tabs.getCurrentTab(function (tab) {
                     putTabToNewBox(boxes, tab);
                 });

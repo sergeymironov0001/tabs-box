@@ -4,12 +4,13 @@ body {
     overflow-x: hidden;
 }
 
-#crete-new-tab-box-button {
-    width: 100%;
-}
+/*#crete-new-tab-box-button {*/
+    /*width: 100%;*/
+/*}*/
 
 .btn {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    font-size: 15px;
 }

@@ -25,9 +25,18 @@ function addTabsEventListeners(boxes, box) {
 function addTabEventListener(boxes, box, tab) {
     $("#box")
         .on("click", "#close-" + tab.id, function (e) {
-            e.preventDefault();
+            e.stopPropagation();
             $("#" + tab.id).remove();
             boxes.removeTabFromBox(box.id, tab);
+        })
+        .on("click", "#" + tab.id, function (e) {
+            Tabs.getTabByUrl(tab.url, function (t) {
+                if (t) {
+                    Tabs.selectTab(t.id);
+                } else {
+                    Tabs.createTab(tab.url);
+                }
+            });
         });
 }
 
@@ -71,10 +80,10 @@ $(document).ready(function () {
 
         $('#close-all-tabs').click(function (e) {
             box.getTabs().forEach(function (tabInfo) {
-                Tabs.getTabByUrl(tabInfo.url, function (tab) {
-                    if (tab) {
+                Tabs.getTabsByUrl(tabInfo.url, function (tabs) {
+                    tabs.forEach(function (tab) {
                         Tabs.closeTab(tab.id);
-                    }
+                    });
                 });
             })
         });

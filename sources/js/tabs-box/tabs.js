@@ -74,6 +74,17 @@ Tabs.getTabByUrl = function (url, callback) {
         });
 };
 
+Tabs.getTabsByUrl = function (url, callback) {
+    chrome.tabs.query({url: url},
+        function (tabs) {
+            if (tabs && tabs.length > 0) {
+                callback(tabs);
+            } else {
+                callback(undefined);
+            }
+        });
+};
+
 Tabs.createBoxTab = function (boxId, callback) {
     Tabs.createTab(chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId), callback);
 };
