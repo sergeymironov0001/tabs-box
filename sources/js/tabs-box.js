@@ -59,6 +59,26 @@ $(document).ready(function () {
             outputTabs(searchQuery, box.getTabs());
         });
 
+        $('#open-all-tabs').click(function (e) {
+            box.getTabs().forEach(function (tabInfo) {
+                Tabs.getTabByUrl(tabInfo.url, function (tab) {
+                    if (!tab) {
+                        Tabs.createTab(tabInfo.url);
+                    }
+                });
+            })
+        });
+
+        $('#close-all-tabs').click(function (e) {
+            box.getTabs().forEach(function (tabInfo) {
+                Tabs.getTabByUrl(tabInfo.url, function (tab) {
+                    if (tab) {
+                        Tabs.closeTab(tab.id);
+                    }
+                });
+            })
+        });
+
         Tabs.changeTabTitle(box.name);
         outputTabs(searchQuery, box.getTabs());
         addTabsEventListeners(boxes, box);

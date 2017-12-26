@@ -57,13 +57,15 @@ Tabs.getTabById = function (tabId, callback) {
 };
 
 Tabs.getBoxTab = function (boxId, callback) {
-    var extId = chrome.runtime.id;
-    console.log("ext " + extId);
-    var url = 'chrome-extension://' + extId + '/html/tabs-box.html?boxId=' + boxId;
-    console.log("var url: " + url);
+    // var extId = chrome.runtime.id;
+    // var url = 'chrome-extension://' + extId + '/html/tabs-box.html?boxId=' + boxId;
+    var url = chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId);
+    Tabs.getTabByUrl(url, callback);
+};
+
+Tabs.getTabByUrl = function (url, callback) {
     chrome.tabs.query({url: url},
         function (tabs) {
-            console.log("Tabs with id: ");
             if (tabs && tabs.length > 0) {
                 callback(tabs[0]);
             } else {
@@ -73,8 +75,12 @@ Tabs.getBoxTab = function (boxId, callback) {
 };
 
 Tabs.createBoxTab = function (boxId, callback) {
+    Tabs.createTab(chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId), callback);
+};
+
+Tabs.createTab = function (url, callback) {
     chrome.tabs.create({
-            'url': chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId),
+            'url': url,
             'active': false,
             'selected': false
         },
