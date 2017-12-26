@@ -29,7 +29,7 @@ function addTabEventListener(boxes, box, tab) {
             $("#" + tab.id).remove();
             boxes.removeTabFromBox(box.id, tab);
         })
-        .on("click", "#" + tab.id, function (e) {
+        .on("click", "#thumb-" + tab.id, function (e) {
             Tabs.getTabByUrl(tab.url, function (t) {
                 if (t) {
                     Tabs.selectTab(t.id);
@@ -48,6 +48,39 @@ function searchTabs(query, tabs) {
     });
 }
 
+function addBoxEventListeners(boxes, box) {
+    $('#tabs-box-name-input').focusout(function () {
+        var name = $(this).val();
+        boxes.changeBoxName(box.id, name);
+        Tabs.changeTabTitle(box.name);
+    }).val(box.name);
+
+    $('#tabs-search').on('input', function (e) {
+        searchQuery = $(this).val();
+        outputTabs(searchQuery, box.getTabs());
+    });
+
+    $('#open-all-tabs').click(function (e) {
+        box.getTabs().forEach(function (tabInfo) {
+            Tabs.getTabByUrl(tabInfo.url, function (tab) {
+                if (!tab) {
+                    Tabs.createTab(tabInfo.url);
+                }
+            });
+        })
+    });
+
+    $('#close-all-tabs').click(function (e) {
+        box.getTabs().forEach(function (tabInfo) {
+            Tabs.getTabsByUrl(tabInfo.url, function (tabs) {
+                tabs.forEach(function (tab) {
+                    Tabs.closeTab(tab.id);
+                });
+            });
+        });
+    });
+}
+
 $(document).ready(function () {
     Templates.loadTabSnapshotTemplate(function (template) {
         tabSnapshotTemplate = template;
@@ -57,36 +90,7 @@ $(document).ready(function () {
         var boxId = getUrlParam("boxId");
         var box = boxes.getBoxById(boxId);
 
-        $('#tabs-box-name-input').focusout(function () {
-            var name = $(this).val();
-            boxes.changeBoxName(boxId, name);
-            Tabs.changeTabTitle(box.name);
-        }).val(box.name);
-
-        $('#tabs-search').on('input', function (e) {
-            searchQuery = $(this).val();
-            outputTabs(searchQuery, box.getTabs());
-        });
-
-        $('#open-all-tabs').click(function (e) {
-            box.getTabs().forEach(function (tabInfo) {
-                Tabs.getTabByUrl(tabInfo.url, function (tab) {
-                    if (!tab) {
-                        Tabs.createTab(tabInfo.url);
-                    }
-                });
-            })
-        });
-
-        $('#close-all-tabs').click(function (e) {
-            box.getTabs().forEach(function (tabInfo) {
-                Tabs.getTabsByUrl(tabInfo.url, function (tabs) {
-                    tabs.forEach(function (tab) {
-                        Tabs.closeTab(tab.id);
-                    });
-                });
-            })
-        });
+        addBoxEventListeners(boxes, box);
 
         Tabs.changeTabTitle(box.name);
         outputTabs(searchQuery, box.getTabs());

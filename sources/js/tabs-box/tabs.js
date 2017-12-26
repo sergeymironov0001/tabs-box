@@ -57,8 +57,6 @@ Tabs.getTabById = function (tabId, callback) {
 };
 
 Tabs.getBoxTab = function (boxId, callback) {
-    // var extId = chrome.runtime.id;
-    // var url = 'chrome-extension://' + extId + '/html/tabs-box.html?boxId=' + boxId;
     var url = chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId);
     Tabs.getTabByUrl(url, callback);
 };
@@ -77,11 +75,9 @@ Tabs.getTabByUrl = function (url, callback) {
 Tabs.getTabsByUrl = function (url, callback) {
     chrome.tabs.query({url: url},
         function (tabs) {
-            if (tabs && tabs.length > 0) {
-                callback(tabs);
-            } else {
-                callback(undefined);
-            }
+            console.log("Tabs by url " + url);
+            console.log(tabs);
+            callback(tabs);
         });
 };
 
