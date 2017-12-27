@@ -2,15 +2,24 @@ body {
     height: 514px;
     width: 260px;
     overflow-x: hidden;
+    font-size: 13px;
+
+    background-color: #F1F1F1;
 }
 
 /*#crete-new-tab-box-button {*/
-    /*width: 100%;*/
+/*width: 100%;*/
 /*}*/
 
 .btn {
+    /*background-color: #F1F1F1;*/
+    background-color: #fff;
+
+    border: 1px solid black;
+    /*color: black;*/
+
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    font-size: 15px;
+    font-size: 13px;
 }

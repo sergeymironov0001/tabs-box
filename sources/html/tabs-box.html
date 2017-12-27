@@ -23,33 +23,34 @@
 </head>
 
 <body>
-<div id="container" class="container-fluid">
-    <div class="container">
-        <div class="form-group mt-1 control-group">
+<div class="container">
+    <div class="row">
+        <div class="form-group mt-1 control-group col-12">
             <input id="tabs-box-name-input" type="text" class="form-control text-center"/>
         </div>
     </div>
-    <div class="container">
-        <div class="form-group mt-1 control-group">
-            <input id="tabs-search" placeholder="Search" type="text" class="form-control text-center"/>
-        </div>
-    </div>
-    <div class="container">
-        <div class="form-group mt-1 control-group">
+</div>
+<div class="container">
+    <div id="controls-container" class="row m-0">
+        <div id="control-buttons" class="form-group mt-1 control-group p-0">
             <button id="open-all-tabs" type="button" class="btn btn-defaults">
                 Open all tabs
             </button>
-            <button id="close-all-tabs" type="button" class="btn btn-defaults">
+            <button id="close-all-tabs" type="button" class="btn btn-defaults ml-1">
                 Close all tabs
             </button>
+        </div>
+        <div id="tabs-search-container" class="p-0 wl-1 form-group control-group m-0 ml-1 mt-1 w-100">
+            <input id="tabs-search" placeholder="Search" type="text" class="form-control"/>
         </div>
     </div>
 </div>
 
-<div class="container">
+<div id="box-container" class="container pt-2">
     <div id="box">
     </div>
 </div>
 
+</div>
 </body>
 </html>
