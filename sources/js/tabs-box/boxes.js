@@ -105,6 +105,19 @@ function Boxes(boxesInfo) {
         }
     };
 
+    this.changeBoxPosition = function (boxId, newPosition) {
+        var box = this.getBoxById(boxId);
+        if (box && box != null) {
+            var oldPosition = this.boxes.indexOf(box);
+            if (oldPosition >= 0) {
+                var tmp = this.boxes[newPosition];
+                this.boxes[newPosition] = box;
+                this.boxes[oldPosition] = tmp;
+                this.saveBoxes();
+            }
+        }
+    };
+
     this.removeBox = function (box) {
         console.log("Removing box=" + box + " ...")
         if (_removeBox(this.boxes, box.id)) {

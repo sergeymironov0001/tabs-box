@@ -1,7 +1,7 @@
 var tabSnapshotTemplate;
 var searchQuery;
 
-var changeTabPositionFunction;
+var changeTabPositionFunc;
 
 function getUrlParam(name) {
     if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
@@ -18,17 +18,17 @@ function outputTabs(searchQuery, boxes, box) {
     });
     $('#box').html(tabsInfoHtml.join(""));
 
-    if (!changeTabPositionFunction) {
-        changeTabPositionFunction = function (e, ui) {
+    if (!changeTabPositionFunc) {
+        changeTabPositionFunc = function (e, ui) {
             boxes.changeTabPosition(box.id, ui.item[0].id, ui.item.index());
         }
     } else {
-        $('#box').unbind('sortupdate', changeTabPositionFunction);
+        $('#box').unbind('sortupdate', changeTabPositionFunc);
     }
 
     $('#box').sortable({
         placeholderClass: 'tab'
-    }).bind('sortupdate', changeTabPositionFunction);
+    }).bind('sortupdate', changeTabPositionFunc);
 }
 
 function addTabsEventListeners(boxes, box) {

@@ -1,4 +1,5 @@
 var boxTemplate;
+var changeBoxPositionFunc;
 
 function selectBoxTab(boxId) {
     Tabs.getBoxTab(boxId, function (tab) {
@@ -44,7 +45,19 @@ function outputBoxes(boxes) {
     var boxesHtml = $.map(boxes.getBoxes(), function (box) {
         return Mustache.to_html(boxTemplate, box);
     });
-    $("#boxes").html(boxesHtml.join(""));
+    $('#boxes').html(boxesHtml.join(""));
+
+    if (!changeBoxPositionFunc) {
+        changeBoxPositionFunc = function (e, ui) {
+            boxes.changeBoxPosition(ui.item[0].id, ui.item.index());
+        }
+    } else {
+        $('#boxes').unbind('sortupdate', changeBoxPositionFunc);
+    }
+
+    $('#boxes').sortable({
+        placeholderClass: 'box'
+    }).bind('sortupdate', changeBoxPositionFunc);
 }
 
 function addButtonsEventListeners(boxes) {
