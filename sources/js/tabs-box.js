@@ -96,6 +96,12 @@ $(document).ready(function () {
         outputTabs(searchQuery, box.getTabs());
         addTabsEventListeners(boxes, box);
 
+        $('#box').sortable({
+            placeholderClass: 'tab'
+        }).bind('sortupdate', function (e, ui) {
+            boxes.changeTabPosition(boxId, ui.item[0].id, ui.item.index());
+        });
+
         Notifications.addPutTabToBoxListener(box.id, function (tab) {
             outputTabs(searchQuery, box.getTabs());
             addTabEventListener(boxes, box, tab);

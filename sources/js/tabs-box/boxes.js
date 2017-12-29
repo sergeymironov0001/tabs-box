@@ -87,6 +87,14 @@ function Boxes(boxesInfo) {
         }
     };
 
+    this.changeTabPosition = function (boxId, tabId, newPosition) {
+        var box = this.getBoxById(boxId);
+        if (box && box != null) {
+            box.changeTabPosition(tabId, newPosition);
+            this.saveBoxes();
+        }
+    };
+
     this.removeTabFromBox = function (boxId, tab) {
         console.log("Removing tab=" + tab + " from the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);

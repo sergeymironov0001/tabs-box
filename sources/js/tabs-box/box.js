@@ -18,6 +18,16 @@ function Box(id, name, tabs) {
         return null;
     }
 
+    function _getTabById(tabs, id) {
+        var foundTabs = tabs.filter(function (tab) {
+            return tab.id === id;
+        });
+        if (foundTabs.length !== 0) {
+            return foundTabs[0];
+        }
+        return null;
+    }
+
     function _putTabToBox(tabs, tab) {
         var foundTab = _getTabByUrl(tabs, tab.url);
         if (!foundTab) {
@@ -26,6 +36,16 @@ function Box(id, name, tabs) {
             return true;
         }
         return false;
+    }
+
+    function _changeTabPosition(tabs, tabId, newIndex) {
+        var tab = _getTabById(tabs, tabId);
+        if (tab) {
+            var oldIndex = tabs.indexOf(tab);
+            var tmp = tabs[newIndex];
+            tabs[newIndex] = tab;
+            tabs[oldIndex] = tmp;
+        }
     }
 
     function _removeTabFromBox(tabs, tabInfo) {
@@ -66,6 +86,11 @@ function Box(id, name, tabs) {
         }
     };
 
+    this.changeTabPosition = function (tabId, newPosition) {
+        _changeTabPosition(this.tabs, tabId, newPosition);
+        Notifications.sendChangeTabPosition(this.id, tabId, newPosition);
+    };
+
     this.init = function () {
         var self = this;
         Notifications.addChangeBoxNameListener(this.id, function (name) {
@@ -81,6 +106,10 @@ function Box(id, name, tabs) {
         Notifications.addRemoveTabFromBoxListener(this.id, function (tab) {
             console.log("Sync remove tab from box: id: " + self.id + ", tab: " + tab);
             _removeTabFromBox(self.tabs, tab);
+        });
+
+        Notifications.addChangeTabPositionListener(this.id, function (tabId, newPosition) {
+            _changeTabPosition(self.tabs, tabId, newPosition);
         });
     };
 }

@@ -40,6 +40,15 @@ Notifications.sendTabForBoxOpened = function (callback) {
     }, callback);
 };
 
+Notifications.sendChangeTabPosition = function (boxId, tabId, newPosition, callback) {
+    sendMessage({
+        type: "tabs-box:change-tab-position",
+        boxId: boxId,
+        tabId: tabId,
+        newPosition: newPosition
+    }, callback);
+};
+
 Notifications.sendTabFromBoxRemoved = function (boxId, tab, callback) {
     sendMessage({
             type: "tabs-box:remove-tab-from-box",
@@ -119,5 +128,19 @@ Notifications.addBoxRemovedListener = function (callback) {
 Notifications.addTabRemoveListener = function (callback) {
     chrome.tabs.onRemoved.addListener(function (tabId, removed) {
         callback(tabId);
+    });
+};
+
+Notifications.addChangeTabPositionListener = function (boxId, callback) {
+    addListener("tabs-box:change-tab-position", function (request) {
+        if (boxId === request.boxId) {
+            callback(request.tabId, request.newPosition);
+        }
+    });
+};
+
+Notifications.addChangeTabsPositionListener = function (callback) {
+    addListener("tabs-box:change-tab-position", function (request) {
+        callback(request.boxId, request.tabId, request.newPosition);
     });
 };
