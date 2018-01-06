@@ -27,8 +27,7 @@ Tabs.createTabInfo = function (tab, thumbImgUrl) {
         url: tab.url,
         title: tab.title,
         faviconUrl: Tabs.getTabFaviconUrl(tab),
-        thumbImgUrl: thumbImgUrl,
-        tab: tab
+        thumbImgUrl: thumbImgUrl
     };
 };
 
