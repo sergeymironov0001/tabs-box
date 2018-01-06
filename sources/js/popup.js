@@ -26,7 +26,7 @@ function putTabToNewBox(boxes, activeTab) {
     addBoxButtonsEventListeners(boxes, box);
 
     Tabs.getCurrentTabPicture(function (dataUrl) {
-        var tabInfo = Tabs.createTabInfo(activeTab, dataUrl);
+        var tabInfo = new Tab(null, activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
         selectBoxTab(box.id);
     });
@@ -34,7 +34,7 @@ function putTabToNewBox(boxes, activeTab) {
 
 function putTabToExistingBox(boxes, boxId, tab) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
-        var tabInfo = Tabs.createTabInfo(tab, dataUrl);
+        var tabInfo = new Tab(null, tab, dataUrl);
         boxes.putTabToBox(boxId, tabInfo);
         // selectBoxTab(boxId);
         // Tabs.closeTab(tab.id);

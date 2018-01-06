@@ -1,61 +1,15 @@
 class Box {
-    static _generateUniqueId() {
-        return Math.random().toString(36).substr(2, 16);
-    }
 
     constructor(id, name, tabs) {
         this.id = id ? id : Box._generateUniqueId();
         this.name = name ? name : "Tabs box";
-        this.tabs = tabs ? tabs : [];
-    }
-
-    static _getTabByUrl(tabs, url) {
-        var foundTabs = tabs.filter(function (tab) {
-            return tab.url === url;
-        });
-        if (foundTabs.length !== 0) {
-            return foundTabs[0];
+        if (tabs && tabs.length > 0) {
+            this.tabs = $.map(tabs, function (tabInfo) {
+                return new Tab(tabInfo.id, tabInfo);
+            });
+        } else {
+            this.tabs = [];
         }
-        return null;
-    }
-
-    static _getTabById(tabs, id) {
-        var foundTabs = tabs.filter(function (tab) {
-            return tab.id === id;
-        });
-        if (foundTabs.length !== 0) {
-            return foundTabs[0];
-        }
-        return null;
-    }
-
-    static _putTabToBox(tabs, tab) {
-        var foundTab = Box._getTabByUrl(tabs, tab.url);
-        if (!foundTab) {
-            tab.id = Box._generateUniqueId();
-            tabs.push(tab);
-            return true;
-        }
-        return false;
-    }
-
-    static _changeTabPosition(tabs, tabId, newIndex) {
-        var tab = Box._getTabById(tabs, tabId);
-        if (tab) {
-            var oldIndex = tabs.indexOf(tab);
-            var tmp = tabs[newIndex];
-            tabs[newIndex] = tab;
-            tabs[oldIndex] = tmp;
-        }
-    }
-
-    static _removeTabFromBox(tabs, tabInfo) {
-        var index = tabs.indexOf(tabInfo);
-        if (index >= 0) {
-            tabs.splice(index, 1);
-            return true;
-        }
-        return false;
     }
 
     getName() {
@@ -122,16 +76,57 @@ class Box {
             `}`;
     }
 
-    // static _tabToString(tab) {
-    //     return `{\n` +
-    //         `"title": "${tab.title},"\n` +
-    //         `"url": "${tab.url}"\n` +
-    //         `}`;
-    // }
-    // static _tabsToString(tabs){
-    //    $.map(tabs, function (tab) {
-    //
-    //    })
-    // }
+    static _generateUniqueId() {
+        return Math.random().toString(36).substr(2, 16);
+    }
+
+    static _getTabByUrl(tabs, url) {
+        var foundTabs = tabs.filter(function (tab) {
+            return tab.url === url;
+        });
+        if (foundTabs.length !== 0) {
+            return foundTabs[0];
+        }
+        return null;
+    }
+
+    static _getTabById(tabs, id) {
+        var foundTabs = tabs.filter(function (tab) {
+            return tab.id === id;
+        });
+        if (foundTabs.length !== 0) {
+            return foundTabs[0];
+        }
+        return null;
+    }
+
+    static _putTabToBox(tabs, tab) {
+        var foundTab = Box._getTabByUrl(tabs, tab.url);
+        if (!foundTab) {
+            tabs.push(tab);
+            return true;
+        }
+        return false;
+    }
+
+    static _changeTabPosition(tabs, tabId, newIndex) {
+        var tab = Box._getTabById(tabs, tabId);
+        console.log("Tab to change position: " + tab);
+        if (tab) {
+            var oldIndex = tabs.indexOf(tab);
+            var tmp = tabs[newIndex];
+            tabs[newIndex] = tab;
+            tabs[oldIndex] = tmp;
+        }
+    }
+
+    static _removeTabFromBox(tabs, tabInfo) {
+        var index = tabs.indexOf(tabInfo);
+        if (index >= 0) {
+            tabs.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
 }
 

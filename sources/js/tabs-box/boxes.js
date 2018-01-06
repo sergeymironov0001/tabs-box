@@ -10,36 +10,6 @@ class Boxes {
         }
     }
 
-    static _createBox(boxInfo) {
-        var box = new Box(boxInfo.id, boxInfo.name, boxInfo.tabs);
-        box.init();
-        return box;
-    }
-
-    static _addNewBox(boxes, box) {
-        boxes.push(box);
-        return true;
-    }
-
-    static _removeBox(boxes, boxId) {
-        var box = Boxes._getBoxById(boxes, boxId);
-        if (box !== null) {
-            boxes.splice(boxes.indexOf(box), 1);
-            return true;
-        }
-        return false;
-    }
-
-    static _getBoxById(boxes, id) {
-        var foundBoxes = boxes.filter(function (box) {
-            return box.id === id;
-        });
-        if (foundBoxes.length !== 0) {
-            return foundBoxes[0];
-        }
-        return null;
-    }
-
     getBoxes() {
         return this.boxes;
     }
@@ -90,6 +60,7 @@ class Boxes {
     }
 
     changeTabPosition(boxId, tabId, newPosition) {
+        console.log("Change tab position: boxId=" + boxId + ", tabId=" + tabId + ", newPosition=" + newPosition);
         var box = this.getBoxById(boxId);
         if (box && box != null) {
             box.changeTabPosition(tabId, newPosition);
@@ -155,5 +126,35 @@ class Boxes {
             console.log("Boxes=" + boxes + " was loaded from the store");
             callback(boxes);
         });
+    }
+
+    static _createBox(boxInfo) {
+        var box = new Box(boxInfo.id, boxInfo.name, boxInfo.tabs);
+        box.init();
+        return box;
+    }
+
+    static _addNewBox(boxes, box) {
+        boxes.push(box);
+        return true;
+    }
+
+    static _removeBox(boxes, boxId) {
+        var box = Boxes._getBoxById(boxes, boxId);
+        if (box !== null) {
+            boxes.splice(boxes.indexOf(box), 1);
+            return true;
+        }
+        return false;
+    }
+
+    static _getBoxById(boxes, id) {
+        var foundBoxes = boxes.filter(function (box) {
+            return box.id === id;
+        });
+        if (foundBoxes.length !== 0) {
+            return foundBoxes[0];
+        }
+        return null;
     }
 }
