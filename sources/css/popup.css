@@ -8,6 +8,10 @@ body {
     background-color: #181818;
 }
 
+#main-container {
+    padding: 0;
+}
+
 /*#crete-new-tab-box-button {*/
 /*width: 100%;*/
 /*}*/

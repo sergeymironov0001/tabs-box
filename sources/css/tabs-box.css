@@ -92,7 +92,7 @@ body {
 
 #control-buttons {
     max-width: 245px;
-    padding-left: 15px;
+    padding: 0;
 
     display: flex;
 }
@@ -114,6 +114,7 @@ body {
     flex-wrap: nowrap;
     width: 100%;
     justify-content: space-between;
+    margin: 0;
 }
 
 input[type="text"] {

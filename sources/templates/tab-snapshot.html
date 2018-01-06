@@ -1,10 +1,12 @@
+<!doctype html>
+
 <div id="{{id}}" class="tab container m-1" draggable="true">
     <div class="row tab-title-container">
-        <div class="col-2 p-1 m-0 tab-favicon">
+        <div class="col-2 tab-favicon p-1 m-0">
             <img src="{{faviconUrl}}"/>
         </div>
-        <div class="tab-title col-8 p-1 m-0">{{title}}</div>
-        <div class="col-2 p-1 m-0 tab-close">
+        <div class="col-8 tab-title p-1 m-0">{{title}}</div>
+        <div class="col-2 tab-close p-1 m-0">
             <button id="close-{{id}}" type="button" class="close tab-close-button" aria-label="Close">
                 &times;
             </button>

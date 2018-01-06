@@ -1,56 +1,55 @@
 <!doctype html>
 
-<html>
-<head>
-    <title>Tabs-box</title>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0`">
+<meta charset="UTF-8">
 
-    <script src="../js/jquery/jquery-3.2.1.min.js"></script>
-    <script src="../js/sortable/sortable.js"></script>
-    <script src="../js/mustache/mustache.js"></script>
-    <script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
+<title>Tabs-box</title>
 
-    <script src="../js/tabs-box/notifications.js"></script>
-    <script src="../js/tabs-box/box.js"></script>
-    <script src="../js/tabs-box/boxes.js"></script>
-    <script src="../js/tabs-box/tabs.js"></script>
-    <script src="../js/tabs-box/templates.js"></script>
+<script src="../js/jquery/jquery-3.2.1.min.js"></script>
+<script src="../js/sortable/sortable.js"></script>
+<script src="../js/mustache/mustache.js"></script>
+<script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
 
-    <script src="../js/tabs-box.js"></script>
+<script src="../js/tabs-box/notifications.js"></script>
+<script src="../js/tabs-box/box.js"></script>
+<script src="../js/tabs-box/boxes.js"></script>
+<script src="../js/tabs-box/tabs.js"></script>
+<script src="../js/tabs-box/templates.js"></script>
 
-    <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script src="../js/tabs-box.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="../css/tabs-box.css">
-    <link rel="icon" type="image/png" href="../icons/icon32.png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/tabs-box.css">
+<link rel="icon" type="image/png" href="../icons/icon32.png"/>
 
-<body>
-<div class="container">
-    <div class="row">
-        <div class="form-group mt-1 control-group col-12">
-            <input id="tabs-box-name-input" type="text" class="form-control text-center"/>
+<div id="main-container">
+    <div id="toolbox-container" class="container">
+        <div class="row">
+            <div class="form-group control-group col-12 mt-1">
+                <input id="tabs-box-name-input" type="text" class="form-control text-center" title="Tabs box name"/>
+            </div>
+        </div>
+        <div id="controls-container" class="row">
+            <div id="control-buttons" class="form-group control-group mt-1">
+                <button id="open-all-tabs" type="button" class="btn btn-defaults">
+                    Open all tabs
+                </button>
+                <button id="close-all-tabs" type="button" class="btn btn-defaults ml-1">
+                    Close all tabs
+                </button>
+            </div>
+            <div id="tabs-search-container" class="form-group control-group m-0 ml-1 mt-1 w-100 p-0 wl-1">
+                <input id="tabs-search" type="text" class="form-control" placeholder="Search" title="Tabs search"/>
+            </div>
         </div>
     </div>
-    <div id="controls-container" class="row m-0">
-        <div id="control-buttons" class="form-group mt-1 control-group p-0">
-            <button id="open-all-tabs" type="button" class="btn btn-defaults">
-                Open all tabs
-            </button>
-            <button id="close-all-tabs" type="button" class="btn btn-defaults ml-1">
-                Close all tabs
-            </button>
-        </div>
-        <div id="tabs-search-container" class="p-0 wl-1 form-group control-group m-0 ml-1 mt-1 w-100">
-            <input id="tabs-search" placeholder="Search" type="text" class="form-control"/>
+
+    <div id="tabs-box-container" class="container pt-2">
+        <div id="box">
+            <!--Place for tabs templates-->
         </div>
     </div>
 </div>
 
-<div id="box-container" class="container pt-2">
-    <div id="box">
-    </div>
-</div>
-
-</div>
-</body>
 </html>

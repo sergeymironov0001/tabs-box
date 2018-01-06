@@ -1,37 +1,37 @@
 <!doctype html>
-<html>
-<head>
-    <title>Tabs-box popup</title>
 
-    <script src="../js/jquery/jquery-3.2.1.min.js"></script>
-    <script src="../js/sortable/sortable.js"></script>
-    <script src="../js/mustache/mustache.js"></script>
-    <script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <script src="../js/tabs-box/notifications.js"></script>
-    <script src="../js/tabs-box/box.js"></script>
-    <script src="../js/tabs-box/boxes.js"></script>
-    <script src="../js/tabs-box/tabs.js"></script>
-    <script src="../js/tabs-box/templates.js"></script>
+<title>Tabs-box popup</title>
 
-    <script src="../js/popup.js"></script>
+<script src="../js/jquery/jquery-3.2.1.min.js"></script>
+<script src="../js/sortable/sortable.js"></script>
+<script src="../js/mustache/mustache.js"></script>
+<script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
 
-    <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="../css/popup.css" media="screen">
+<script src="../js/tabs-box/notifications.js"></script>
+<script src="../js/tabs-box/box.js"></script>
+<script src="../js/tabs-box/boxes.js"></script>
+<script src="../js/tabs-box/tabs.js"></script>
+<script src="../js/tabs-box/templates.js"></script>
 
-    <link rel="icon" type="image/png" href="../icons/icon32.png"/>
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-</head>
-<body>
-<div id="main-container" class="container-fluid p-0">
+<script src="../js/popup.js"></script>
+
+<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="../css/popup.css">
+<link rel="icon" type="image/png" href="../icons/icon32.png"/>
+
+<div id="main-container" class="container-fluid">
     <div class="container p-1">
         <div class="row m-0">
-            <div class="col-6 p-0 text-center pr-1">
+            <div class="col-6 text-center p-0 pr-1">
                 <button id="put-tab-to-new-box-button" type="button" class="btn btn-defaults pr-1">
                     To new box
                 </button>
             </div>
-            <div class="col-6 p-0 text-center">
+            <div class="col-6 text-center p-0">
                 <button id="crete-empty-tab-box-button" type="button" class="btn btn-defaults">
                     Empty box
                 </button>
@@ -39,7 +39,8 @@
         </div>
     </div>
     <div id="boxes" class="container-fluid p-1">
+        <!--Place for box templates-->
     </div>
 </div>
-</body>
+
 </html>
