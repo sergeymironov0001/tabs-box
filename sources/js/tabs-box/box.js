@@ -1,14 +1,15 @@
-function Box(id, name, tabs) {
-
-    this.id = id ? id : generateUniqueId();
-    this.name = name ? name : "Tabs box";
-    this.tabs = tabs ? tabs : [];
-
-    function generateUniqueId() {
+class Box {
+    static _generateUniqueId() {
         return Math.random().toString(36).substr(2, 16);
     }
 
-    function _getTabByUrl(tabs, url) {
+    constructor(id, name, tabs) {
+        this.id = id ? id : Box._generateUniqueId();
+        this.name = name ? name : "Tabs box";
+        this.tabs = tabs ? tabs : [];
+    }
+
+    static _getTabByUrl(tabs, url) {
         var foundTabs = tabs.filter(function (tab) {
             return tab.url === url;
         });
@@ -18,7 +19,7 @@ function Box(id, name, tabs) {
         return null;
     }
 
-    function _getTabById(tabs, id) {
+    static _getTabById(tabs, id) {
         var foundTabs = tabs.filter(function (tab) {
             return tab.id === id;
         });
@@ -28,18 +29,18 @@ function Box(id, name, tabs) {
         return null;
     }
 
-    function _putTabToBox(tabs, tab) {
-        var foundTab = _getTabByUrl(tabs, tab.url);
+    static _putTabToBox(tabs, tab) {
+        var foundTab = Box._getTabByUrl(tabs, tab.url);
         if (!foundTab) {
-            tab.id = generateUniqueId();
+            tab.id = Box._generateUniqueId();
             tabs.push(tab);
             return true;
         }
         return false;
     }
 
-    function _changeTabPosition(tabs, tabId, newIndex) {
-        var tab = _getTabById(tabs, tabId);
+    static _changeTabPosition(tabs, tabId, newIndex) {
+        var tab = Box._getTabById(tabs, tabId);
         if (tab) {
             var oldIndex = tabs.indexOf(tab);
             var tmp = tabs[newIndex];
@@ -48,7 +49,7 @@ function Box(id, name, tabs) {
         }
     }
 
-    function _removeTabFromBox(tabs, tabInfo) {
+    static _removeTabFromBox(tabs, tabInfo) {
         var index = tabs.indexOf(tabInfo);
         if (index >= 0) {
             tabs.splice(index, 1);
@@ -57,41 +58,41 @@ function Box(id, name, tabs) {
         return false;
     }
 
-    this.getName = function () {
-        return name;
-    };
+    getName() {
+        return this.name;
+    }
 
-    this.getTabByUrl = function (url) {
-        return _getTabByUrl(url);
-    };
+    getTabByUrl(url) {
+        return Box._getTabByUrl(this.tabs, url);
+    }
 
-    this.getTabs = function () {
-        return tabs;
-    };
+    getTabs() {
+        return this.tabs;
+    }
 
-    this.changeName = function (name) {
+    changeName(name) {
         this.name = name;
         Notifications.sendBoxNameChanged(this);
-    };
+    }
 
-    this.putTabToBox = function (tabInfo) {
-        if (_putTabToBox(this.tabs, tabInfo)) {
+    putTabToBox(tabInfo) {
+        if (Box._putTabToBox(this.tabs, tabInfo)) {
             Notifications.sendPutTabToBox(this.id, tabInfo);
         }
-    };
+    }
 
-    this.removeTabFromBox = function (tabInfo) {
-        if (_removeTabFromBox(this.tabs, tabInfo)) {
+    removeTabFromBox(tabInfo) {
+        if (Box._removeTabFromBox(this.tabs, tabInfo)) {
             Notifications.sendTabFromBoxRemoved(this.id, tabInfo);
         }
-    };
+    }
 
-    this.changeTabPosition = function (tabId, newPosition) {
-        _changeTabPosition(this.tabs, tabId, newPosition);
+    changeTabPosition(tabId, newPosition) {
+        Box._changeTabPosition(this.tabs, tabId, newPosition);
         Notifications.sendChangeTabPosition(this.id, tabId, newPosition);
-    };
+    }
 
-    this.init = function () {
+    init() {
         var self = this;
         Notifications.addChangeBoxNameListener(this.id, function (name) {
             console.log("Sync box nam - id: " + self.id + ", name: " + name);
@@ -100,17 +101,37 @@ function Box(id, name, tabs) {
 
         Notifications.addPutTabToBoxListener(this.id, function (tab) {
             console.log("Sync add tab to box - id: " + self.id + ", tab: " + tab);
-            _putTabToBox(self.tabs, tab);
+            Box._putTabToBox(self.tabs, tab);
         });
 
         Notifications.addRemoveTabFromBoxListener(this.id, function (tab) {
             console.log("Sync remove tab from box: id: " + self.id + ", tab: " + tab);
-            _removeTabFromBox(self.tabs, tab);
+            Box._removeTabFromBox(self.tabs, tab);
         });
 
         Notifications.addChangeTabPositionListener(this.id, function (tabId, newPosition) {
-            _changeTabPosition(self.tabs, tabId, newPosition);
+            Box._changeTabPosition(self.tabs, tabId, newPosition);
         });
-    };
+    }
+
+    toString() {
+        return `{\n` +
+            `\t"id": ${this.id},\n` +
+            `\t"name": ${this.name},\n` +
+            `\t"tabs": [${this.tabs.join(", ")}]\n` +
+            `}`;
+    }
+
+    // static _tabToString(tab) {
+    //     return `{\n` +
+    //         `"title": "${tab.title},"\n` +
+    //         `"url": "${tab.url}"\n` +
+    //         `}`;
+    // }
+    // static _tabsToString(tabs){
+    //    $.map(tabs, function (tab) {
+    //
+    //    })
+    // }
 }
 
