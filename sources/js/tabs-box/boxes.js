@@ -1,26 +1,28 @@
-function Boxes(boxesInfo) {
-    this.boxes = [];
+class Boxes {
 
-    if (boxesInfo) {
-        var self = this;
-        boxesInfo.forEach(function (boxInfo) {
-            _addNewBox(self.boxes, _createBox(boxInfo));
-        });
+    constructor(boxesInfo) {
+        this.boxes = [];
+        if (boxesInfo) {
+            var self = this;
+            boxesInfo.forEach(function (boxInfo) {
+                Boxes._addNewBox(self.boxes, Boxes._createBox(boxInfo));
+            });
+        }
     }
 
-    function _createBox(boxInfo) {
+    static _createBox(boxInfo) {
         var box = new Box(boxInfo.id, boxInfo.name, boxInfo.tabs);
         box.init();
         return box;
     }
 
-    function _addNewBox(boxes, box) {
+    static _addNewBox(boxes, box) {
         boxes.push(box);
         return true;
     }
 
-    function _removeBox(boxes, boxId) {
-        var box = _getBoxById(boxes, boxId);
+    static _removeBox(boxes, boxId) {
+        var box = Boxes._getBoxById(boxes, boxId);
         if (box !== null) {
             boxes.splice(boxes.indexOf(box), 1);
             return true;
@@ -28,7 +30,7 @@ function Boxes(boxesInfo) {
         return false;
     }
 
-    function _getBoxById(boxes, id) {
+    static _getBoxById(boxes, id) {
         var foundBoxes = boxes.filter(function (box) {
             return box.id === id;
         });
@@ -38,36 +40,36 @@ function Boxes(boxesInfo) {
         return null;
     }
 
-    this.getBoxes = function () {
+    getBoxes() {
         return this.boxes;
-    };
+    }
 
-    this.addNewBox = function () {
+    addNewBox() {
         console.log("Adding new box...");
         var box = new Box();
         box.init();
-        if (_addNewBox(this.boxes, box)) {
+        if (Boxes._addNewBox(this.boxes, box)) {
             this.saveBoxes();
             Notifications.sendNewBoxAdded(box);
             console.log("New box=" + box + "was added");
             return box;
         }
         return undefined;
-    };
+    }
 
-    this.saveBoxes = function () {
+    saveBoxes() {
         console.log("Saving boxes=" + this.boxes + " ...");
         var self = this;
         chrome.storage.local.set({tabsBoxes: this.boxes}, function () {
             console.log("Boxes=" + self.boxes + " was saved");
         });
-    };
+    }
 
-    this.getBoxById = function (id) {
-        return _getBoxById(this.boxes, id);
-    };
+    getBoxById(id) {
+        return Boxes._getBoxById(this.boxes, id);
+    }
 
-    this.changeBoxName = function (boxId, boxName) {
+    changeBoxName(boxId, boxName) {
         console.log("Changing name of the box with id=" + boxId + " to '" + boxName + "' ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
@@ -75,9 +77,9 @@ function Boxes(boxesInfo) {
             this.saveBoxes();
             console.log("Box name with id=" + boxId + " was changed to '" + boxName + "'")
         }
-    };
+    }
 
-    this.putTabToBox = function (boxId, tab) {
+    putTabToBox(boxId, tab) {
         console.log("Putting tab=" + tab + " to the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
@@ -85,17 +87,17 @@ function Boxes(boxesInfo) {
             this.saveBoxes();
             console.log("Tab=" + tab + " was put to the box with id=" + boxId);
         }
-    };
+    }
 
-    this.changeTabPosition = function (boxId, tabId, newPosition) {
+    changeTabPosition(boxId, tabId, newPosition) {
         var box = this.getBoxById(boxId);
         if (box && box != null) {
             box.changeTabPosition(tabId, newPosition);
             this.saveBoxes();
         }
-    };
+    }
 
-    this.removeTabFromBox = function (boxId, tab) {
+    removeTabFromBox(boxId, tab) {
         console.log("Removing tab=" + tab + " from the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
@@ -103,9 +105,9 @@ function Boxes(boxesInfo) {
             this.saveBoxes();
             console.log("Tab=" + tab + " was removed form the box with id=" + boxId);
         }
-    };
+    }
 
-    this.changeBoxPosition = function (boxId, newPosition) {
+    changeBoxPosition(boxId, newPosition) {
         var box = this.getBoxById(boxId);
         if (box && box != null) {
             var oldPosition = this.boxes.indexOf(box);
@@ -116,36 +118,42 @@ function Boxes(boxesInfo) {
                 this.saveBoxes();
             }
         }
-    };
+    }
 
-    this.removeBox = function (box) {
+    removeBox(box) {
         console.log("Removing box=" + box + " ...")
-        if (_removeBox(this.boxes, box.id)) {
+        if (Boxes._removeBox(this.boxes, box.id)) {
             this.saveBoxes();
             Notifications.sendBoxRemoved(box);
             console.log("Box=" + box + " was removed ")
         }
-    };
+    }
 
-    this.init = function () {
+    init() {
         var self = this;
         Notifications.addNewBoxAddedListener(function (boxInfo) {
-            var box = _createBox(boxInfo);
-            _addNewBox(self.boxes, box);
+            var box = Boxes._createBox(boxInfo);
+            Boxes._addNewBox(self.boxes, box);
         });
 
         Notifications.addBoxRemovedListener(function (box) {
-            _removeBox(self.boxes, box.id);
+            Boxes._removeBox(self.boxes, box.id);
         });
-    };
-}
+    }
 
-Boxes.loadBoxes = function (callback) {
-    console.log("Loading boxes from the store...");
-    chrome.storage.local.get(["tabsBoxes"], function (item) {
-        var boxes = new Boxes(item.tabsBoxes);
-        boxes.init();
-        console.log("Boxes=" + boxes + " was loaded from the store");
-        callback(boxes);
-    });
-};
+    toString() {
+        return `{\n` +
+            `\t"boxes": [${this.boxes}]\n` +
+            `}`;
+    }
+
+    static loadBoxes(callback) {
+        console.log("Loading boxes from the store...");
+        chrome.storage.local.get(["tabsBoxes"], function (item) {
+            var boxes = new Boxes(item.tabsBoxes);
+            boxes.init();
+            console.log("Boxes=" + boxes + " was loaded from the store");
+            callback(boxes);
+        });
+    }
+}
