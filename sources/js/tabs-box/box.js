@@ -12,14 +12,6 @@ class Box {
         }
     }
 
-    getName() {
-        return this.name;
-    }
-
-    getTabByUrl(url) {
-        return Box._getTabByUrl(this.tabs, url);
-    }
-
     getTabs() {
         return this.tabs;
     }
