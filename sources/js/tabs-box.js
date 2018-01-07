@@ -45,13 +45,7 @@ function addTabEventListener(boxes, box, tab) {
             boxes.removeTabFromBox(box.id, tab);
         })
         .on("click", "#thumb-" + tab.id, function (e) {
-            Tabs.getTabByUrl(tab.url, function (t) {
-                if (t) {
-                    Tabs.selectTab(t.id);
-                } else {
-                    Tabs.createTab(tab.url);
-                }
-            });
+            Tabs.selectTabByUrl(tab.url);
         });
 }
 

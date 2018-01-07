@@ -1,23 +1,11 @@
 var boxTemplate;
 var changeBoxPositionFunc;
 
-function selectBoxTab(boxId) {
-    Tabs.getBoxTab(boxId, function (tab) {
-        if (tab) {
-            Tabs.selectTab(tab.id);
-        } else {
-            Tabs.createBoxTab(boxId, function (newTab) {
-                // Tabs.selectTab(newTab.id);
-            });
-        }
-    });
-}
-
 function createNewEmptyBox(boxes) {
     var box = boxes.addNewBox();
     outputBoxes(boxes);
     addBoxButtonsEventListeners(boxes, box);
-    selectBoxTab(box.id);
+    Tabs.selectBoxTab(box.id);
 }
 
 function putTabToNewBox(boxes, activeTab) {
@@ -28,7 +16,7 @@ function putTabToNewBox(boxes, activeTab) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
-        selectBoxTab(box.id);
+        Tabs.selectBoxTab(box.id);
     });
 }
 
@@ -75,7 +63,7 @@ function addBoxButtonsEventListeners(boxes, box) {
             });
         })
         .on("click", "#switch-to-box-" + box.id, function () {
-            selectBoxTab(box.id);
+            Tabs.selectBoxTab(box.id);
         })
         .on("click", "#close-box-" + box.id, function () {
             boxes.removeBox(box);

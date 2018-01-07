@@ -4,6 +4,28 @@ class Tabs {
         chrome.tabs.update(tabId, {selected: true});
     }
 
+    static selectBoxTab(boxId) {
+        Tabs.getBoxTab(boxId, function (tab) {
+            if (tab) {
+                Tabs.selectTab(tab.id);
+            } else {
+                Tabs.createBoxTab(boxId, function (newTab) {
+                    // Tabs.selectTab(newTab.id);
+                });
+            }
+        });
+    }
+
+    static selectTabByUrl(url) {
+        Tabs.getTabByUrl(url, function (t) {
+            if (t) {
+                Tabs.selectTab(t.id);
+            } else {
+                Tabs.createTab(url);
+            }
+        });
+    }
+
     static closeTab(tabId) {
         chrome.tabs.remove(tabId, function () {
         })
