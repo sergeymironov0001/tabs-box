@@ -79,8 +79,9 @@ class Boxes {
     }
 
     changeBoxPosition(boxId, newPosition) {
+        console.log("Change box position: boxId=" + boxId + ", newPosition=" + newPosition);
         var box = this.getBoxById(boxId);
-        if (box && box != null) {
+        if (box) {
             var oldPosition = this.boxes.indexOf(box);
             if (oldPosition >= 0) {
                 var tmp = this.boxes[newPosition];
