@@ -42,7 +42,7 @@ function addTabEventListener(boxes, box, tab) {
         .on("click", "#close-" + tab.id, function (e) {
             e.stopPropagation();
             $("#" + tab.id).remove();
-            boxes.removeTabFromBox(box.id, tab);
+            boxes.removeTabFromBox(box.id, tab.id);
         })
         .on("click", "#thumb-" + tab.id, function (e) {
             Tabs.selectTabByUrl(tab.url);
@@ -108,6 +108,10 @@ $(document).ready(function () {
         Notifications.addPutTabToBoxListener(box.id, function (tab) {
             outputTabs(searchQuery, boxes, box);
             addTabEventListener(boxes, box, tab);
+        });
+
+        Notifications.addRemoveTabFromBoxListener(box.id, function (tabId) {
+           outputTabs(searchQuery, boxes, box);
         });
     });
 });

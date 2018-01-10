@@ -34,11 +34,11 @@ class Notifications {
         }, callback);
     }
 
-    static sendTabFromBoxRemoved(boxId, tab, callback) {
+    static sendTabFromBoxRemoved(boxId, tabId, callback) {
         Notifications._sendMessage({
                 type: "tabs-box:remove-tab-from-box",
                 boxId: boxId,
-                tab: tab
+                tabId: tabId
             },
             callback);
     }
@@ -69,7 +69,7 @@ class Notifications {
     static addRemoveTabFromBoxListener(boxId, callback) {
         Notifications._addListener("tabs-box:remove-tab-from-box", function (request) {
                 if (boxId === request.boxId) {
-                    callback(request.tab);
+                    callback(request.tabId);
                 }
             }
         );

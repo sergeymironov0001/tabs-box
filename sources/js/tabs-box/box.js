@@ -1,8 +1,10 @@
 class Box {
 
-    constructor(id, name, tabs) {
+    constructor(id, name, showContent, tabs) {
         this.id = id ? id : Box._generateUniqueId();
         this.name = name ? name : "Tabs box";
+        this.showContent = showContent ? showContent : false;
+
         if (tabs && tabs.length > 0) {
             this.tabs = $.map(tabs, function (tabInfo) {
                 return new Tab(tabInfo.id, tabInfo);
@@ -27,9 +29,9 @@ class Box {
         }
     }
 
-    removeTabFromBox(tabInfo) {
-        if (Box._removeTabFromBox(this.tabs, tabInfo)) {
-            Notifications.sendTabFromBoxRemoved(this.id, tabInfo);
+    removeTabFromBox(tabId, callback) {
+        if (Box._removeTabFromBox(this.tabs, tabId)) {
+            Notifications.sendTabFromBoxRemoved(this.id, tabId, callback)
         }
     }
 
@@ -50,9 +52,9 @@ class Box {
             Box._putTabToBox(self.tabs, tab);
         });
 
-        Notifications.addRemoveTabFromBoxListener(this.id, function (tab) {
-            console.log("Sync remove tab from box: id: " + self.id + ", tab: " + tab);
-            Box._removeTabFromBox(self.tabs, tab);
+        Notifications.addRemoveTabFromBoxListener(this.id, function (tabId) {
+            console.log("Sync remove tab from box: id: " + self.id + ", tab: " + tabId);
+            Box._removeTabFromBox(self.tabs, tabId);
         });
 
         Notifications.addChangeTabPositionListener(this.id, function (tabId, newPosition) {
@@ -64,6 +66,7 @@ class Box {
         return `{\n` +
             `\t"id": ${this.id},\n` +
             `\t"name": ${this.name},\n` +
+            `\t"showContent": ${this.showContent},\n` +
             `\t"tabs": [${this.tabs.join(", ")}]\n` +
             `}`;
     }
@@ -112,13 +115,16 @@ class Box {
         }
     }
 
-    static _removeTabFromBox(tabs, tabInfo) {
-        var index = tabs.indexOf(tabInfo);
-        if (index >= 0) {
-            tabs.splice(index, 1);
-            return true;
+    static _removeTabFromBox(tabs, tabId) {
+        var tab = Box._getTabById(tabs, tabId);
+        if (tab) {
+            var index = tabs.indexOf(tab);
+            if (index >= 0) {
+                tabs.splice(index, 1);
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 }
 

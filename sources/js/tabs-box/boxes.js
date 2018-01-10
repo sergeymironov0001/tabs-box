@@ -14,6 +14,24 @@ class Boxes {
         return this.boxes;
     }
 
+    showBoxContent(boxId) {
+        console.log("show box content: boxId=" + boxId);
+        var box = this.getBoxById(boxId);
+        if (box) {
+            box.showContent = true;
+            this.saveBoxes();
+        }
+    }
+
+    hideBoxContent(boxId) {
+        console.log("hide box content: boxId=" + boxId);
+        var box = this.getBoxById(boxId);
+        if (box) {
+            box.showContent = false;
+            this.saveBoxes();
+        }
+    }
+
     addNewBox() {
         console.log("Adding new box...");
         var box = new Box();
@@ -68,13 +86,16 @@ class Boxes {
         }
     }
 
-    removeTabFromBox(boxId, tab) {
-        console.log("Removing tab=" + tab + " from the box with id=" + boxId + " ...");
+    removeTabFromBox(boxId, tabId, callback) {
+        console.log("Removing tab=" + tabId + " from the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
-            box.removeTabFromBox(tab);
+            box.removeTabFromBox(tabId);
             this.saveBoxes();
-            console.log("Tab=" + tab + " was removed form the box with id=" + boxId);
+            if(callback){
+                callback();
+            }
+            console.log("Tab=" + tabId + " was removed form the box with id=" + boxId);
         }
     }
 
@@ -130,7 +151,7 @@ class Boxes {
     }
 
     static _createBox(boxInfo) {
-        var box = new Box(boxInfo.id, boxInfo.name, boxInfo.tabs);
+        var box = new Box(boxInfo.id, boxInfo.name, boxInfo.showContent, boxInfo.tabs);
         box.init();
         return box;
     }

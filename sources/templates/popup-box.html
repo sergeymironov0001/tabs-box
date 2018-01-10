@@ -1,15 +1,34 @@
 <!doctype html>
 
 <div id="{{id}}" class="row m-0 pb-1" draggable="true">
-    <div class="col-2 text-center p-0 pr-1">
+    <div class="col-1 text-center p-0 pr-1">
         <button id="add-to-box-{{id}}" type="button" class="btn">+</button>
     </div>
 
-    <div class="col-8 text-center p-0 pr-1">
+    <div class="col-9 text-center p-0 pr-1">
         <button id="switch-to-box-{{id}}" type="button" class="btn">{{name}}</button>
     </div>
 
-    <div class="col-2 text-center p-0">
+    <div class="col-1 text-center p-0 pr-1">
+        <button id="collapse-box-{{id}}" type="button" data-toggle="collapse" data-target="#box-content-{{id}}"
+                class="btn">↓
+        </button>
+    </div>
+
+    <div class="col-1 text-center p-0">
         <button id="close-box-{{id}}" type="button" class="btn">&times;</button>
+    </div>
+
+    <div id="box-content-{{id}}" class="collapse w-100">
+        {{#tabs}}
+        <div class="row m-0 pl-3 pt-1">
+            <div class="col-1 text-center p-0 pr-1">
+                <button id="remove-tab-{{id}}" type="button" class="btn">&times;</button>
+            </div>
+            <div class="col-11 tab-title p-0">
+                {{title}}
+            </div>
+        </div>
+        {{/tabs}}
     </div>
 </div>

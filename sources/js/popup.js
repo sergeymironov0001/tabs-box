@@ -20,16 +20,20 @@ function putTabToNewBox(boxes, activeTab) {
     });
 }
 
-function putTabToExistingBox(boxes, boxId, tab) {
+function putTabToExistingBox(boxes, boxId, tab, callback) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, tab, dataUrl);
         boxes.putTabToBox(boxId, tabInfo);
+        if (callback) {
+            callback(tabInfo.id);
+        }
         // selectBoxTab(boxId);
         // Tabs.closeTab(tab.id);
     });
 }
 
 function outputBoxes(boxes) {
+    console.log("Output boxes");
     var boxesHtml = $.map(boxes.getBoxes(), function (box) {
         return Mustache.to_html(boxTemplate, box);
     });
@@ -43,9 +47,18 @@ function outputBoxes(boxes) {
         $('#boxes').unbind('sortupdate', changeBoxPositionFunc);
     }
 
-    $('#boxes').sortable({
-        placeholderClass: 'box'
-    }).bind('sortupdate', changeBoxPositionFunc);
+    $('#boxes')
+        .sortable({
+            placeholderClass: 'box'
+        })
+        .bind('sortupdate', changeBoxPositionFunc);
+
+    boxes.getBoxes().forEach(function (box) {
+        if (box.showContent) {
+            // $("#box-content-" + box.id).collapse('show');
+            $("#box-content-" + box.id).addClass('show');
+        }
+    });
 }
 
 function addButtonsEventListeners(boxes) {
@@ -59,7 +72,10 @@ function addBoxButtonsEventListeners(boxes, box) {
     $("#boxes")
         .on("click", "#add-to-box-" + box.id, function () {
             Tabs.getCurrentTab(function (tab) {
-                putTabToExistingBox(boxes, box.id, tab);
+                putTabToExistingBox(boxes, box.id, tab, function (tabId) {
+                    outputBoxes(boxes);
+                    addTabListeners(boxes, box.id, tabId);
+                });
             });
         })
         .on("click", "#switch-to-box-" + box.id, function () {
@@ -69,6 +85,29 @@ function addBoxButtonsEventListeners(boxes, box) {
             boxes.removeBox(box);
             outputBoxes(boxes);
             Tabs.closeBoxTab(box.id);
+        });
+
+    box.tabs.forEach(function (tab) {
+        addTabListeners(boxes, box.id, tab.id);
+    });
+
+    $("#box-content-" + box.id)
+        .on("show.bs.collapse", function () {
+            boxes.showBoxContent(box.id);
+        })
+        .on("hide.bs.collapse", function () {
+            boxes.hideBoxContent(box.id);
+        });
+}
+
+function addTabListeners(boxes, boxId, tabId) {
+    $("#boxes")
+        .on("click", "#remove-tab-" + tabId, function () {
+            console.log("Remove tab: tabId = " + tabId);
+            boxes.removeTabFromBox(boxId, tabId, function () {
+                console.log("aaa");
+                outputBoxes(boxes);
+            });
         });
 }
 

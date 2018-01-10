@@ -1,11 +1,11 @@
 body {
     height: 514px;
-    width: 260px;
+    width: 450px;
     overflow-x: hidden;
     font-size: 14px;
 
     /*background-color: #F1F1F1;*/
-    background-color: #181818;
+    background-color: #FFFFFF;
 }
 
 #main-container {
@@ -30,4 +30,10 @@ body {
 
     background-color: #FFA31A;
     color: #1B1B1B;
+}
+
+.tab-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
