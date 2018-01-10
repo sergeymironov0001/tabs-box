@@ -33,7 +33,6 @@ function putTabToExistingBox(boxes, boxId, tab, callback) {
 }
 
 function outputBoxes(boxes) {
-    console.log("Output boxes");
     var boxesHtml = $.map(boxes.getBoxes(), function (box) {
         return Mustache.to_html(boxTemplate, box);
     });
@@ -103,9 +102,7 @@ function addBoxButtonsEventListeners(boxes, box) {
 function addTabListeners(boxes, boxId, tabId) {
     $("#boxes")
         .on("click", "#remove-tab-" + tabId, function () {
-            console.log("Remove tab: tabId = " + tabId);
             boxes.removeTabFromBox(boxId, tabId, function () {
-                console.log("aaa");
                 outputBoxes(boxes);
             });
         });
