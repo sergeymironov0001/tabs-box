@@ -4,8 +4,10 @@ body {
     overflow-x: hidden;
     font-size: 14px;
 
+    background-color: #181818;
+    color: #cacaca;
     /*background-color: #F1F1F1;*/
-    background-color: #FFFFFF;
+    /*background-color: #FFFFFF;*/
 }
 
 #main-container {
@@ -17,23 +19,69 @@ body {
 /*}*/
 
 .btn {
-    /*background-color: #F1F1F1;*/
-    /*background-color: #fff;*/
-
-    border: 1px solid black;
-    /*color: black;*/
-
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
     font-size: 14px;
 
     background-color: #FFA31A;
-    color: #1B1B1B;
 }
 
-.tab-title{
+i {
+    /*color: gray;*/
+    color: #FFA31A;
+}
+
+.tab-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 100%;
+}
+
+.box {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+    margin: 0;
+
+    background-color: #363636;
+
+    border-top: 1px solid #181818;
+    border-radius: .25rem;
+}
+
+.boxes-controls {
+    /*border-bottom: 1px solid black;*/
+}
+
+.box-controls {
+    min-width: 35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.box-name {
+    width: 100%;
+}
+
+.ttt {
+    padding: .375rem 0 .375rem 0;
+}
+
+.tab {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+    margin: 0;
+
+    /*border-bottom: 1px dotted black;*/
+}
+
+.tab-controls {
+    min-width: 20px;
+    display: flex;
+    justify-content: space-between;
 }

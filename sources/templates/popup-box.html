@@ -1,31 +1,35 @@
 <!doctype html>
 
-<div id="{{id}}" class="row m-0 pb-1" draggable="true">
-    <div class="col-1 text-center p-0 pr-1">
-        <button id="add-to-box-{{id}}" type="button" class="btn">+</button>
-    </div>
-
-    <div class="col-9 text-center p-0 pr-1">
-        <button id="switch-to-box-{{id}}" type="button" class="btn">{{name}}</button>
-    </div>
-
-    <div class="col-1 text-center p-0 pr-1">
-        <button id="collapse-box-{{id}}" type="button" data-toggle="collapse" data-target="#box-content-{{id}}"
-                class="btn">↓
-        </button>
-    </div>
-
-    <div class="col-1 text-center p-0">
-        <button id="close-box-{{id}}" type="button" class="btn">&times;</button>
-    </div>
-
-    <div id="box-content-{{id}}" class="collapse w-100">
-        {{#tabs}}
-        <div class="row m-0 pl-3 pt-1">
-            <div class="col-1 text-center p-0 pr-1">
-                <button id="remove-tab-{{id}}" type="button" class="btn">&times;</button>
+<div id="{{id}}" draggable="true">
+    <div class="box row m-0">
+        <div class="box-controls pl-1">
+            <div id="add-to-box-{{id}}" class="h-100 align-middle ttt">
+                <i class="fa fa-plus"></i>
             </div>
-            <div class="col-11 tab-title p-0">
+
+            <div id="collapse-box-{{id}}" class="h-100 ttt" data-toggle="collapse" data-target="#box-content-{{id}}">
+                <i class="fa fa-toggle-down"></i>
+            </div>
+        </div>
+        <div class="box-name p-0 pl-2 pr-1">
+            <div id="switch-to-box-{{id}}" class="ttt">{{name}}</div>
+        </div>
+
+        <div class="text-center p-0 pr-1">
+            <div id="close-box-{{id}}" class="ttt h-100">
+                <i class="fa fa-remove"></i>
+            </div>
+        </div>
+    </div>
+    <div id="box-content-{{id}}" class="box-content collapse">
+        {{#tabs}}
+        <div class="row m-0 pl-4 tab">
+            <div class="tab-controls p-0 pr-1">
+                <div id="remove-tab-{{id}}" class="h-100 ttt">
+                    <i class="fa fa-remove"></i>
+                </div>
+            </div>
+            <div class="tab-title ttt">
                 {{title}}
             </div>
         </div>
