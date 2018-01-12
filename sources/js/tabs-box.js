@@ -111,7 +111,12 @@ $(document).ready(function () {
         });
 
         Notifications.addRemoveTabFromBoxListener(box.id, function (tabId) {
-           outputTabs(searchQuery, boxes, box);
+            outputTabs(searchQuery, boxes, box);
+        });
+
+        Notifications.addChangeBoxNameListener(box.id, function (newName) {
+            Tabs.changeTabTitle(newName);
+            $("#tabs-box-name-input").val(newName);
         });
     });
 });

@@ -97,6 +97,31 @@ function addBoxButtonsEventListeners(boxes, box) {
         .on("hide.bs.collapse", function () {
             boxes.hideBoxContent(box.id);
         });
+
+    $("#rename-box-" + box.id)
+        .on("click", function () {
+            $("#switch-to-box-" + box.id)
+                .attr("hidden", "");
+
+            var boxNameInput = $("#box-name-input-" + box.id);
+            boxNameInput.removeAttr("hidden").focus();
+
+            var nameLength = boxNameInput.val().length;
+            boxNameInput.focus();
+            boxNameInput[0].setSelectionRange(nameLength, nameLength)
+        });
+
+    $("#box-name-input-" + box.id)
+        .on("focusout", function () {
+            var name = $(this).val();
+
+            boxes.changeBoxName(box.id, name);
+
+            $(this).attr("hidden", "");
+            $("#switch-to-box-" + box.id)
+                .text(name)
+                .removeAttr("hidden");
+        });
 }
 
 function addTabListeners(boxes, boxId, tabId) {

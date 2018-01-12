@@ -57,7 +57,7 @@ i {
 }
 
 .box-controls {
-    min-width: 35px;
+    min-width: 50px;
     display: flex;
     justify-content: space-between;
 }
@@ -84,4 +84,18 @@ i {
     min-width: 20px;
     display: flex;
     justify-content: space-between;
+}
+
+input[type="text"] {
+    /*border: 1px solid black;*/
+    border: 1px solid #181818;
+    background-color: #181818;
+    color: #cacaca;
+    font-size: 14px;
+}
+
+input[type="text"]:focus {
+    /*border: 1px solid #363636;*/
+    background-color: #181818;
+    color: #cacaca;
 }
