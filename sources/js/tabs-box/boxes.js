@@ -49,7 +49,7 @@ class Boxes {
         console.log("Saving boxes=" + this.boxes + " ...");
         var self = this;
         chrome.storage.local.set({tabsBoxes: this.boxes}, function () {
-            console.log("Boxes=" + self.boxes + " was saved");
+            // console.log("Boxes=" + self.boxes + " was saved");
         });
     }
 

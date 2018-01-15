@@ -3,15 +3,16 @@
 <div id="{{id}}" draggable="true">
     <div class="box row m-0">
         <div class="box-controls pl-1">
-            <div id="add-to-box-{{id}}" class="h-100 ttt">
+            <div id="add-to-box-button-{{id}}" class="h-100 ttt">
                 <i class="fa fa-plus"></i>
             </div>
 
-            <div id="collapse-box-{{id}}" class="h-100 ttt" data-toggle="collapse" data-target="#box-content-{{id}}">
-                <i class="fa fa-toggle-down"></i>
+            <div id="collapse-box-button-{{id}}" class="h-100 ttt" data-toggle="collapse"
+                 data-target="#box-content-{{id}}">
+                <i id="collapse-box-icon-{{id}}" class="fa fa-toggle-down"></i>
             </div>
 
-            <div id="rename-box-{{id}}" class="ttt h-100">
+            <div id="rename-box-button-{{id}}" class="ttt h-100">
                 <i class="fa fa-pencil"></i>
             </div>
         </div>
@@ -22,7 +23,7 @@
         </div>
 
         <div class="p-0 pr-1">
-            <div id="close-box-{{id}}" class="ttt h-100">
+            <div id="remove-box-button-{{id}}" class="ttt h-100">
                 <i class="fa fa-remove"></i>
             </div>
         </div>
@@ -35,7 +36,7 @@
                     <i class="fa fa-remove"></i>
                 </div>
             </div>
-            <div class="tab-title ttt">
+            <div id="tab-title-{{id}}" class="tab-title ttt">
                 {{title}}
             </div>
         </div>

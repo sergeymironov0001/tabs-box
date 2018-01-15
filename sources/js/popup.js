@@ -5,7 +5,7 @@ function createNewEmptyBox(boxes) {
     var box = boxes.addNewBox();
     outputBoxes(boxes);
     addBoxButtonsEventListeners(boxes, box);
-    Tabs.selectBoxTab(box.id);
+    // Tabs.selectBoxTab(box.id);
 }
 
 function putTabToNewBox(boxes, activeTab) {
@@ -16,7 +16,7 @@ function putTabToNewBox(boxes, activeTab) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
-        Tabs.selectBoxTab(box.id);
+        // Tabs.selectBoxTab(box.id);
     });
 }
 
@@ -25,7 +25,7 @@ function putTabToExistingBox(boxes, boxId, tab, callback) {
         var tabInfo = new Tab(null, tab, dataUrl);
         boxes.putTabToBox(boxId, tabInfo);
         if (callback) {
-            callback(tabInfo.id);
+            callback(tabInfo);
         }
         // selectBoxTab(boxId);
         // Tabs.closeTab(tab.id);
@@ -54,8 +54,8 @@ function outputBoxes(boxes) {
 
     boxes.getBoxes().forEach(function (box) {
         if (box.showContent) {
-            // $("#box-content-" + box.id).collapse('show');
             $("#box-content-" + box.id).addClass('show');
+            $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
         }
     });
 }
@@ -67,23 +67,39 @@ function addButtonsEventListeners(boxes) {
 }
 
 function addBoxButtonsEventListeners(boxes, box) {
-    console.log("Box buttons event listener " + box.id);
     $("#boxes")
-        .on("click", "#add-to-box-" + box.id, function () {
+        .on("click", "#add-to-box-button-" + box.id, function () {
             Tabs.getCurrentTab(function (tab) {
-                putTabToExistingBox(boxes, box.id, tab, function (tabId) {
+                putTabToExistingBox(boxes, box.id, tab, function (tabInfo) {
                     outputBoxes(boxes);
-                    addTabListeners(boxes, box.id, tabId);
+                    addTabListeners(boxes, box.id, tabInfo);
                 });
             });
         })
         .on("click", "#switch-to-box-" + box.id, function () {
             Tabs.selectBoxTab(box.id);
         })
-        .on("click", "#close-box-" + box.id, function () {
+        .on("click", "#remove-box-button-" + box.id, function () {
             boxes.removeBox(box);
             outputBoxes(boxes);
             Tabs.closeBoxTab(box.id);
+        })
+        .on("click", "#rename-box-button-" + box.id, function () {
+            var switchToBoxElement = $("#switch-to-box-" + box.id);
+            var hiddenAttr = switchToBoxElement.attr("hidden");
+            var hasHiddenAttr = typeof hiddenAttr !== typeof undefined && hiddenAttr !== false;
+            if (!hasHiddenAttr) {
+                switchToBoxElement.attr("hidden", "hidden");
+
+                var boxNameInput = $("#box-name-input-" + box.id);
+                boxNameInput.removeAttr("hidden").focus();
+
+                var nameLength = boxNameInput.val().length;
+                boxNameInput.focus();
+                boxNameInput[0].setSelectionRange(nameLength, nameLength);
+            } else {
+
+            }
         });
 
     box.tabs.forEach(function (tab) {
@@ -93,43 +109,37 @@ function addBoxButtonsEventListeners(boxes, box) {
     $("#box-content-" + box.id)
         .on("show.bs.collapse", function () {
             boxes.showBoxContent(box.id);
+            $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
         })
         .on("hide.bs.collapse", function () {
             boxes.hideBoxContent(box.id);
-        });
-
-    $("#rename-box-" + box.id)
-        .on("click", function () {
-            $("#switch-to-box-" + box.id)
-                .attr("hidden", "");
-
-            var boxNameInput = $("#box-name-input-" + box.id);
-            boxNameInput.removeAttr("hidden").focus();
-
-            var nameLength = boxNameInput.val().length;
-            boxNameInput.focus();
-            boxNameInput[0].setSelectionRange(nameLength, nameLength)
+            $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
         });
 
     $("#box-name-input-" + box.id)
         .on("focusout", function () {
             var name = $(this).val();
-
             boxes.changeBoxName(box.id, name);
-
-            $(this).attr("hidden", "");
+            $(this).attr("hidden", "hidden");
             $("#switch-to-box-" + box.id)
                 .text(name)
                 .removeAttr("hidden");
         });
+
+    box.tabs.forEach(function (tab) {
+        addTabListeners(boxes, box.id, tab);
+    });
 }
 
-function addTabListeners(boxes, boxId, tabId) {
+function addTabListeners(boxes, boxId, tab) {
     $("#boxes")
-        .on("click", "#remove-tab-" + tabId, function () {
-            boxes.removeTabFromBox(boxId, tabId, function () {
+        .on("click", "#remove-tab-" + tab.id, function () {
+            boxes.removeTabFromBox(boxId, tab.id, function () {
                 outputBoxes(boxes);
             });
+        })
+        .on("click", "#tab-title-" + tab.id, function () {
+            Tabs.selectTabByUrl(tab.url);
         });
 }
 
