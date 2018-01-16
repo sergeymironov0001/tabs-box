@@ -11,7 +11,7 @@ function getUrlParam(name) {
 function outputTabs(searchQuery, boxes, box) {
     var tabs = box.getTabs();
     if (searchQuery) {
-        tabs = searchTabs(searchQuery, tabs);
+        tabs = box.searchTabs(searchQuery);
     }
     var tabsInfoHtml = $.map(tabs, function (tab) {
         return Mustache.to_html(tabSnapshotTemplate, tab);
@@ -47,14 +47,6 @@ function addTabEventListener(boxes, box, tab) {
         .on("click", "#thumb-" + tab.id, function (e) {
             Tabs.selectTabByUrl(tab.url);
         });
-}
-
-function searchTabs(query, tabs) {
-    var q = query.toLowerCase();
-    return tabs.filter(function (tab) {
-        return tab.url.toLowerCase().indexOf(q) !== -1 ||
-            tab.title.toLowerCase().indexOf(q) !== -1;
-    });
 }
 
 function addBoxEventListeners(boxes, box) {

@@ -92,7 +92,7 @@ class Boxes {
         if (box && box !== null) {
             box.removeTabFromBox(tabId);
             this.saveBoxes();
-            if(callback){
+            if (callback) {
                 callback();
             }
             console.log("Tab=" + tabId + " was removed form the box with id=" + boxId);
@@ -120,6 +120,30 @@ class Boxes {
             Notifications.sendBoxRemoved(box);
             console.log("Box=" + box + " was removed ")
         }
+    }
+
+    searchBoxesByName(searchQuery) {
+        searchQuery = searchQuery.toLowerCase();
+        return this.getBoxes().filter(function (box) {
+            return box.name.toLowerCase().indexOf(searchQuery) !== -1;
+        });
+    }
+
+    searchBoxesByTabs(searchQuery) {
+        searchQuery = searchQuery.toLowerCase();
+        return this.getBoxes().filter(function (box) {
+            if (box.searchTabs(searchQuery).length > 0) {
+                return true;
+            }
+            return false;
+        });
+    }
+
+    searchBoxesByNameAndTabs(searchQuery) {
+        searchQuery = searchQuery.toLowerCase();
+        return this.getBoxes().filter(function (box) {
+            return box.name.toLowerCase().indexOf(searchQuery) !== -1 || box.searchTabs(searchQuery).length > 0;
+        });
     }
 
     init() {

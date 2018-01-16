@@ -1,16 +1,17 @@
 var boxTemplate;
 var changeBoxPositionFunc;
+var searchQuery;
 
 function createNewEmptyBox(boxes) {
     var box = boxes.addNewBox();
-    outputBoxes(boxes);
+    outputBoxes($('#search-input').val(), boxes);
     addBoxButtonsEventListeners(boxes, box);
     // Tabs.selectBoxTab(box.id);
 }
 
 function putTabToNewBox(boxes, activeTab) {
     var box = boxes.addNewBox();
-    outputBoxes(boxes);
+    outputBoxes($('#search-input').val(), boxes);
     addBoxButtonsEventListeners(boxes, box);
 
     Tabs.getCurrentTabPicture(function (dataUrl) {
@@ -32,9 +33,22 @@ function putTabToExistingBox(boxes, boxId, tab, callback) {
     });
 }
 
-function outputBoxes(boxes) {
-    var boxesHtml = $.map(boxes.getBoxes(), function (box) {
-        return Mustache.to_html(boxTemplate, box);
+function outputBoxes(searchQuery, boxes) {
+    var outputBoxes = boxes.getBoxes();
+    if (searchQuery) {
+        // outputBoxes = boxes.searchBoxesByName(searchQuery);
+        outputBoxes = boxes.searchBoxesByTabs(searchQuery);
+        // outputBoxes = boxes.searchBoxesByNameAndTabs(searchQuery);
+    }
+
+    var boxesHtml = $.map(outputBoxes, function (box) {
+        var originTabs = box.getTabs();
+        if (searchQuery) {
+            box.tabs = box.searchTabs(searchQuery);
+        }
+        var boxHtml = Mustache.to_html(boxTemplate, box);
+        box.tabs = originTabs;
+        return boxHtml;
     });
     $('#boxes').html(boxesHtml.join(""));
 
@@ -52,8 +66,8 @@ function outputBoxes(boxes) {
         })
         .bind('sortupdate', changeBoxPositionFunc);
 
-    boxes.getBoxes().forEach(function (box) {
-        if (box.showContent) {
+    outputBoxes.forEach(function (box) {
+        if (box.showContent || searchQuery) {
             $("#box-content-" + box.id).addClass('show');
             $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
         }
@@ -71,7 +85,7 @@ function addBoxButtonsEventListeners(boxes, box) {
         .on("click", "#add-to-box-button-" + box.id, function () {
             Tabs.getCurrentTab(function (tab) {
                 putTabToExistingBox(boxes, box.id, tab, function (tabInfo) {
-                    outputBoxes(boxes);
+                    outputBoxes($('#search-input').val(), boxes);
                     addTabListeners(boxes, box.id, tabInfo);
                 });
             });
@@ -81,7 +95,7 @@ function addBoxButtonsEventListeners(boxes, box) {
         })
         .on("click", "#remove-box-button-" + box.id, function () {
             boxes.removeBox(box);
-            outputBoxes(boxes);
+            outputBoxes($('#search-input').val(), boxes);
             Tabs.closeBoxTab(box.id);
         })
         .on("click", "#rename-box-button-" + box.id, function () {
@@ -135,7 +149,7 @@ function addTabListeners(boxes, boxId, tab) {
     $("#boxes")
         .on("click", "#remove-tab-" + tab.id, function () {
             boxes.removeTabFromBox(boxId, tab.id, function () {
-                outputBoxes(boxes);
+                outputBoxes($('#search-input').val(), boxes);
             });
         })
         .on("click", "#tab-title-" + tab.id, function () {
@@ -148,7 +162,7 @@ $(document).ready(function () {
         boxTemplate = template;
 
         Boxes.loadBoxes(function (boxes) {
-            outputBoxes(boxes);
+            outputBoxes($('#search-input').val(), boxes);
             addButtonsEventListeners(boxes);
 
             $('#crete-empty-tab-box-button').click(function (e) {
@@ -158,6 +172,10 @@ $(document).ready(function () {
                 Tabs.getCurrentTab(function (tab) {
                     putTabToNewBox(boxes, tab);
                 });
+            });
+            $('#search-input').on('input', function (e) {
+                searchQuery = $(this).val();
+                outputBoxes(searchQuery, boxes);
             });
         });
     });
