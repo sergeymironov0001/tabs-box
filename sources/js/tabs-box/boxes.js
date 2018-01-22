@@ -70,10 +70,13 @@ class Boxes {
         console.log("Putting tab=" + tab + " to the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
-            box.putTabToBox(tab);
-            this.saveBoxes();
-            console.log("Tab=" + tab + " was put to the box with id=" + boxId);
+            if (box.putTabToBox(tab)) {
+                this.saveBoxes();
+                console.log("Tab=" + tab + " was put to the box with id=" + boxId);
+                return true;
+            }
         }
+        return false;
     }
 
     changeTabPosition(boxId, tabId, newPosition) {
@@ -89,12 +92,13 @@ class Boxes {
         console.log("Removing tab=" + tabId + " from the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
-            box.removeTabFromBox(tabId);
-            this.saveBoxes();
-            if (callback) {
-                callback();
+            if (box.removeTabFromBox(tabId)) {
+                this.saveBoxes();
+                if (callback) {
+                    callback();
+                }
+                console.log("Tab=" + tabId + " was removed form the box with id=" + boxId);
             }
-            console.log("Tab=" + tabId + " was removed form the box with id=" + boxId);
         }
     }
 

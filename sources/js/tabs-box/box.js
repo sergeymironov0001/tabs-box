@@ -26,13 +26,17 @@ class Box {
     putTabToBox(tabInfo) {
         if (Box._putTabToBox(this.tabs, tabInfo)) {
             Notifications.sendPutTabToBox(this.id, tabInfo);
+            return true;
         }
+        return false;
     }
 
     removeTabFromBox(tabId, callback) {
         if (Box._removeTabFromBox(this.tabs, tabId)) {
             Notifications.sendTabFromBoxRemoved(this.id, tabId, callback)
+            return true;
         }
+        return false;
     }
 
     changeTabPosition(tabId, newPosition) {
@@ -106,7 +110,10 @@ class Box {
 
     static _putTabToBox(tabs, tab) {
         var foundTab = Box._getTabByUrl(tabs, tab.url);
+        console.log("Found tab");
+        console.log(foundTab);
         if (!foundTab) {
+            console.log("Push new tab");
             tabs.push(tab);
             return true;
         }
@@ -125,7 +132,10 @@ class Box {
     }
 
     static _removeTabFromBox(tabs, tabId) {
+        console.log(tabs);
         var tab = Box._getTabById(tabs, tabId);
+        console.log("Tab by id for remove:" + tabId);
+        console.log(tab);
         if (tab) {
             var index = tabs.indexOf(tab);
             if (index >= 0) {

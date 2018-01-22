@@ -26,9 +26,10 @@ function putTabToNewBox(boxes, activeTab) {
 function putTabToExistingBox(boxes, boxId, tab, callback) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, tab, dataUrl);
-        boxes.putTabToBox(boxId, tabInfo);
-        if (callback) {
-            callback(tabInfo);
+        if (boxes.putTabToBox(boxId, tabInfo)) {
+            if (callback) {
+                callback(tabInfo);
+            }
         }
         // selectBoxTab(boxId);
         // Tabs.closeTab(tab.id);
@@ -169,8 +170,8 @@ function addBoxButtonsEventListeners(boxes, box) {
         .on("click", "#add-to-box-button-" + box.id, function () {
             Tabs.getCurrentTab(function (tab) {
                 putTabToExistingBox(boxes, box.id, tab, function (tabInfo) {
-                    addTabElement(box, tab);
-                    addTabListeners(boxes, box, tab);
+                    addTabElement(box, tabInfo);
+                    addTabListeners(boxes, box, tabInfo);
                 });
             });
         })
@@ -218,6 +219,7 @@ function addBoxButtonsEventListeners(boxes, box) {
 function addTabListeners(boxes, box, tab) {
     $("#boxes")
         .on("click", "#remove-tab-" + tab.id, function () {
+            console.log("Tab to remove: " + tab.id);
             boxes.removeTabFromBox(box.id, tab.id, function () {
                 deleteTabElement(box, tab);
             });
