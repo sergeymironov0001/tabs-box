@@ -3,6 +3,10 @@ class Templates {
         Templates._loadTemplate("../templates/popup-box.html", callback);
     };
 
+    static loadPopupTabTemplate(callback) {
+        Templates._loadTemplate("../templates/popup-tab.html", callback);
+    };
+
     static loadTabSnapshotTemplate(callback) {
         Templates._loadTemplate("../templates/tab-snapshot.html", callback);
     };

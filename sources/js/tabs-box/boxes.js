@@ -39,14 +39,13 @@ class Boxes {
         if (Boxes._addNewBox(this.boxes, box)) {
             this.saveBoxes();
             Notifications.sendNewBoxAdded(box);
-            console.log("New box=" + box + "was added");
-            return box;
+            console.log("New box=" + box + " was added");
         }
-        return undefined;
+        return box;
     }
 
     saveBoxes() {
-        console.log("Saving boxes=" + this.boxes + " ...");
+        // console.log("Saving boxes=" + this.boxes + " ...");
         var self = this;
         chrome.storage.local.set({tabsBoxes: this.boxes}, function () {
             // console.log("Boxes=" + self.boxes + " was saved");

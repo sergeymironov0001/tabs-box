@@ -43,7 +43,8 @@ class Box {
     searchTabs(query) {
         query = query.toLowerCase();
         var tabs = this.tabs.filter(function (tab) {
-            return tab.url.toLowerCase().indexOf(query) !== -1 || tab.title.toLowerCase().indexOf(query) !== -1;
+            // return tab.url.toLowerCase().indexOf(query) !== -1 || tab.title.toLowerCase().indexOf(query) !== -1;
+            return tab.title.toLowerCase().indexOf(query) !== -1;
         });
         return tabs;
     }

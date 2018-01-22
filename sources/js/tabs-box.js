@@ -10,6 +10,7 @@ function getUrlParam(name) {
 
 function outputTabs(searchQuery, boxes, box) {
     var tabs = box.getTabs();
+    console.log(tabs);
     if (searchQuery) {
         tabs = box.searchTabs(searchQuery);
     }

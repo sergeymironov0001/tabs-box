@@ -1,22 +1,24 @@
 var boxTemplate;
-var changeBoxPositionFunc;
+var tabTemplate;
 var searchQuery;
 
 function createNewEmptyBox(boxes) {
     var box = boxes.addNewBox();
-    outputBoxes($('#search-input').val(), boxes);
+    addBoxElement(box);
     addBoxButtonsEventListeners(boxes, box);
+    filterBox(searchQuery, boxes, box);
     // Tabs.selectBoxTab(box.id);
 }
 
 function putTabToNewBox(boxes, activeTab) {
     var box = boxes.addNewBox();
-    outputBoxes($('#search-input').val(), boxes);
-    addBoxButtonsEventListeners(boxes, box);
 
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
+        addBoxElement(box);
+        addBoxButtonsEventListeners(boxes, box)
+        filterBox(searchQuery, boxes, box);
         // Tabs.selectBoxTab(box.id);
     });
 }
@@ -33,45 +35,109 @@ function putTabToExistingBox(boxes, boxId, tab, callback) {
     });
 }
 
-function outputBoxes(searchQuery, boxes) {
-    var outputBoxes = boxes.getBoxes();
-    if (searchQuery) {
-        // outputBoxes = boxes.searchBoxesByName(searchQuery);
-        outputBoxes = boxes.searchBoxesByTabs(searchQuery);
-        // outputBoxes = boxes.searchBoxesByNameAndTabs(searchQuery);
-    }
+function addTabElement(box, tab) {
+    var tabHtml = Mustache.to_html(tabTemplate, tab);
+    $('#box-content-' + box.id).append(tabHtml);
+}
 
-    var boxesHtml = $.map(outputBoxes, function (box) {
-        var originTabs = box.getTabs();
-        if (searchQuery) {
-            box.tabs = box.searchTabs(searchQuery);
-        }
-        var boxHtml = Mustache.to_html(boxTemplate, box);
-        box.tabs = originTabs;
-        return boxHtml;
+function addBoxElement(box) {
+    var boxHtml = Mustache.to_html(boxTemplate, box);
+    $('#boxes').append(boxHtml);
+
+    box.getTabs().forEach(function (tab) {
+        addTabElement(box, tab);
     });
-    $('#boxes').html(boxesHtml.join(""));
-
-    if (!changeBoxPositionFunc) {
-        changeBoxPositionFunc = function (e, ui) {
-            boxes.changeBoxPosition(ui.item[0].id, ui.item.index());
-        }
-    } else {
-        $('#boxes').unbind('sortupdate', changeBoxPositionFunc);
+    if (box.showContent) {
+        $("#box-content-" + box.id).addClass('show');
+        $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
     }
+}
 
-    $('#boxes')
-        .sortable({
-            placeholderClass: 'box'
-        })
-        .bind('sortupdate', changeBoxPositionFunc);
+function deleteBoxElement(box) {
+    $('#' + box.id).remove();
+}
 
-    outputBoxes.forEach(function (box) {
-        if (box.showContent || searchQuery) {
-            $("#box-content-" + box.id).addClass('show');
-            $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
-        }
+function deleteTabElement(box, tab) {
+    $('#tab-' + tab.id).remove();
+    // $('#' + box.id).remove('#tab-' + tab.id);
+}
+
+
+function outputBoxes(boxes) {
+    boxes.getBoxes().forEach(function (box) {
+        addBoxElement(box);
     });
+}
+
+function removeFilters(boxes) {
+    showBoxes(boxes);
+    boxes.forEach(removeFiltersFromBox);
+}
+
+function removeFiltersFromBox(box) {
+    showBox(box);
+    showTabs(box.getTabs());
+    if (!box.showContent && $("#box-content-" + box.id).hasClass("show")) {
+        $("#box-content-" + box.id).removeClass('show');
+        $("#collapse-box-icon-" + box.id).toggleClass("fa-toggle-down fa-toggle-up");
+    }
+}
+
+function filterBoxes(searchQuery, boxes) {
+    boxes.getBoxes().forEach(function (box) {
+        filterBox(searchQuery, boxes, box);
+    });
+}
+
+function filterBox(searchQuery, boxes, box) {
+    if (!searchQuery || searchQuery.length === 0) {
+        removeFiltersFromBox(box);
+        return;
+    }
+    var tabs = box.searchTabs(searchQuery);
+    if (tabs.length === 0) {
+        hideBox(box);
+        return;
+    }
+    showBox(box);
+    hideTabs(box.getTabs());
+    if (tabs.length > 0) {
+        $("#box-content-" + box.id).addClass('show');
+        $("#collapse-box-icon-" + box.id)
+            .removeClass('fa-toggle-down')
+            .addClass('fa-toggle-up');
+    }
+    showTabs(tabs);
+}
+
+function hideBoxes(boxes) {
+    boxes.forEach(hideBox);
+}
+
+function hideBox(box) {
+    $("#" + box.id).attr("hidden", "hidden");
+}
+
+function showBox(box) {
+    $("#" + box.id).removeAttr("hidden");
+}
+
+function showBoxes(boxes) {
+    boxes.forEach(function (box) {
+        $("#" + box.id).removeAttr("hidden");
+    })
+}
+
+function hideTabs(tabs) {
+    tabs.forEach(function (tab) {
+        $("#tab-" + tab.id).attr("hidden", "hidden");
+    })
+}
+
+function showTabs(tabs) {
+    tabs.forEach(function (tab) {
+        $("#tab-" + tab.id).removeAttr("hidden");
+    })
 }
 
 function addButtonsEventListeners(boxes) {
@@ -80,13 +146,31 @@ function addButtonsEventListeners(boxes) {
     });
 }
 
+var renameBox = function (box) {
+    var switchToBoxElement = $("#switch-to-box-" + box.id);
+    var hiddenAttr = switchToBoxElement.attr("hidden");
+    var hasHiddenAttr = typeof hiddenAttr !== typeof undefined && hiddenAttr !== false;
+    if (!hasHiddenAttr) {
+        switchToBoxElement.attr("hidden", "hidden");
+
+        var boxNameInput = $("#box-name-input-" + box.id);
+        boxNameInput.removeAttr("hidden").focus();
+
+        var nameLength = boxNameInput.val().length;
+        boxNameInput.focus();
+        boxNameInput[0].setSelectionRange(nameLength, nameLength);
+    } else {
+
+    }
+};
+
 function addBoxButtonsEventListeners(boxes, box) {
     $("#boxes")
         .on("click", "#add-to-box-button-" + box.id, function () {
             Tabs.getCurrentTab(function (tab) {
                 putTabToExistingBox(boxes, box.id, tab, function (tabInfo) {
-                    outputBoxes($('#search-input').val(), boxes);
-                    addTabListeners(boxes, box.id, tabInfo);
+                    addTabElement(box, tab);
+                    addTabListeners(boxes, box, tab);
                 });
             });
         })
@@ -95,25 +179,11 @@ function addBoxButtonsEventListeners(boxes, box) {
         })
         .on("click", "#remove-box-button-" + box.id, function () {
             boxes.removeBox(box);
-            outputBoxes($('#search-input').val(), boxes);
+            deleteBoxElement(box);
             Tabs.closeBoxTab(box.id);
         })
         .on("click", "#rename-box-button-" + box.id, function () {
-            var switchToBoxElement = $("#switch-to-box-" + box.id);
-            var hiddenAttr = switchToBoxElement.attr("hidden");
-            var hasHiddenAttr = typeof hiddenAttr !== typeof undefined && hiddenAttr !== false;
-            if (!hasHiddenAttr) {
-                switchToBoxElement.attr("hidden", "hidden");
-
-                var boxNameInput = $("#box-name-input-" + box.id);
-                boxNameInput.removeAttr("hidden").focus();
-
-                var nameLength = boxNameInput.val().length;
-                boxNameInput.focus();
-                boxNameInput[0].setSelectionRange(nameLength, nameLength);
-            } else {
-
-            }
+            renameBox(box);
         });
 
     box.tabs.forEach(function (tab) {
@@ -141,15 +211,15 @@ function addBoxButtonsEventListeners(boxes, box) {
         });
 
     box.tabs.forEach(function (tab) {
-        addTabListeners(boxes, box.id, tab);
+        addTabListeners(boxes, box, tab);
     });
 }
 
-function addTabListeners(boxes, boxId, tab) {
+function addTabListeners(boxes, box, tab) {
     $("#boxes")
         .on("click", "#remove-tab-" + tab.id, function () {
-            boxes.removeTabFromBox(boxId, tab.id, function () {
-                outputBoxes($('#search-input').val(), boxes);
+            boxes.removeTabFromBox(box.id, tab.id, function () {
+                deleteTabElement(box, tab);
             });
         })
         .on("click", "#tab-title-" + tab.id, function () {
@@ -160,22 +230,34 @@ function addTabListeners(boxes, boxId, tab) {
 $(document).ready(function () {
     Templates.loadPopupBoxTemplate(function (template) {
         boxTemplate = template;
+        Templates.loadPopupTabTemplate(function (template) {
+            tabTemplate = template;
 
-        Boxes.loadBoxes(function (boxes) {
-            outputBoxes($('#search-input').val(), boxes);
-            addButtonsEventListeners(boxes);
+            Boxes.loadBoxes(function (boxes) {
+                outputBoxes(boxes);
+                addButtonsEventListeners(boxes);
 
-            $('#crete-empty-tab-box-button').click(function (e) {
-                createNewEmptyBox(boxes);
-            });
-            $('#put-tab-to-new-box-button').click(function (e) {
-                Tabs.getCurrentTab(function (tab) {
-                    putTabToNewBox(boxes, tab);
+                $('#crete-empty-tab-box-button').click(function (e) {
+                    createNewEmptyBox(boxes);
                 });
-            });
-            $('#search-input').on('input', function (e) {
-                searchQuery = $(this).val();
-                outputBoxes(searchQuery, boxes);
+                $('#put-tab-to-new-box-button').click(function (e) {
+                    Tabs.getCurrentTab(function (tab) {
+                        putTabToNewBox(boxes, tab);
+                    });
+                });
+                $('#search-input').on('input', function (e) {
+                    searchQuery = $(this).val();
+                    filterBoxes(searchQuery, boxes);
+                    // outputBoxes(searchQuery, boxes);
+                });
+
+                $('#boxes')
+                    .sortable({
+                        placeholderClass: 'box'
+                    })
+                    .bind('sortupdate', function (e, ui) {
+                        boxes.changeBoxPosition(ui.item[0].id, ui.item.index());
+                    });
             });
         });
     });
