@@ -253,13 +253,31 @@ $(document).ready(function () {
                     // outputBoxes(searchQuery, boxes);
                 });
 
-                $('#boxes')
-                    .sortable({
-                        placeholderClass: 'box'
-                    })
-                    .bind('sortupdate', function (e, ui) {
-                        boxes.changeBoxPosition(ui.item[0].id, ui.item.index());
-                    });
+                sortable('#boxes', {
+                    handle: '.box-name'
+                    // placeholderClass: 'box'
+                });
+                sortable('#boxes')[0].addEventListener('sortupdate', function (e) {
+                    console.log(e.detail.item);
+                    boxes.changeBoxPosition(e.detail.item.id, e.detail.index);
+                });
+
+                sortable('.box-content', {
+                    handle: '.tab-title',
+                    connectWith: 'connected'
+                });
+                sortable('.box-content')[0].addEventListener('sortupdate', function (e) {
+                    if (e.detail.startparent === e.detail.endparent) {
+                        var boxId = $("#" + e.detail.endparent.id).parent().attr('id');
+                        var tabId = e.detail.item.id.substr(4);
+                        boxes.changeTabPosition(boxId, tabId, e.detail.index)
+                    } else {
+                        var oldBoxId = $("#" + e.detail.startparent.id).parent().attr('id');
+                        var newBoxId = $("#" + e.detail.endparent.id).parent().attr('id');
+                        var tabIdToMove = e.detail.item.id.substr(4);
+                        boxes.moveTabToBox(oldBoxId, newBoxId, tabIdToMove, e.detail.index)
+                    }
+                });
             });
         });
     });

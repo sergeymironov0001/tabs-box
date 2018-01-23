@@ -18,6 +18,10 @@ class Box {
         return this.tabs;
     }
 
+    getTabById(tabId) {
+        return Box._getTabById(this.tabs, tabId);
+    }
+
     changeName(name) {
         this.name = name;
         Notifications.sendBoxNameChanged(this);

@@ -81,7 +81,7 @@ i {
 }
 
 .tab-controls {
-    min-width: 20px;
+    min-width: 19px;
     display: flex;
     justify-content: space-between;
 }
@@ -98,6 +98,8 @@ input[type="text"]:focus {
     /*border: 1px solid #363636;*/
     background-color: #181818;
     color: #cacaca;
+    border: 1px solid #555;
+    box-shadow: 0 0 5px #555;
 }
 
 #search-input {

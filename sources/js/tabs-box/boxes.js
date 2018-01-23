@@ -67,12 +67,25 @@ class Boxes {
     }
 
     putTabToBox(boxId, tab) {
-        console.log("Putting tab=" + tab + " to the box with id=" + boxId + " ...");
         var box = this.getBoxById(boxId);
         if (box && box !== null) {
             if (box.putTabToBox(tab)) {
                 this.saveBoxes();
                 console.log("Tab=" + tab + " was put to the box with id=" + boxId);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    moveTabToBox(originBoxId, destinationBoxId, tabId, tabPosition) {
+        var originBox = this.getBoxById(originBoxId);
+        var tab = originBox.getTabById(tabId);
+        var destinationBox = this.getBoxById(destinationBoxId);
+        if (originBox && originBox !== null && destinationBox && destinationBox !== null && tab && tab != null) {
+            if (originBox.removeTabFromBox(tabId) && destinationBox.putTabToBox(tab)) {
+                destinationBox.changeTabPosition(tabId, tabPosition);
+                this.saveBoxes();
                 return true;
             }
         }
