@@ -48,6 +48,14 @@ class Box {
         Notifications.sendChangeTabPosition(this.id, tabId, newPosition);
     }
 
+    changeTabTitleAndUrl(tabId, title, url) {
+        if (Box._changeTabTitleAndUrl(this.tabs, tabId, title, url)) {
+            Notifications.sendChangeTabTitleAndUrl(this.id, tabId, title, url);
+            return true;
+        }
+        return false;
+    }
+
     searchTabs(query) {
         query = query.toLowerCase();
         var tabs = this.tabs.filter(function (tab) {
@@ -76,6 +84,10 @@ class Box {
 
         Notifications.addChangeTabPositionListener(this.id, function (tabId, newPosition) {
             Box._changeTabPosition(self.tabs, tabId, newPosition);
+        });
+
+        Notifications.addChangeTabTitleAndUrlListener(this.id, function (tabId, title, url) {
+            Box._changeTabTitleAndUrl(self.tabs, tabId, title, url);
         });
     }
 
@@ -133,6 +145,16 @@ class Box {
             tabs[newIndex] = tab;
             tabs[oldIndex] = tmp;
         }
+    }
+
+    static _changeTabTitleAndUrl(tabs, tabId, title, url) {
+        var tab = Box._getTabById(tabs, tabId);
+        if (tab && tab != null) {
+            tab.title = title;
+            tab.url = url;
+            return true;
+        }
+        return false;
     }
 
     static _removeTabFromBox(tabs, tabId) {

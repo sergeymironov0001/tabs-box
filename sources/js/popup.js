@@ -1,6 +1,8 @@
 var boxTemplate;
 var tabTemplate;
 var searchQuery;
+var tabToEdit;
+var boxOfEditTab;
 
 function createNewEmptyBox(boxes) {
     var box = boxes.addNewBox();
@@ -226,6 +228,12 @@ function addTabListeners(boxes, box, tab) {
         })
         .on("click", "#tab-title-" + tab.id, function () {
             Tabs.selectTabByUrl(tab.url);
+        })
+        .on("click", "#edit-tab-" + tab.id, function () {
+            boxOfEditTab = box;
+            tabToEdit = tab;
+            $("#tab-title-input").val(tab.title);
+            $("#tab-url-input").val(tab.url);
         });
 }
 
@@ -276,6 +284,15 @@ $(document).ready(function () {
                         var newBoxId = $("#" + e.detail.endparent.id).parent().attr('id');
                         var tabIdToMove = e.detail.item.id.substr(4);
                         boxes.moveTabToBox(oldBoxId, newBoxId, tabIdToMove, e.detail.index)
+                    }
+                });
+
+                $('#save-edit-tab-button').click(function (e) {
+                    if (tabToEdit) {
+                        var title = $("#tab-title-input").val();
+                        var url = $("#tab-url-input").val();
+                        $("#tab-title-" + tabToEdit.id).text(title);
+                        boxes.changeTabTitleAndUrl(boxOfEditTab.id, tabToEdit.id, title, url);
                     }
                 });
             });

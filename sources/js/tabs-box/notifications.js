@@ -34,6 +34,17 @@ class Notifications {
         }, callback);
     }
 
+    static sendChangeTabTitleAndUrl(boxId, tabId, title, url, callback) {
+        console.log("Notify");
+        Notifications._sendMessage({
+            type: "tabs-box:change-tab-title-and-url",
+            boxId: boxId,
+            tabId: tabId,
+            title: title,
+            url: url
+        }, callback);
+    }
+
     static sendTabFromBoxRemoved(boxId, tabId, callback) {
         Notifications._sendMessage({
                 type: "tabs-box:remove-tab-from-box",
@@ -103,12 +114,21 @@ class Notifications {
         });
     }
 
-    static addChangeTabsPositionListener(callback) {
-        Notifications._addListener("tabs-box:change-tab-position", function (request) {
-            callback(request.boxId, request.tabId, request.newPosition);
+    static addChangeTabTitleAndUrlListener(boxId, callback) {
+        Notifications._addListener("tabs-box:change-tab-title-and-url", function (request) {
+            console.log("changed tab " + boxId + " : " + request.boxId);
+            if (boxId === request.boxId) {
+                callback(request.tabId, request.title, request.url);
+            }
         });
     }
 
+    static addChangeTabTitleAndUrlListener_(callback) {
+        Notifications._addListener("tabs-box:change-tab-title-and-url", function (request) {
+            console.log("changed tab_");
+            callback(request.boxId, request.tabId, request.title, request.url);
+        });
+    }
 
     static _sendMessage(message, callback) {
         chrome.runtime.sendMessage(message, function (response) {

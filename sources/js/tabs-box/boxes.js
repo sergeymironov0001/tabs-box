@@ -78,6 +78,17 @@ class Boxes {
         return false;
     }
 
+    changeTabTitleAndUrl(boxId, tabId, title, url) {
+        var box = this.getBoxById(boxId);
+        if (box && box !== null) {
+            if (box.changeTabTitleAndUrl(tabId, title, url)) {
+                this.saveBoxes();
+                return true;
+            }
+        }
+        return false;
+    }
+
     moveTabToBox(originBoxId, destinationBoxId, tabId, tabPosition) {
         var originBox = this.getBoxById(originBoxId);
         var tab = originBox.getTabById(tabId);

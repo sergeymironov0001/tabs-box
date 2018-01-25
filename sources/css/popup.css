@@ -88,7 +88,8 @@ i {
 
 input[type="text"] {
     /*border: 1px solid black;*/
-    border: 1px solid #181818;
+    /*border: 1px solid #181818;*/
+    border: 1px solid #555;
     background-color: #181818;
     color: #cacaca;
     font-size: 14px;
@@ -102,6 +103,19 @@ input[type="text"]:focus {
     box-shadow: 0 0 5px #555;
 }
 
-#search-input {
-    border: 1px solid #363636;
+.modal-dialog {
+    top: 50%;
+    transform: translate(0, -50%) !important;
+}
+
+.modal-content {
+    font-size: 14px;
+
+    background-color: #181818;
+    /*background-color: #363636;*/
+    color: #cacaca;
+}
+
+.modal-footer {
+    border-top: 1px solid #555;
 }

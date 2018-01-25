@@ -27,9 +27,9 @@ function outputTabs(searchQuery, boxes, box) {
         $('#box').unbind('sortupdate', changeTabPositionFunc);
     }
 
-    $('#box').sortable({
-        placeholderClass: 'tab'
-    }).bind('sortupdate', changeTabPositionFunc);
+    // $('#box').sortable({
+    //     placeholderClass: 'tab'
+    // }).bind('sortupdate', changeTabPositionFunc);
 }
 
 function addTabsEventListeners(boxes, box) {
@@ -110,6 +110,11 @@ $(document).ready(function () {
         Notifications.addChangeBoxNameListener(box.id, function (newName) {
             Tabs.changeTabTitle(newName);
             $("#tabs-box-name-input").val(newName);
+        });
+
+        Notifications.addChangeTabTitleAndUrlListener(boxId, function (tabId, title, url) {
+            console.log("Update title");
+            $("#tab-title-" + tabId).text(title);
         });
     });
 });
