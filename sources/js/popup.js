@@ -255,6 +255,9 @@ $(document).ready(function () {
                         putTabToNewBox(boxes, tab);
                     });
                 });
+                $('#open-options-button').click(function (e) {
+                    Tabs.selectOptionsTab();
+                });
                 $('#search-input').on('input', function (e) {
                     searchQuery = $(this).val();
                     filterBoxes(searchQuery, boxes);

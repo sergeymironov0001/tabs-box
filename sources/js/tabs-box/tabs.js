@@ -16,6 +16,18 @@ class Tabs {
         });
     }
 
+    static selectOptionsTab() {
+        Tabs.getOptionsTab(function (tab) {
+            if (tab) {
+                Tabs.selectTab(tab.id);
+            } else {
+                Tabs.createOptionsTab(function (newTab) {
+                    Tabs.selectTab(newTab.id);
+                });
+            }
+        });
+    }
+
     static selectTabByUrl(url) {
         Tabs.getTabByUrl(url, function (t) {
             if (t) {
@@ -68,6 +80,11 @@ class Tabs {
         Tabs.getTabByUrl(url, callback);
     }
 
+    static getOptionsTab(callback) {
+        var url = chrome.extension.getURL('html/options.html');
+        Tabs.getTabByUrl(url, callback);
+    }
+
     static getTabByUrl(url, callback) {
         chrome.tabs.query({url: url},
             function (tabs) {
@@ -90,6 +107,10 @@ class Tabs {
 
     static createBoxTab(boxId, callback) {
         Tabs.createTab(chrome.extension.getURL('html/tabs-box.html?boxId=' + boxId), callback);
+    }
+
+    static createOptionsTab(callback) {
+        Tabs.createTab(chrome.extension.getURL('html/options.html'), callback);
     }
 
     static createTab(url, callback) {

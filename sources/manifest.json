@@ -10,10 +10,12 @@
     "64": "icons/icon64.png",
     "128": "icons/icon128.png"
   },
+  "options_page": "html/options.html",
   "permissions": [
     "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "unlimitedStorage"
   ],
   "background": {
     "scripts": [

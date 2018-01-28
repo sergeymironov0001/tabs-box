@@ -23,12 +23,18 @@ body {
     text-overflow: ellipsis;
     width: 100%;
     font-size: 14px;
-
     background-color: #FFA31A;
 }
 
-i {
-    /*color: gray;*/
+/*i {*/
+    /*color: #FFA31A;*/
+/*}*/
+
+.tab-button{
+    color: #FFA31A;
+}
+
+.box-button{
     color: #FFA31A;
 }
 
