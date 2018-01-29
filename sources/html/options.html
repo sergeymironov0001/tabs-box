@@ -10,22 +10,34 @@
 <script src="../js/html5sortable/html.sortable.min.js"></script>
 <script src="../js/mustache/mustache.js"></script>
 <script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../js/bootstrap-select/bootstrap-select.min.js"></script>
 
 <script src="../js/tabs-box/notifications.js"></script>
 <script src="../js/tabs-box/tab.js"></script>
 <script src="../js/tabs-box/box.js"></script>
+<script src="../js/tabs-box/local-storage.js"></script>
+<script src="../js/tabs-box/themes.js"></script>
 <script src="../js/tabs-box/boxes.js"></script>
 <script src="../js/tabs-box/tabs.js"></script>
 <script src="../js/tabs-box/templates.js"></script>
 
+<script src="../js/options.js"></script>
+
 <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrap-select/bootstrap-select.min.css">
 <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../css/options.css">
 
 <link rel="icon" type="image/png" href="../icons/icon32.png"/>
 
-<header >
+<div class="container-fluid text-center">
     Tabs box options
-</header>
-
+</div>
+<div class="container-fluid">
+    <div class="row m-1">
+        <label for="theme-select" class="col-1 m-0 ttt">Theme:</label>
+        <select id="theme-select" class="form-control col-11 select ">
+        </select>
+    </div>
+</div>
 </html>

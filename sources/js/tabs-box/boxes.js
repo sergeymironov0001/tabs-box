@@ -46,10 +46,7 @@ class Boxes {
 
     saveBoxes() {
         // console.log("Saving boxes=" + this.boxes + " ...");
-        var self = this;
-        chrome.storage.local.set({tabsBoxes: this.boxes}, function () {
-            // console.log("Boxes=" + self.boxes + " was saved");
-        });
+        LocalStorage.saveBoxes(this.boxes);
     }
 
     getBoxById(id) {
@@ -192,11 +189,9 @@ class Boxes {
     }
 
     static loadBoxes(callback) {
-        console.log("Loading boxes from the store...");
-        chrome.storage.local.get(["tabsBoxes"], function (item) {
-            var boxes = new Boxes(item.tabsBoxes);
+        LocalStorage.loadBoxes(function (tabsBoxes) {
+            var boxes = new Boxes(tabsBoxes);
             boxes.init();
-            console.log("Boxes=" + boxes + " was loaded from the store");
             callback(boxes);
         });
     }

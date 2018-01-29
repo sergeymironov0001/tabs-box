@@ -1,24 +1,28 @@
 body {
-    /*background-color: hsl(0, 0%, 7%);*/
-    /*background-color: #fff;*/
-    background-color: #181818;
-
     font-size: 14px;
 }
 
-#tabs-box-name-input {
+.porn-hub {
+    /*background-color: hsl(0, 0%, 7%);*/
+    /*background-color: #fff;*/
+    background-color: #181818;
+}
+
+.porn-hub #tabs-box-name-input {
     /*background-color: hsl(0, 0%, 7%);*/
     /*color: hsl(0, 0%, 53.3%);*/
 }
 
 .tab {
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-    /*padding: 5px 0 0 0;*/
     width: 204px;
     height: 128px;
     display: inline-block;
-    /*margin: 5px;*/
+    border: 1px solid #ced4da;
+}
+
+.porn-hub .tab {
     background-color: black;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 .tab-favicon {
@@ -36,7 +40,7 @@ body {
     padding-top: 3px;
 }
 
-.tab-close-button {
+.porn-hub .tab-close-button {
     /*float: none;*/
 }
 
@@ -52,26 +56,12 @@ body {
 }
 
 .tab-title {
-    /*height: 15px;*/
-    /*left: 31px;*/
-    /*line-height: 14px;*/
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    /*color: #cacaca;*/
-    /*margin-right: 5px;*/
-    /*!*position: absolute;*!*/
-    /*text-overflow: ellipsis;*/
-    /*top: 9px;*/
-    /*width: 120px;*/
-    /*width: 100%;*/
 }
 
 .tab-thumb {
-    /*height: 100%;*/
-    /*width: 154px;*/
-    /*height: 96px;*/
-    /*height: calc(100% - 21px);*/
 }
 
 .tab-thumb img {
@@ -81,12 +71,11 @@ body {
 }
 
 .btn {
-    /*background-color: #fff;*/
-    /*border: 1px solid #000;*/
-    background-color: #FFA31A;
-    /*border: 1px solid #fff;*/
-
     font-size: 14px;
+}
+
+.porn-hub .btn {
+    background-color: #FFA31A;
     color: #1B1B1B;
 }
 
@@ -121,20 +110,21 @@ body {
 }
 
 input[type="text"] {
-    /*border: 1px solid black;*/
-    border: 1px solid #363636;
-    background-color: #363636;
-    color: #cacaca;
     font-size: 14px;
 }
 
-input[type="text"]:focus {
-    /*border: 1px solid #363636;*/
+.porn-hub input[type="text"] {
+    border: 1px solid #363636;
     background-color: #363636;
     color: #cacaca;
 }
 
-.tab-title-container {
+.porn-hub input[type="text"]:focus {
+    background-color: #363636;
+    color: #cacaca;
+}
+
+.porn-hub .tab-title-container {
     background-color: #363636;
     color: #cacaca;
 }

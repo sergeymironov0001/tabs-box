@@ -62,6 +62,14 @@ class Notifications {
             callback);
     }
 
+    static sendThemeChanged(theme, callback) {
+        Notifications._sendMessage({
+                type: "tabs-box:theme-changed",
+                theme: theme
+            },
+            callback);
+    }
+
     static addNewBoxAddedListener(callback) {
         Notifications._addListener("tabs-box:new-box-added", function (request) {
             callback(request.box);
@@ -127,6 +135,12 @@ class Notifications {
         Notifications._addListener("tabs-box:change-tab-title-and-url", function (request) {
             console.log("changed tab_");
             callback(request.boxId, request.tabId, request.title, request.url);
+        });
+    }
+
+    static addThemeChangedListener(callback) {
+        Notifications._addListener("tabs-box:theme-changed", function (request) {
+            callback(request.theme);
         });
     }
 

@@ -1,9 +1,40 @@
 body {
     overflow-x: hidden;
     font-size: 14px;
+}
 
+.porn-hub {
     background-color: #181818;
     color: #cacaca;
-    /*background-color: #F1F1F1;*/
-    /*background-color: #FFFFFF;*/
+}
+
+.chrome {
+}
+
+.ttt {
+    padding: .375rem 0 .375rem 0;
+}
+
+.porn-hub .select {
+    border: 1px solid #555;
+    background-color: #181818;
+    color: #cacaca;
+}
+
+.porn-hub .select:focus {
+    background-color: #181818;
+    color: #cacaca;
+    border: 1px solid #555;
+    box-shadow: 0 0 5px #555;
+}
+
+.porn-hub .select option {
+    border: 1px solid #555;
+    background-color: #181818;
+    color: #cacaca;
+    border-radius: .25rem;;
+}
+
+.porn-hub .select option:hover {
+    box-shadow: 0 0 10px 100px #1882A8 inset;
 }

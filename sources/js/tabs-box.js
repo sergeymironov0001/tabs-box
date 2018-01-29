@@ -84,6 +84,9 @@ function addBoxEventListeners(boxes, box) {
 }
 
 $(document).ready(function () {
+    Themes.init();
+    Themes.applySavedThemeToCurrentPage();
+
     Templates.loadTabSnapshotTemplate(function (template) {
         tabSnapshotTemplate = template;
     });

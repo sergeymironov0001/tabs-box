@@ -238,10 +238,15 @@ function addTabListeners(boxes, box, tab) {
 }
 
 $(document).ready(function () {
+    Themes.init();
+    Themes.applySavedThemeToCurrentPage();
+
     Templates.loadPopupBoxTemplate(function (template) {
         boxTemplate = template;
         Templates.loadPopupTabTemplate(function (template) {
             tabTemplate = template;
+
+
 
             Boxes.loadBoxes(function (boxes) {
                 outputBoxes(boxes);
