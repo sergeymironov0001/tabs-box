@@ -6,7 +6,7 @@ var boxOfEditTab;
 
 function createNewEmptyBox(boxes) {
     var box = boxes.addNewBox();
-    addBoxElement(box);
+    addBoxElement(box, generateBoxHtml(box));
     addBoxButtonsEventListeners(boxes, box);
     filterBox(searchQuery, boxes, box);
     // Tabs.selectBoxTab(box.id);
@@ -18,7 +18,7 @@ function putTabToNewBox(boxes, activeTab) {
     Tabs.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
-        addBoxElement(box);
+        addBoxElement(box, generateBoxHtml(box));
         addBoxButtonsEventListeners(boxes, box)
         filterBox(searchQuery, boxes, box);
         // Tabs.selectBoxTab(box.id);
@@ -38,17 +38,23 @@ function putTabToExistingBox(boxes, boxId, tab, callback) {
     });
 }
 
-function addTabElement(box, tab) {
-    var tabHtml = Mustache.to_html(tabTemplate, tab);
+function addTabHtml(box, tabHtml) {
     $('#box-content-' + box.id).append(tabHtml);
 }
 
-function addBoxElement(box) {
-    var boxHtml = Mustache.to_html(boxTemplate, box);
+function generateTabElement(tab) {
+    return Mustache.to_html(tabTemplate, tab);
+}
+
+function generateBoxHtml(box) {
+    return Mustache.to_html(boxTemplate, box);
+}
+
+function addBoxElement(box, boxHtml) {
     $('#boxes').append(boxHtml);
 
     box.getTabs().forEach(function (tab) {
-        addTabElement(box, tab);
+        addTabHtml(box, generateTabElement(tab));
     });
     if (box.showContent) {
         $("#box-content-" + box.id).addClass('show');
@@ -65,10 +71,9 @@ function deleteTabElement(box, tab) {
     // $('#' + box.id).remove('#tab-' + tab.id);
 }
 
-
 function outputBoxes(boxes) {
     boxes.getBoxes().forEach(function (box) {
-        addBoxElement(box);
+        addBoxElement(box, generateBoxHtml(box));
     });
 }
 
@@ -172,7 +177,7 @@ function addBoxButtonsEventListeners(boxes, box) {
         .on("click", "#add-to-box-button-" + box.id, function () {
             Tabs.getCurrentTab(function (tab) {
                 putTabToExistingBox(boxes, box.id, tab, function (tabInfo) {
-                    addTabElement(box, tabInfo);
+                    addTabHtml(box, generateTabElement(tabInfo));
                     addTabListeners(boxes, box, tabInfo);
                 });
             });
@@ -245,7 +250,6 @@ $(document).ready(function () {
         boxTemplate = template;
         Templates.loadPopupTabTemplate(function (template) {
             tabTemplate = template;
-
 
 
             Boxes.loadBoxes(function (boxes) {
