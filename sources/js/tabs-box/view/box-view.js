@@ -12,11 +12,12 @@ class BoxView extends View {
                 self.boxes.removeTabFromBox(self.box.id, tabView.tab.id);
             }
         };
-        this.tabViews = this.__createSubViews(box.getTabs());
+        this.tabViews = [];
 
-        this.tabViews.forEach(function (view) {
-            view.addEventsListener(self.subViewEventListener);
-        });
+        this.__createSubViews(box.getTabs())
+            .forEach(function (view) {
+                self.__addSubView(view);
+            });
     }
 
     getElement() {
@@ -57,9 +58,7 @@ class BoxView extends View {
             Tabs.getCurrentTabPicture(function (pictureUrl) {
                 var tab = new Tab(null, tabInfo, pictureUrl);
                 if (self.boxes.putTabToBox(self.box.id, tab)) {
-                    var tabView = self.__createSubView(tab);
-                    self.__addSubView(tabView);
-                    self.__outputSubView(tabView);
+                    self.__createAddAndOutputSubView(tab);
                 }
             });
         });

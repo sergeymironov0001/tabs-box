@@ -41,6 +41,12 @@ class View {
         }
     }
 
+    __createAddAndOutputSubView(data) {
+        var subView = this.__createSubView(data);
+        this.__addSubView(subView);
+        this.__outputSubView(subView);
+    }
+
     __createSubViews(subData) {
         var self = this;
         return subData.map(function (data) {
@@ -59,10 +65,8 @@ class View {
     }
 
     __notifyListeners(eventType) {
-        console.log("notify");
         var self = this;
         this.eventsListeners.forEach(function (listener) {
-            console.log("notify 1");
             listener(self, eventType);
         });
     }
