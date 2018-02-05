@@ -1,59 +1,53 @@
-class BoxesView extends View {
+class BoxesView extends ListView {
 
     constructor(boxes) {
-        super();
+        super(boxes, boxes.getBoxes());
+    }
 
-        this.boxes = boxes;
-
+    __getItemViewsEventListener() {
         var self = this;
-        this.subViewEventListener = function (boxView, type) {
-            console.log("Delete box");
+        return function (boxView, type) {
             if (type === 'delete') {
-                self.__deleteSubView(boxView);
-                self.boxes.removeBox(boxView.box);
+                self.__deleteItemView(boxView);
+                self.getData().removeBox(boxView.getData());
             }
-        };
-
-        this.boxViews = [];
-        this.__createSubViews(boxes.getBoxes())
-            .forEach(function (view) {
-                self.__addSubView(view);
-            });
+        }
     }
 
-    __getSubViews() {
-        return this.boxViews;
+    __createItemView(box) {
+        return new BoxView(this.getData(), box);
     }
 
-    __createSubView(box) {
-        return new BoxView(this.boxes, box);
+    __getParentElementForItemViews() {
+        return $('#boxes');
     }
 
-    __outputSubView(boxView) {
-        boxView.outputView($('#boxes'));
-        if (boxView.box.showContent) {
+    __outputItemView(boxView) {
+        console.log(boxView);
+        boxView.outputView(this.__getParentElementForItemViews());
+        if (boxView.getData().showContent) {
             boxView.expand();
         }
     }
 
     __createNewEmptyBox() {
-        var box = this.boxes.addNewBox();
-        var boxView = this.__createSubView(box);
-        this.__addSubView(boxView);
-        this.__outputSubView(boxView);
+        var box = this.getData().addNewBox();
+        var boxView = this.__createItemView(box);
+        this.__addItemView(boxView);
+        this.__outputItemView(boxView);
     }
 
     __putCurrentTabToNewBox() {
         var self = this;
-        var box = this.boxes.addNewBox();
+        var box = this.getData().addNewBox();
         Tabs.getCurrentTab(function (activeTab) {
             Tabs.getCurrentTabPicture(function (snapshotImageUrl) {
                 var tab = new Tab(null, activeTab, snapshotImageUrl);
-                if (!self.boxes.putTabToBox(box.id, tab)) {
+                if (!self.getData().putTabToBox(box.id, tab)) {
                     return;
                 }
-                self.boxes.showBoxContent(box.id);
-                self.__createAddAndOutputSubView(box);
+                self.getData().showBoxContent(box.id);
+                self.__createAddAndOutputItemView(box);
             });
         });
     }
@@ -68,6 +62,18 @@ class BoxesView extends View {
         });
         $('#open-options-button').click(function (e) {
             Tabs.selectOptionsTab();
+        });
+
+        $('#search-input').on('input', function (e) {
+            self.searchQuery = $(this).val();
+            self.__filterBoxes();
+        });
+    }
+
+    __filterBoxes() {
+        var self = this;
+        this.itemViews.forEach(function (boxView) {
+            boxView.filterTabs(self.searchQuery);
         });
     }
 }

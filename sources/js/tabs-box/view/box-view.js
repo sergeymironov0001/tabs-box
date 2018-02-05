@@ -1,55 +1,47 @@
-class BoxView extends View {
+class BoxView extends ListView {
 
     constructor(boxes, box) {
-        super();
+        super(box, box.getTabs());
         this.boxes = boxes;
-        this.box = box;
+    }
 
+    __getItemViewsEventListener() {
         var self = this;
-        this.subViewEventListener = function (tabView, type) {
+        return function (tabView, type) {
             if (type === 'delete') {
-                self.__deleteSubView(tabView);
-                self.boxes.removeTabFromBox(self.box.id, tabView.tab.id);
+                self.__deleteItemView(tabView);
+                self.boxes.removeTabFromBox(self.getData().id, tabView.getData().id);
             }
-        };
-        this.tabViews = [];
-
-        this.__createSubViews(box.getTabs())
-            .forEach(function (view) {
-                self.__addSubView(view);
-            });
+        }
     }
 
     getElement() {
-        return $("#" + this.box.id);
+        return $("#" + this.getData().id);
     }
 
     expand() {
-        this.boxes.showBoxContent(this.box.id);
-        $("#box-content-" + this.box.id).addClass('show');
-        $("#collapse-box-icon-" + this.box.id).removeClass("fa-toggle-down").addClass("fa-toggle-up");
+        this.boxes.showBoxContent(this.getData().id);
+        $("#box-content-" + this.getData().id).addClass('show');
+        $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-down").addClass("fa-toggle-up");
     }
 
     collapse() {
-        this.boxes.hideBoxContent(this.box.id);
+        this.boxes.hideBoxContent(this.getData().id);
         // $("#box-content-" + this.box.id).removeClass('show');
-        $("#collapse-box-icon-" + this.box.id).removeClass("fa-toggle-up").addClass("fa-toggle-down");
+        $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-up").addClass("fa-toggle-down");
     }
 
-    __getSubViews() {
-        return this.tabViews;
+
+    __createItemView(tab) {
+        return new TabView(this.getData(), tab);
     }
 
-    __createSubView(tab) {
-        return new TabView(this.box, tab);
-    }
-
-    __outputSubView(tabView) {
-        tabView.outputView($('#box-content-' + this.box.id));
+    __getParentElementForItemViews() {
+        return $('#box-content-' + this.getData().id);
     }
 
     __generateElement() {
-        return Mustache.to_html(BoxView.elementTemplate, this.box);
+        return Mustache.to_html(BoxView.elementTemplate, this.getData());
     }
 
     __addCurrentTab() {
@@ -57,8 +49,8 @@ class BoxView extends View {
         Tabs.getCurrentTab(function (tabInfo) {
             Tabs.getCurrentTabPicture(function (pictureUrl) {
                 var tab = new Tab(null, tabInfo, pictureUrl);
-                if (self.boxes.putTabToBox(self.box.id, tab)) {
-                    self.__createAddAndOutputSubView(tab);
+                if (self.boxes.putTabToBox(self.getData().id, tab)) {
+                    self.__createAddAndOutputItemView(tab);
                 }
             });
         });
@@ -67,30 +59,58 @@ class BoxView extends View {
     __addButtonsListeners() {
         var self = this;
         $("#boxes")
-            .on("click", "#add-to-box-button-" + this.box.id, function () {
+            .on("click", "#add-to-box-button-" + this.getData().id, function () {
                 self.__addCurrentTab();
                 self.__notifyListeners("addTab");
             })
-            .on("click", "#switch-to-box-" + this.box.id, function () {
-                Tabs.selectBoxTab(self.box.id);
+            .on("click", "#switch-to-box-" + this.getData().id, function () {
+                Tabs.selectBoxTab(self.getData().id);
                 self.__notifyListeners("select");
             })
-            .on("click", "#rename-box-button-" + this.box.id, function () {
+            .on("click", "#rename-box-button-" + this.getData().id, function () {
                 self.__notifyListeners("edit");
             })
-            .on("click", "#remove-box-button-" + this.box.id, function () {
-                Tabs.closeBoxTab(self.box.id);
+            .on("click", "#remove-box-button-" + this.getData().id, function () {
+                Tabs.closeBoxTab(self.getData().id);
                 self.deleteElement();
                 self.__notifyListeners("delete");
             });
 
-        $("#box-content-" + this.box.id)
+        $("#box-content-" + this.getData().id)
             .on("show.bs.collapse", function () {
                 self.expand();
             })
             .on("hide.bs.collapse", function () {
                 self.collapse();
             });
+    }
+
+    // TODO refactor this nightmare
+    filterTabs(searchQuery) {
+        if (!searchQuery || searchQuery.length === 0) {
+            this.show();
+            this.__showItemViews();
+            if (!this.getData().showContent) {
+
+                $("#box-content-" + this.getData().id).removeClass('show');
+                $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-up").addClass("fa-toggle-down");
+            }
+            return;
+        }
+
+        var tabs = this.getData().searchTabs(searchQuery);
+        if (tabs.length === 0) {
+            this.hide();
+            return;
+        }
+        this.__hideItemViews();
+        this.show();
+
+        $("#box-content-" + this.getData().id).addClass('show');
+        $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-down").addClass("fa-toggle-up");
+
+        var itemsToShow = this.__getItemViews(tabs);
+        this.__showItemViews(itemsToShow);
     }
 }
 
