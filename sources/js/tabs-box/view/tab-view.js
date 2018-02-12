@@ -8,23 +8,31 @@ class TabView extends View {
         return $('#tab-' + this.getData().id);
     }
 
-    __generateElement() {
+    _generateElement() {
         return Mustache.to_html(TabView.elementTemplate, this.getData());
     }
 
-    __addButtonsListeners() {
+    _updateTitle() {
+        $("#tab-title-" + this.getData().id).text(this.getData().title);
+    }
+
+    _addButtonsListeners() {
         var self = this;
         $("#boxes")
             .on("click", "#tab-title-" + this.getData().id, function () {
                 Tabs.selectTabByUrl(self.getData().url);
-                self.__notifyListeners("select");
+                self._notifyListeners("select");
             })
             .on("click", "#edit-tab-" + this.getData().id, function () {
-                self.__notifyListeners("edit");
+                ModalDialogFactory.createDialog('editTab', self.getData(), function (tab) {
+                    self.data = tab;
+                    self._updateTitle();
+                    self._notifyListeners("edit");
+                }).show();
             })
             .on("click", "#remove-tab-" + this.getData().id, function () {
                 self.deleteElement();
-                self.__notifyListeners("delete");
+                self._notifyListeners("delete");
             });
     }
 }

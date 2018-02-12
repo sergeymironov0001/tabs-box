@@ -9,11 +9,11 @@ class View {
         // child has to implement this
     }
 
-    __generateElement() {
+    _generateElement() {
         // child has to implement this
     }
 
-    __addButtonsListeners() {
+    _addButtonsListeners() {
         // child has to implement this
     }
 
@@ -23,9 +23,9 @@ class View {
 
     outputView(parentElement) {
         if (parentElement) {
-            parentElement.append(this.__generateElement());
+            parentElement.append(this._generateElement());
         }
-        this.__addButtonsListeners();
+        this._addButtonsListeners();
     }
 
     deleteElement() {
@@ -44,8 +44,8 @@ class View {
         this.eventsListeners.push(listener);
     }
 
-    __notifyListeners(eventType) {
-        console.log(this.eventsListeners);
+    _notifyListeners(eventType) {
+        console.log(eventType);
         var self = this;
         this.eventsListeners.forEach(function (listener) {
             listener(self, eventType);

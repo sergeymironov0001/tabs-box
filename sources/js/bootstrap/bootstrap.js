@@ -173,7 +173,7 @@ var createClass = _createClass;
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
+  subClass._proto_ = superClass;
 }
 
 var inheritsLoose = _inheritsLoose;
@@ -219,7 +219,7 @@ var Alert = function () {
   };
 
   var Alert =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Alert(element) {
       this._element = element;
@@ -393,7 +393,7 @@ var Button = function () {
   };
 
   var Button =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Button(element) {
       this._element = element;
@@ -596,7 +596,7 @@ var Carousel = function () {
   };
 
   var Carousel =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Carousel(element, config) {
       this._items = null;
@@ -1070,7 +1070,7 @@ var Collapse = function () {
   };
 
   var Collapse =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Collapse(element, config) {
       this._isTransitioning = false;
@@ -1467,7 +1467,7 @@ var Dropdown = function () {
   };
 
   var Dropdown =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Dropdown(element, config) {
       this._element = element;
@@ -1890,7 +1890,7 @@ var Modal = function () {
   };
 
   var Modal =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Modal(element, config) {
       this._config = this._getConfig(config);
@@ -2497,7 +2497,7 @@ var Tooltip = function () {
   };
 
   var Tooltip =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Tooltip(element, config) {
       // private
@@ -3113,7 +3113,7 @@ var Popover = function () {
   };
 
   var Popover =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function (_Tooltip) {
     inheritsLoose(Popover, _Tooltip);
 
@@ -3304,7 +3304,7 @@ var ScrollSpy = function () {
   };
 
   var ScrollSpy =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function ScrollSpy(element, config) {
       var _this = this;
@@ -3604,7 +3604,7 @@ var Tab = function () {
   };
 
   var Tab =
-  /*#__PURE__*/
+  /*#_PURE_*/
   function () {
     function Tab(element) {
       this._element = element;

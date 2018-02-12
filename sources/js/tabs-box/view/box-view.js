@@ -5,12 +5,20 @@ class BoxView extends ListView {
         this.boxes = boxes;
     }
 
-    __getItemViewsEventListener() {
+    _getItemViewsEventListener() {
         var self = this;
         return function (tabView, type) {
-            if (type === 'delete') {
-                self.__deleteItemView(tabView);
-                self.boxes.removeTabFromBox(self.getData().id, tabView.getData().id);
+            switch (type) {
+                case 'delete': {
+                    self._deleteItemView(tabView);
+                    self.boxes.removeTabFromBox(self.getData().id, tabView.getData().id);
+                    break;
+                }
+                case 'edit': {
+                    self.boxes.changeTabTitleAndUrl(self.getData().id, tabView.getData().id,
+                        tabView.getData().title, tabView.getData().url);
+                    break;
+                }
             }
         }
     }
@@ -32,48 +40,56 @@ class BoxView extends ListView {
     }
 
 
-    __createItemView(tab) {
+    _createItemView(tab) {
         return new TabView(this.getData(), tab);
     }
 
-    __getParentElementForItemViews() {
+    _getParentElementForItemViews() {
         return $('#box-content-' + this.getData().id);
     }
 
-    __generateElement() {
+    _generateElement() {
         return Mustache.to_html(BoxView.elementTemplate, this.getData());
     }
 
-    __addCurrentTab() {
+    _addCurrentTab() {
         var self = this;
         Tabs.getCurrentTab(function (tabInfo) {
             Tabs.getCurrentTabPicture(function (pictureUrl) {
                 var tab = new Tab(null, tabInfo, pictureUrl);
                 if (self.boxes.putTabToBox(self.getData().id, tab)) {
-                    self.__createAddAndOutputItemView(tab);
+                    self._createAddAndOutputItemView(tab);
                 }
             });
         });
     }
 
-    __addButtonsListeners() {
+    _updateName() {
+        $("#switch-to-box-" + this.getData().id).text(this.getData().name)
+    }
+
+    _addButtonsListeners() {
         var self = this;
         $("#boxes")
             .on("click", "#add-to-box-button-" + this.getData().id, function () {
-                self.__addCurrentTab();
-                self.__notifyListeners("addTab");
+                self._addCurrentTab();
+                self._notifyListeners("addTab");
             })
             .on("click", "#switch-to-box-" + this.getData().id, function () {
                 Tabs.selectBoxTab(self.getData().id);
-                self.__notifyListeners("select");
+                self._notifyListeners("select");
             })
             .on("click", "#rename-box-button-" + this.getData().id, function () {
-                self.__notifyListeners("edit");
+                ModalDialogFactory.createDialog('editBox', self.getData(), function (box) {
+                    self.data = box;
+                    self._updateName();
+                    self._notifyListeners("edit");
+                }).show();
             })
             .on("click", "#remove-box-button-" + this.getData().id, function () {
                 Tabs.closeBoxTab(self.getData().id);
                 self.deleteElement();
-                self.__notifyListeners("delete");
+                self._notifyListeners("delete");
             });
 
         $("#box-content-" + this.getData().id)
@@ -89,7 +105,7 @@ class BoxView extends ListView {
     filterTabs(searchQuery) {
         if (!searchQuery || searchQuery.length === 0) {
             this.show();
-            this.__showItemViews();
+            this._showItemViews();
             if (!this.getData().showContent) {
 
                 $("#box-content-" + this.getData().id).removeClass('show');
@@ -103,14 +119,14 @@ class BoxView extends ListView {
             this.hide();
             return;
         }
-        this.__hideItemViews();
+        this._hideItemViews();
         this.show();
 
         $("#box-content-" + this.getData().id).addClass('show');
         $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-down").addClass("fa-toggle-up");
 
-        var itemsToShow = this.__getItemViews(tabs);
-        this.__showItemViews(itemsToShow);
+        var itemsToShow = this._getItemViews(tabs);
+        this._showItemViews(itemsToShow);
     }
 }
 

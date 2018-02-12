@@ -11,6 +11,14 @@ class Templates {
         Templates._loadTemplate("../templates/tab-snapshot.html", callback);
     };
 
+    static loadEditTabTemplate(callback) {
+        Templates._loadTemplate("../templates/edit-tab-dialog.html", callback);
+    }
+
+    static loadEditBoxTemplate(callback) {
+        Templates._loadTemplate("../templates/edit-box-dialog.html", callback);
+    }
+
     static _loadTemplate(templateName, callback) {
         $.get(chrome.extension.getURL(templateName), function (template) {
             Mustache.parse(template);

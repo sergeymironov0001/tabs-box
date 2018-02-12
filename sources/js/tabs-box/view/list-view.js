@@ -4,71 +4,71 @@ class ListView extends View {
         super(itemsContainer);
         this.itemViews = [];
 
-        var views = this.__createItemViews(items);
+        var views = this._createItemViews(items);
         var self = this;
         views.forEach(function (itemView) {
-            self.__addItemView(itemView);
+            self._addItemView(itemView);
         });
     }
 
-    __getParentElementForItemViews() {
+    _getParentElementForItemViews() {
         // child has to implement this
     }
 
-    __getItemViewsEventListener() {
+    _getItemViewsEventListener() {
         // child has to implement this
     }
 
-    __createItemView(item) {
+    _createItemView(item) {
         // child has to implement this
     }
 
-    __createItemViews(items) {
+    _createItemViews(items) {
         var self = this;
         return items.map(function (data) {
-            return self.__createItemView(data);
+            return self._createItemView(data);
         });
     }
 
-    __addItemView(itemView) {
+    _addItemView(itemView) {
         this.itemViews.push(itemView);
-        itemView.addEventsListener(this.__getItemViewsEventListener());
+        itemView.addEventsListener(this._getItemViewsEventListener());
     }
 
-    __deleteItemView(itemView) {
+    _deleteItemView(itemView) {
         var views = this.itemViews;
         views.splice(views.indexOf(itemView), 1);
     }
 
     outputView(parentElement) {
         if (parentElement) {
-            parentElement.append(this.__generateElement());
+            parentElement.append(this._generateElement());
         }
-        this.__outputItemViews();
-        this.__addButtonsListeners();
+        this._outputItemViews();
+        this._addButtonsListeners();
     }
 
-    __outputItemViews() {
+    _outputItemViews() {
         var self = this;
         var itemViews = this.itemViews;
         if (itemViews) {
             itemViews.forEach(function (itemView) {
-                self.__outputItemView(itemView);
+                self._outputItemView(itemView);
             });
         }
     }
 
-    __createAddAndOutputItemView(item) {
-        var itemView = this.__createItemView(item);
-        this.__addItemView(itemView);
-        this.__outputItemView(itemView);
+    _createAddAndOutputItemView(item) {
+        var itemView = this._createItemView(item);
+        this._addItemView(itemView);
+        this._outputItemView(itemView);
     }
 
-    __outputItemView(itemView) {
-        itemView.outputView(this.__getParentElementForItemViews());
+    _outputItemView(itemView) {
+        itemView.outputView(this._getParentElementForItemViews());
     }
 
-    __hideItemViews(itemViews) {
+    _hideItemViews(itemViews) {
         if (!itemViews) {
             itemViews = this.itemViews;
         }
@@ -77,7 +77,7 @@ class ListView extends View {
         });
     }
 
-    __showItemViews(itemViews) {
+    _showItemViews(itemViews) {
         if (!itemViews) {
             itemViews = this.itemViews;
         }
@@ -87,14 +87,14 @@ class ListView extends View {
         });
     }
 
-    __getItemViews(items) {
+    _getItemViews(items) {
         var self = this;
         return items.map(function (item) {
-            return self.__getItemView(item);
+            return self._getItemView(item);
         })
     }
 
-    __getItemView(item) {
+    _getItemView(item) {
         var views = this.itemViews.filter(function (view) {
             return view.getData() === item;
         });
