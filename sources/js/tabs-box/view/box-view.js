@@ -52,13 +52,14 @@ class BoxView extends ListView {
         return Mustache.to_html(BoxView.elementTemplate, this.getData());
     }
 
-    _addCurrentTab() {
+    _addCurrentTab(callback) {
         var self = this;
         Tabs.getCurrentTab(function (tabInfo) {
             Tabs.getCurrentTabPicture(function (pictureUrl) {
                 var tab = new Tab(null, tabInfo, pictureUrl);
                 if (self.boxes.putTabToBox(self.getData().id, tab)) {
                     self._createAddAndOutputItemView(tab);
+                    if (callback) callback();
                 }
             });
         });
@@ -72,8 +73,9 @@ class BoxView extends ListView {
         var self = this;
         $("#boxes")
             .on("click", "#add-to-box-button-" + this.getData().id, function () {
-                self._addCurrentTab();
-                self._notifyListeners("addTab");
+                self._addCurrentTab(function () {
+                    self._notifyListeners("addTab");
+                });
             })
             .on("click", "#switch-to-box-" + this.getData().id, function () {
                 Tabs.selectBoxTab(self.getData().id);

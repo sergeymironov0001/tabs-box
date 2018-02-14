@@ -2,12 +2,24 @@ class BoxesView extends ListView {
 
     constructor(boxes) {
         super(boxes, boxes.getBoxes());
+
+        this.addEventsListener(function (boxesView, type) {
+            switch (type) {
+                case 'addBox':
+                    sortable('#boxes');
+                    break;
+            }
+        });
     }
 
     _getItemViewsEventListener() {
         var self = this;
         return function (boxView, type) {
             switch (type) {
+                case 'addTab':
+                    sortable('.box-content');
+                    console.log("Box content sotrable updated");
+                    break;
                 case 'delete':
                     self._deleteItemView(boxView);
                     self.getData().removeBox(boxView.getData());
@@ -40,11 +52,13 @@ class BoxesView extends ListView {
         var boxView = this._createItemView(box);
         this._addItemView(boxView);
         this._outputItemView(boxView);
+
     }
 
     _putCurrentTabToNewBox() {
         var self = this;
         var box = this.getData().addNewBox();
+
         Tabs.getCurrentTab(function (activeTab) {
             Tabs.getCurrentTabPicture(function (snapshotImageUrl) {
                 var tab = new Tab(null, activeTab, snapshotImageUrl);
@@ -61,9 +75,11 @@ class BoxesView extends ListView {
         var self = this;
         $('#create-empty-tab-box-button').click(function (e) {
             self._createNewEmptyBox();
+            self._notifyListeners("addBox");
         });
         $('#put-tab-to-new-box-button').click(function (e) {
             self._putCurrentTabToNewBox();
+            self._notifyListeners("addBox");
         });
         $('#open-options-button').click(function (e) {
             Tabs.selectOptionsTab();

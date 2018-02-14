@@ -126,10 +126,7 @@ class Box {
 
     static _putTabToBox(tabs, tab) {
         var foundTab = Box._getTabByUrl(tabs, tab.url);
-        console.log("Found tab");
-        console.log(foundTab);
         if (!foundTab) {
-            console.log("Push new tab");
             tabs.push(tab);
             return true;
         }
@@ -138,7 +135,6 @@ class Box {
 
     static _changeTabPosition(tabs, tabId, newIndex) {
         var tab = Box._getTabById(tabs, tabId);
-        console.log("Tab to change position: " + tab);
         if (tab) {
             var oldIndex = tabs.indexOf(tab);
             var tmp = tabs[newIndex];
@@ -160,8 +156,6 @@ class Box {
     static _removeTabFromBox(tabs, tabId) {
         console.log(tabs);
         var tab = Box._getTabById(tabs, tabId);
-        console.log("Tab by id for remove:" + tabId);
-        console.log(tab);
         if (tab) {
             var index = tabs.indexOf(tab);
             if (index >= 0) {
