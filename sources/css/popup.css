@@ -1,51 +1,19 @@
-body{
+body {
     height: 514px;
     width: 450px;
     overflow-x: hidden;
     font-size: 14px;
 }
 
-.porn-hub {
-    background-color: #181818;
-    color: #cacaca;
-}
-
-.chrome {
-    /*background-color: #181818;*/
-    /*color: #cacaca;*/
-    /*background-color: #F1F1F1;*/
-    /*background-color: #FFFFFF;*/
-}
-
 #main-container {
     padding: 0;
 }
-
-/*#crete-new-tab-box-button {*/
-/*width: 100%;*/
-/*}*/
 
 .btn {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
     font-size: 14px;
-}
-
-.porn-hub .btn {
-    background-color: #FFA31A;
-}
-
-/*i {*/
-/*color: #FFA31A;*/
-/*}*/
-
-.porn-hub .tab-button {
-    color: #FFA31A;
-}
-
-.porn-hub .box-button {
-    color: #FFA31A;
 }
 
 .tab-title {
@@ -61,16 +29,6 @@ body{
     width: 100%;
     justify-content: space-between;
     margin: 0;
-}
-
-.porn-hub .box {
-    background-color: #363636;
-    border-top: 1px solid #181818;
-    border-radius: .25rem;
-}
-
-.porn-hub .boxes-controls {
-    /*border-bottom: 1px solid black;*/
 }
 
 .box-controls {
@@ -107,35 +65,15 @@ input[type="text"] {
     font-size: 14px;
 }
 
-.porn-hub input[type="text"] {
-    /*border: 1px solid black;*/
-    /*border: 1px solid #181818;*/
-    border: 1px solid #555;
-    background-color: #181818;
-    color: #cacaca;
-}
-
-.porn-hub input[type="text"]:focus {
-    /*border: 1px solid #363636;*/
-    background-color: #181818;
-    color: #cacaca;
-    border: 1px solid #555;
-    box-shadow: 0 0 5px #555;
-}
-
 .modal-dialog {
     top: 50%;
     transform: translate(0, -50%) !important;
 }
-.modal-content{
+
+.modal-content {
     font-size: 14px;
 }
 
-.porn-hub .modal-content {
-    background-color: #181818;
-    color: #cacaca;
-}
-
-.porn-hub .modal-footer {
-    border-top: 1px solid #555;
+.box-content{
+    /*min-height: 30px;*/
 }
