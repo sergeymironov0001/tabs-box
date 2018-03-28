@@ -4,7 +4,7 @@ class Box extends Observable {
         super();
 
         this.id = id || CommonUtils.generateUniqueId();
-        this.name = name || "Box";
+        this.name = name || "Box [" + new Date().toLocaleString() + "]";
         this.showContent = showContent || false;
         this.tabs = [];
         if (tabs) {
@@ -73,10 +73,6 @@ class Box extends Observable {
     filterTabs(query) {
         return this.tabs.filter(tab =>
             tab.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-    }
-
-    getTabsCount() {
-        return this.tabs.length;
     }
 
     toString() {
