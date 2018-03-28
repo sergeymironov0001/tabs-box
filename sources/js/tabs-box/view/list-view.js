@@ -1,106 +1,53 @@
 class ListView extends View {
 
-    constructor(itemsContainer, items) {
-        super(itemsContainer);
-        this.itemViews = [];
+    constructor(model, itemModels, mvcResolver) {
+        super(model);
 
-        var views = this._createItemViews(items);
-        var self = this;
-        views.forEach(function (itemView) {
-            self._addItemView(itemView);
-        });
+        this.mvcResoler = mvcResolver;
+        this.items = [];
+        this._addItems(itemModels);
     }
 
-    _getParentElementForItemViews() {
-        // child has to implement this
-    }
-
-    _getItemViewsEventListener() {
-        // child has to implement this
-    }
-
-    _createItemView(item) {
-        // child has to implement this
-    }
-
-    _createItemViews(items) {
-        var self = this;
-        return items.map(function (data) {
-            return self._createItemView(data);
-        });
-    }
-
-    _addItemView(itemView) {
-        this.itemViews.push(itemView);
-        itemView.addEventsListener(this._getItemViewsEventListener());
-    }
-
-    _deleteItemView(itemView) {
-        var views = this.itemViews;
-        views.splice(views.indexOf(itemView), 1);
-    }
-
-    outputView(parentElement) {
-        if (parentElement) {
-            parentElement.append(this._generateElement());
+    _addItem(itemModel) {
+        let view = this.mvcResoler.createView(itemModel);
+        if (ArrayUtils.addItem(this.items, view)) {
+            return view;
         }
-        this._outputItemViews();
-        this._addButtonsListeners();
+        return undefined;
     }
 
-    _outputItemViews() {
-        var self = this;
-        var itemViews = this.itemViews;
-        if (itemViews) {
-            itemViews.forEach(function (itemView) {
-                self._outputItemView(itemView);
-            });
+    _addItems(itemModels) {
+        return $.map(itemModels, item => this._addItem(item));
+    }
+
+    _removeItem(id) {
+        let view = this._getItem(id);
+        if (view) {
+            ArrayUtils.removeItemById(this.items, id);
         }
+        return view;
     }
 
-    _createAddAndOutputItemView(item) {
-        var itemView = this._createItemView(item);
-        this._addItemView(itemView);
-        this._outputItemView(itemView);
+    _hideItems(ids) {
+        this._getItems(ids).forEach(view => view.hide());
     }
 
-    _outputItemView(itemView) {
-        itemView.outputView(this._getParentElementForItemViews());
+    _showItems(ids) {
+        this._getItems(ids).forEach(view => view.show());
     }
 
-    _hideItemViews(itemViews) {
-        if (!itemViews) {
-            itemViews = this.itemViews;
-        }
-        itemViews.forEach(function (view) {
-            view.hide();
-        });
-    }
-
-    _showItemViews(itemViews) {
-        if (!itemViews) {
-            itemViews = this.itemViews;
-        }
-
-        itemViews.forEach(function (view) {
-            view.show();
-        });
-    }
-
-    _getItemViews(items) {
-        var self = this;
-        return items.map(function (item) {
-            return self._getItemView(item);
-        })
-    }
-
-    _getItemView(item) {
-        var views = this.itemViews.filter(function (view) {
-            return view.getData() === item;
-        });
+    _getItem(id) {
+        let views = this.items.filter(view => view.id === id);
         if (views && views.length > 0) {
             return views[0];
         }
         return undefined;
+    }
+
+    _getItems(ids) {
+        if (ids) {
+            return ids.map(id => this._getItem(id));
+        }
+        return this.items;
     }
 }

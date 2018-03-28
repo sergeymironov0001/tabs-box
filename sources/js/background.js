@@ -1,3 +1,3 @@
-Boxes.loadBoxes(function (boxes) {
+BoxesManager.loadBoxes(function (boxesManager) {
 
 });

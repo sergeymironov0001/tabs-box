@@ -2,36 +2,22 @@ $(document).ready(function () {
     Themes.init();
     Themes.applySavedThemeToCurrentPage();
 
-    ModalDialogFactory.initModals($("body"));
+    ModalDialogFactory.initModals($("#boxes"));
 
-    Boxes.loadBoxes(function (boxes) {
-        var boxesView = new BoxesView(boxes);
-        boxesView.outputView();
+    BoxesManager.loadBoxes(function (boxesManager) {
 
-        sortable('#boxes', {
-            handle: '.box-name',
-            forcePlaceholderSize: true,
-        });
-        sortable('#boxes')[0].addEventListener('sortupdate', function (e) {
-            boxes.changeBoxPosition(e.detail.item.id, e.detail.index);
-        });
+        Observable.addGlobalListener((event, className) => {
+            console.log(event);
+            console.log("class = " + className);
+            BoxesManager.saveBoxes(boxesManager, () =>
+                console.log("Boxes saved"));
+        }, ["Tab", "Box", "BoxesManager"]);
 
-        sortable('.box-content', {
-            handle: '.tab-title',
-            forcePlaceholderSize: true,
-            connectWith: 'tabs-list'
-        });
-        sortable('.box-content')[0].addEventListener('sortupdate', function (e) {
-            if (e.detail.startparent === e.detail.endparent) {
-                var boxId = $("#" + e.detail.endparent.id).parent().attr('id');
-                var tabId = e.detail.item.id.substr(4);
-                boxes.changeTabPosition(boxId, tabId, e.detail.index)
-            } else {
-                var oldBoxId = $("#" + e.detail.startparent.id).parent().attr('id');
-                var newBoxId = $("#" + e.detail.endparent.id).parent().attr('id');
-                var tabIdToMove = e.detail.item.id.substr(4);
-                boxes.moveTabToBox(oldBoxId, newBoxId, tabIdToMove, e.detail.index)
-            }
-        });
+        let mvcResolver = new MVCResolver();
+        let view = mvcResolver.createView(boxesManager);
+
+        $("#boxes").append(view.getHtml());
+
+        view.init();
     });
 });

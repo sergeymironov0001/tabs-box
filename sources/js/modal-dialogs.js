@@ -101,10 +101,12 @@ class EditBoxModalDialog extends EditModalDialog {
 class ModalDialogFactory {
 
     static initModals(parentElement) {
-        var editTabDialogHtml = Mustache.to_html(ModalDialogFactory.editTabModalDialogTemplate, {});
+        let editTabDialogHtml = Mustache.to_html(
+            ModalDialogFactory.editTabModalDialogTemplate, {});
         parentElement.append(editTabDialogHtml);
 
-        var editBoxDialogHtml = Mustache.to_html(ModalDialogFactory.editBoxModalDialogTemplate, {});
+        let editBoxDialogHtml = Mustache.to_html(
+            ModalDialogFactory.editBoxModalDialogTemplate, {});
         parentElement.append(editBoxDialogHtml);
 
         ModalDialogFactory.editTabModalDialog = new EditTabModalDialog();

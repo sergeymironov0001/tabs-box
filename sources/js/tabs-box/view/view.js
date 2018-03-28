@@ -1,34 +1,19 @@
-class View {
+class View extends Observable {
 
-    constructor(data) {
-        this.data = data;
-        this.eventsListeners = [];
+    constructor(model) {
+        super();
+        this.id = model.id;
+        this.model = model;
+    }
+
+    getHtml() {
     }
 
     getElement() {
-        // child has to implement this
+        return $(this.id);
     }
 
-    _generateElement() {
-        // child has to implement this
-    }
-
-    _addButtonsListeners() {
-        // child has to implement this
-    }
-
-    getData() {
-        return this.data;
-    }
-
-    outputView(parentElement) {
-        if (parentElement) {
-            parentElement.append(this._generateElement());
-        }
-        this._addButtonsListeners();
-    }
-
-    deleteElement() {
+    remove() {
         this.getElement().remove();
     }
 
@@ -38,17 +23,5 @@ class View {
 
     hide() {
         this.getElement().attr("hidden", "hidden");
-    }
-
-    addEventsListener(listener) {
-        this.eventsListeners.push(listener);
-    }
-
-    _notifyListeners(eventType) {
-        console.log(eventType);
-        var self = this;
-        this.eventsListeners.forEach(function (listener) {
-            listener(self, eventType);
-        });
     }
 }

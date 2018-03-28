@@ -46,7 +46,7 @@ function addTabEventListener(boxes, box, tab) {
             boxes.removeTabFromBox(box.id, tab.id);
         })
         .on("click", "#thumb-" + tab.id, function (e) {
-            Tabs.selectTabByUrl(tab.url);
+            TabUtils.selectTabByUrl(tab.url);
         });
 }
 
@@ -54,7 +54,7 @@ function addBoxEventListeners(boxes, box) {
     $('#tabs-box-name-input').focusout(function () {
         var name = $(this).val();
         boxes.changeBoxName(box.id, name);
-        Tabs.changeTabTitle(box.name);
+        TabUtils.changeTabTitle(box.name);
     }).val(box.name);
 
     $('#tabs-search').on('input', function (e) {
@@ -64,9 +64,9 @@ function addBoxEventListeners(boxes, box) {
 
     $('#open-all-tabs').click(function (e) {
         box.getTabs().forEach(function (tabInfo) {
-            Tabs.getTabByUrl(tabInfo.url, function (tab) {
+            TabUtils.getTabByUrl(tabInfo.url, function (tab) {
                 if (!tab) {
-                    Tabs.createTab(tabInfo.url);
+                    TabUtils.createTab(tabInfo.url);
                 }
             });
         })
@@ -74,9 +74,9 @@ function addBoxEventListeners(boxes, box) {
 
     $('#close-all-tabs').click(function (e) {
         box.getTabs().forEach(function (tabInfo) {
-            Tabs.getTabsByUrl(tabInfo.url, function (tabs) {
+            TabUtils.getTabsByUrl(tabInfo.url, function (tabs) {
                 tabs.forEach(function (tab) {
-                    Tabs.closeTab(tab.id);
+                    TabUtils.closeTab(tab.id);
                 });
             });
         });
@@ -91,31 +91,31 @@ $(document).ready(function () {
         tabSnapshotTemplate = template;
     });
 
-    Boxes.loadBoxes(function (boxes) {
+    BoxesManager.loadBoxes(function (boxes) {
         var boxId = getUrlParam("boxId");
         var box = boxes.getBoxById(boxId);
 
-        Tabs.changeTabTitle(box.name);
+        TabUtils.changeTabTitle(box.name);
         outputTabs(searchQuery, boxes, box);
         addTabsEventListeners(boxes, box);
 
         addBoxEventListeners(boxes, box);
 
-        Notifications.addPutTabToBoxListener(box.id, function (tab) {
+        NotificationUtils.addPutTabToBoxListener(box.id, function (tab) {
             outputTabs(searchQuery, boxes, box);
             addTabEventListener(boxes, box, tab);
         });
 
-        Notifications.addRemoveTabFromBoxListener(box.id, function (tabId) {
+        NotificationUtils.addRemoveTabFromBoxListener(box.id, function (tabId) {
             outputTabs(searchQuery, boxes, box);
         });
 
-        Notifications.addChangeBoxNameListener(box.id, function (newName) {
-            Tabs.changeTabTitle(newName);
+        NotificationUtils.addChangeBoxNameListener(box.id, function (newName) {
+            TabUtils.changeTabTitle(newName);
             $("#tabs-box-name-input").val(newName);
         });
 
-        Notifications.addChangeTabTitleAndUrlListener(boxId, function (tabId, title, url) {
+        NotificationUtils.addChangeTabTitleAndUrlListener(boxId, function (tabId, title, url) {
             console.log("Update title");
             $("#tab-title-" + tabId).text(title);
         });

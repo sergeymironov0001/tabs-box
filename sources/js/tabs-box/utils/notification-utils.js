@@ -1,7 +1,7 @@
-class Notifications {
+class NotificationUtils {
 
     static sendNewBoxAdded(box, callback) {
-        Notifications._sendMessage({
+        NotificationUtils._sendMessage({
                 type: "tabs-box:new-box-added",
                 box: box
             },
@@ -9,7 +9,7 @@ class Notifications {
     }
 
     static sendBoxNameChanged(box) {
-        Notifications._sendMessage({
+        NotificationUtils._sendMessage({
             type: "tabs-box:change-box-name",
             id: box.id,
             name: box.name
@@ -17,7 +17,7 @@ class Notifications {
     }
 
     static sendPutTabToBox(boxId, tab, callback) {
-        Notifications._sendMessage({
+        NotificationUtils._sendMessage({
                 type: "tabs-box:put-tab-to-box",
                 boxId: boxId,
                 tab: tab
@@ -26,7 +26,7 @@ class Notifications {
     }
 
     static sendChangeTabPosition(boxId, tabId, newPosition, callback) {
-        Notifications._sendMessage({
+        NotificationUtils._sendMessage({
             type: "tabs-box:change-tab-position",
             boxId: boxId,
             tabId: tabId,
@@ -34,11 +34,9 @@ class Notifications {
         }, callback);
     }
 
-    static sendChangeTabTitleAndUrl(boxId, tabId, title, url, callback) {
-        console.log("Notify");
-        Notifications._sendMessage({
+    static sendChangeTabTitleAndUrl(tabId, title, url, callback) {
+        NotificationUtils._sendMessage({
             type: "tabs-box:change-tab-title-and-url",
-            boxId: boxId,
             tabId: tabId,
             title: title,
             url: url
@@ -46,7 +44,7 @@ class Notifications {
     }
 
     static sendTabFromBoxRemoved(boxId, tabId, callback) {
-        Notifications._sendMessage({
+        NotificationUtils._sendMessage({
                 type: "tabs-box:remove-tab-from-box",
                 boxId: boxId,
                 tabId: tabId
@@ -54,16 +52,16 @@ class Notifications {
             callback);
     }
 
-    static sendBoxRemoved(box, callback) {
-        Notifications._sendMessage({
+    static sendBoxRemoved(boxId, callback) {
+        NotificationUtils._sendMessage({
                 type: "tabs-box:box-removed",
-                box: box
+                boxId: boxId
             },
             callback);
     }
 
     static sendThemeChanged(theme, callback) {
-        Notifications._sendMessage({
+        NotificationUtils._sendMessage({
                 type: "tabs-box:theme-changed",
                 theme: theme
             },
@@ -71,14 +69,14 @@ class Notifications {
     }
 
     static addNewBoxAddedListener(callback) {
-        Notifications._addListener("tabs-box:new-box-added", function (request) {
+        NotificationUtils._addListener("tabs-box:new-box-added", function (request) {
             callback(request.box);
         });
     }
 
 
     static addChangeBoxNameListener(boxId, callback) {
-        Notifications._addListener("tabs-box:change-box-name", function (request) {
+        NotificationUtils._addListener("tabs-box:change-box-name", function (request) {
             if (request.id === boxId) {
                 callback(request.name);
             }
@@ -86,7 +84,7 @@ class Notifications {
     }
 
     static addRemoveTabFromBoxListener(boxId, callback) {
-        Notifications._addListener("tabs-box:remove-tab-from-box", function (request) {
+        NotificationUtils._addListener("tabs-box:remove-tab-from-box", function (request) {
                 if (boxId === request.boxId) {
                     callback(request.tabId);
                 }
@@ -95,7 +93,7 @@ class Notifications {
     }
 
     static addPutTabToBoxListener(boxId, callback) {
-        Notifications._addListener("tabs-box:put-tab-to-box", function (request) {
+        NotificationUtils._addListener("tabs-box:put-tab-to-box", function (request) {
             if (boxId === request.boxId) {
                 callback(request.tab);
             }
@@ -103,8 +101,8 @@ class Notifications {
     }
 
     static addBoxRemovedListener(callback) {
-        Notifications._addListener("tabs-box:box-removed", function (request) {
-            callback(request.box)
+        NotificationUtils._addListener("tabs-box:box-removed", function (request) {
+            callback(request.boxId)
         });
     }
 
@@ -115,31 +113,30 @@ class Notifications {
     }
 
     static addChangeTabPositionListener(boxId, callback) {
-        Notifications._addListener("tabs-box:change-tab-position", function (request) {
+        NotificationUtils._addListener("tabs-box:change-tab-position", function (request) {
             if (boxId === request.boxId) {
                 callback(request.tabId, request.newPosition);
             }
         });
     }
 
-    static addChangeTabTitleAndUrlListener(boxId, callback) {
-        Notifications._addListener("tabs-box:change-tab-title-and-url", function (request) {
-            console.log("changed tab " + boxId + " : " + request.boxId);
-            if (boxId === request.boxId) {
-                callback(request.tabId, request.title, request.url);
+    static addChangeTabTitleAndUrlListener(tabId, callback) {
+        NotificationUtils._addListener("tabs-box:change-tab-title-and-url", function (request) {
+            if (tabId === request.tabId) {
+                callback(request.title, request.url);
             }
         });
     }
 
     static addChangeTabTitleAndUrlListener_(callback) {
-        Notifications._addListener("tabs-box:change-tab-title-and-url", function (request) {
+        NotificationUtils._addListener("tabs-box:change-tab-title-and-url", function (request) {
             console.log("changed tab_");
             callback(request.boxId, request.tabId, request.title, request.url);
         });
     }
 
     static addThemeChangedListener(callback) {
-        Notifications._addListener("tabs-box:theme-changed", function (request) {
+        NotificationUtils._addListener("tabs-box:theme-changed", function (request) {
             callback(request.theme);
         });
     }

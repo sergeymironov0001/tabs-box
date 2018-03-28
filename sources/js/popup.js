@@ -9,24 +9,24 @@ function createNewEmptyBox(boxes) {
     addBoxElement(box, generateBoxHtml(box));
     addBoxButtonsEventListeners(boxes, box);
     filterBox(searchQuery, boxes, box);
-    // Tabs.selectBoxTab(box.id);
+    // TabUtils.selectBoxTab(box.id);
 }
 
 function putTabToNewBox(boxes, activeTab) {
     var box = boxes.addNewBox();
 
-    Tabs.getCurrentTabPicture(function (dataUrl) {
+    TabUtils.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, activeTab, dataUrl);
         boxes.putTabToBox(box.id, tabInfo);
         addBoxElement(box, generateBoxHtml(box));
         addBoxButtonsEventListeners(boxes, box)
         filterBox(searchQuery, boxes, box);
-        // Tabs.selectBoxTab(box.id);
+        // TabUtils.selectBoxTab(box.id);
     });
 }
 
 function putTabToExistingBox(boxes, boxId, tab, callback) {
-    Tabs.getCurrentTabPicture(function (dataUrl) {
+    TabUtils.getCurrentTabPicture(function (dataUrl) {
         var tabInfo = new Tab(null, tab, dataUrl);
         if (boxes.putTabToBox(boxId, tabInfo)) {
             if (callback) {
@@ -34,7 +34,7 @@ function putTabToExistingBox(boxes, boxId, tab, callback) {
             }
         }
         // selectBoxTab(boxId);
-        // Tabs.closeTab(tab.id);
+        // TabUtils.closeTab(tab.id);
     });
 }
 
@@ -175,7 +175,7 @@ var renameBox = function (box) {
 function addBoxButtonsEventListeners(boxes, box) {
     $("#boxes")
         .on("click", "#add-to-box-button-" + box.id, function () {
-            Tabs.getCurrentTab(function (tab) {
+            TabUtils.getCurrentTab(function (tab) {
                 putTabToExistingBox(boxes, box.id, tab, function (tabInfo) {
                     addTabHtml(box, generateTabElement(tabInfo));
                     addTabListeners(boxes, box, tabInfo);
@@ -183,12 +183,12 @@ function addBoxButtonsEventListeners(boxes, box) {
             });
         })
         .on("click", "#switch-to-box-" + box.id, function () {
-            Tabs.selectBoxTab(box.id);
+            TabUtils.selectBoxTab(box.id);
         })
         .on("click", "#remove-box-button-" + box.id, function () {
             boxes.removeBox(box);
             deleteBoxElement(box);
-            Tabs.closeBoxTab(box.id);
+            TabUtils.closeBoxTab(box.id);
         })
         .on("click", "#rename-box-button-" + box.id, function () {
             renameBox(box);
@@ -232,7 +232,7 @@ function addTabListeners(boxes, box, tab) {
             });
         })
         .on("click", "#tab-title-" + tab.id, function () {
-            Tabs.selectTabByUrl(tab.url);
+            TabUtils.selectTabByUrl(tab.url);
         })
         .on("click", "#edit-tab-" + tab.id, function () {
             boxOfEditTab = box;
@@ -252,7 +252,7 @@ $(document).ready(function () {
             tabTemplate = template;
 
 
-            Boxes.loadBoxes(function (boxes) {
+            BoxesManager.loadBoxes(function (boxes) {
                 outputBoxes(boxes);
                 addButtonsEventListeners(boxes);
 
@@ -260,12 +260,12 @@ $(document).ready(function () {
                     createNewEmptyBox(boxes);
                 });
                 $('#put-tab-to-new-box-button').click(function (e) {
-                    Tabs.getCurrentTab(function (tab) {
+                    TabUtils.getCurrentTab(function (tab) {
                         putTabToNewBox(boxes, tab);
                     });
                 });
                 $('#open-options-button').click(function (e) {
-                    Tabs.selectOptionsTab();
+                    TabUtils.selectOptionsTab();
                 });
                 $('#search-input').on('input', function (e) {
                     searchQuery = $(this).val();

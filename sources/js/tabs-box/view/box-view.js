@@ -1,137 +1,178 @@
 class BoxView extends ListView {
 
-    constructor(boxes, box) {
-        super(box, box.getTabs());
-        this.boxes = boxes;
+    constructor(model, mvcResolver) {
+        super(model, model.getTabs(), mvcResolver);
     }
 
-    _getItemViewsEventListener() {
-        var self = this;
-        return function (tabView, type) {
-            switch (type) {
-                case 'delete': {
-                    self._deleteItemView(tabView);
-                    self.boxes.removeTabFromBox(self.getData().id, tabView.getData().id);
-                    break;
-                }
-                case 'edit': {
-                    self.boxes.changeTabTitleAndUrl(self.getData().id, tabView.getData().id,
-                        tabView.getData().title, tabView.getData().url);
-                    break;
-                }
-            }
-        }
+    getHtml() {
+        let html = HtmlTemplateUtils.generateBoxHtml(this.model);
+        this.items.forEach(item => {
+            html = this._addItemToHtml(item, html);
+        });
+
+        return this._syncHtmlWithModel(html);
     }
 
     getElement() {
-        return $("#" + this.getData().id);
+        return $("#box-" + this.id);
+    }
+
+    init() {
+        this.model.addListener(event => this._updateView(event));
+
+        this._addAddTabAction();
+        this._addRenameBoxAction();
+        this._addExpandBoxAction();
+        this._addCollapseBoxAction();
+        this._addRemoveBoxAction();
+
+        this.items.forEach(item => item.init());
+        this._initDragAndDrop();
+    }
+
+    filterItems(filterQuery) {
+        if (filterQuery) {
+            this._hideItems();
+            let filteredTabs = this.model.filterTabs(filterQuery);
+            let filteredTabIds = $.map(filteredTabs, box => box.id);
+            this._showItems(filteredTabIds)
+        } else {
+            this._showItems();
+        }
+    }
+
+    _initDragAndDrop() {
+        sortable('#box-content-' + this.id, {
+            handle: '.tab-title',
+            // connectWith: 'connected',
+            forcePlaceholderSize: true
+        });
+
+        sortable('#box-content-' + this.id)[0].addEventListener('sortupdate',
+            event => {
+                let tabId = event.detail.item.id.substr(4);
+                this._notifyListeners("boxView/tabPositionChangedAction", {
+                    tabId: tabId,
+                    newPosition: event.detail.index
+                });
+                // if (e.detail.startparent === e.detail.endparent) {
+                //     var boxId = $("#" + e.detail.endparent.id).parent().attr('id');
+                //     var tabId = e.detail.item.id.substr(4);
+                //     boxes.changeTabPosition(boxId, tabId, e.detail.index)
+                // } else {
+                //     var oldBoxId = $("#" + e.detail.startparent.id).parent().attr('id');
+                //     var newBoxId = $("#" + e.detail.endparent.id).parent().attr('id');
+                //     var tabIdToMove = e.detail.item.id.substr(4);
+                //     boxes.moveTabToBox(oldBoxId, newBoxId, tabIdToMove, e.detail.index)
+                // }
+            });
+    }
+
+    _syncHtmlWithModel(html) {
+        let dom = HtmlUtils.htmlToDom(html);
+        if (this.model.showContent) {
+            dom.find("#box-content-" + this.id)
+                .removeClass('collapse')
+                .addClass('show');
+            dom.find("#collapse-box-icon-" + this.id)
+                .removeClass("fa-toggle-down")
+                .addClass("fa-toggle-up");
+        }
+        return dom.html();
+    }
+
+    _addItem(itemModel) {
+        let item = super._addItem(itemModel);
+        if (item) {
+            item.addListener(
+                event =>
+                    this._notifyListeners("boxView/removeTabAction", event.source),
+                "tabView/removeTabAction");
+        }
+        return item;
+    }
+
+    _updateView(event) {
+        switch (event.type) {
+            case "tabAdded": {
+                let item = this._addItem(event.data);
+                this._addItemToHtml(item);
+                item.init();
+                break;
+            }
+            case "tabRemoved": {
+                let item = this._removeItem(event.data);
+                item.remove();
+                break;
+            }
+            case "nameChanged":
+                $("#switch-to-box-" + this.id).text(event.data);
+                break;
+            case "boxExpanded":
+                this.expand();
+                break;
+            case "boxCollapsed":
+                this.collapse();
+                break;
+            case "tabsCountChanged":
+                this._updateTabsCount(event.data);
+                break;
+        }
     }
 
     expand() {
-        this.boxes.showBoxContent(this.getData().id);
-        $("#box-content-" + this.getData().id).addClass('show');
-        $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-down").addClass("fa-toggle-up");
+        $("#box-content-" + this.id)
+            .removeClass('collapse')
+            .addClass('show');
+        $("#collapse-box-icon-" + this.id)
+            .removeClass("fa-toggle-down")
+            .addClass("fa-toggle-up");
     }
 
     collapse() {
-        this.boxes.hideBoxContent(this.getData().id);
-        // $("#box-content-" + this.box.id).removeClass('show');
-        $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-up").addClass("fa-toggle-down");
+        $("#box-content-" + this.id)
+            .removeClass('show')
+            .addClass('collapse');
+        $("#collapse-box-icon-" + this.id)
+            .removeClass("fa-toggle-up")
+            .addClass("fa-toggle-down");
+    }
+
+    _updateTabsCount(tabsCount) {
+        $("#box-tabs-count-" + this.id)
+            .text("[ " + tabsCount + " ]");
     }
 
 
-    _createItemView(tab) {
-        return new TabView(this.getData(), tab);
+    _addItemToHtml(item, html) {
+        let dom = html ? HtmlUtils.htmlToDom(html) : $('body');
+        dom.find("#box-content-" + this.id).append(item.getHtml());
+        return dom.html();
     }
 
-    _getParentElementForItemViews() {
-        return $('#box-content-' + this.getData().id);
+    _addAddTabAction() {
+        $("#boxes").on("click", "#add-to-box-button-" + this.id, () =>
+            this._notifyListeners("boxView/addTabAction"));
     }
 
-    _generateElement() {
-        return Mustache.to_html(BoxView.elementTemplate, this.getData());
+    _addRenameBoxAction() {
+        $("#boxes").on("click", "#rename-box-button-" + this.id, () =>
+            this._notifyListeners("boxView/renameBoxAction"));
     }
 
-    _addCurrentTab(callback) {
-        var self = this;
-        Tabs.getCurrentTab(function (tabInfo) {
-            Tabs.getCurrentTabPicture(function (pictureUrl) {
-                var tab = new Tab(null, tabInfo, pictureUrl);
-                if (self.boxes.putTabToBox(self.getData().id, tab)) {
-                    self._createAddAndOutputItemView(tab);
-                    if (callback) callback();
-                }
-            });
+    _addExpandBoxAction() {
+        $("#box-content-" + this.model.id).on("show.bs.collapse", () =>
+            this._notifyListeners("boxView/expandBoxAction"));
+    }
+
+    _addCollapseBoxAction() {
+        $("#box-content-" + this.model.id).on("hide.bs.collapse", () =>
+            this._notifyListeners("boxView/collapseBoxAction"));
+    }
+
+    _addRemoveBoxAction() {
+        $("#boxes").on("click", "#remove-box-button-" + this.id, () => {
+            this._notifyListeners("boxView/removeBoxAction")
         });
     }
-
-    _updateName() {
-        $("#switch-to-box-" + this.getData().id).text(this.getData().name)
-    }
-
-    _addButtonsListeners() {
-        var self = this;
-        $("#boxes")
-            .on("click", "#add-to-box-button-" + this.getData().id, function () {
-                self._addCurrentTab(function () {
-                    self._notifyListeners("addTab");
-                });
-            })
-            .on("click", "#switch-to-box-" + this.getData().id, function () {
-                Tabs.selectBoxTab(self.getData().id);
-                self._notifyListeners("select");
-            })
-            .on("click", "#rename-box-button-" + this.getData().id, function () {
-                ModalDialogFactory.createDialog('editBox', self.getData(), function (box) {
-                    self.data = box;
-                    self._updateName();
-                    self._notifyListeners("edit");
-                }).show();
-            })
-            .on("click", "#remove-box-button-" + this.getData().id, function () {
-                Tabs.closeBoxTab(self.getData().id);
-                self.deleteElement();
-                self._notifyListeners("delete");
-            });
-
-        $("#box-content-" + this.getData().id)
-            .on("show.bs.collapse", function () {
-                self.expand();
-            })
-            .on("hide.bs.collapse", function () {
-                self.collapse();
-            });
-    }
-
-    // TODO refactor this nightmare
-    filterTabs(searchQuery) {
-        if (!searchQuery || searchQuery.length === 0) {
-            this.show();
-            this._showItemViews();
-            if (!this.getData().showContent) {
-
-                $("#box-content-" + this.getData().id).removeClass('show');
-                $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-up").addClass("fa-toggle-down");
-            }
-            return;
-        }
-
-        var tabs = this.getData().searchTabs(searchQuery);
-        if (tabs.length === 0) {
-            this.hide();
-            return;
-        }
-        this._hideItemViews();
-        this.show();
-
-        $("#box-content-" + this.getData().id).addClass('show');
-        $("#collapse-box-icon-" + this.getData().id).removeClass("fa-toggle-down").addClass("fa-toggle-up");
-
-        var itemsToShow = this._getItemViews(tabs);
-        this._showItemViews(itemsToShow);
-    }
 }
-
-Templates.loadPopupBoxTemplate(function (template) {
-    BoxView.elementTemplate = template;
-});

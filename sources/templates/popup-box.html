@@ -1,34 +1,34 @@
 <!doctype html>
 
-<div id="{{id}}" draggable="true">
-    <div class="box row m-0">
-        <div class="box-controls pl-1">
-            <div id="add-to-box-button-{{id}}" class="h-100 ttt">
+<div id="box-{{id}}" class="layout vertical box" draggable="true">
+    <div class="box-header layout horizontal m-0 vertical-center">
+        <div class="layout horizontal">
+            <div id="add-to-box-button-{{id}}" class="ml-1">
                 <i class="fa fa-plus box-button"></i>
             </div>
-
-            <div id="collapse-box-button-{{id}}" class="h-100 ttt" data-toggle="collapse"
-                 data-target="#box-content-{{id}}">
-                <i id="collapse-box-icon-{{id}}" class="fa fa-toggle-down box-button"></i>
+            <div id="collapse-box-button-{{id}}" class="ml-1"
+                 data-toggle="collapse" data-target="#box-content-{{id}}">
+                <i id="collapse-box-icon-{{id}}"
+                   class="fa fa-toggle-down box-button"></i>
             </div>
-
-            <div id="rename-box-button-{{id}}" class="ttt h-100">
+            <div id="rename-box-button-{{id}}" class="ml-1">
                 <i class="fa fa-pencil box-button"></i>
             </div>
         </div>
-        <div class="box-name p-0 pl-2 pr-1">
-            <div id="switch-to-box-{{id}}" class="ttt">{{name}}</div>
-            <input id="box-name-input-{{id}}" type="text" class="form-control" hidden
-                   value="{{name}}" title="Tabs box name"/>
+
+        <div class="box-name layout horizontal ml-1">
+            <div id="switch-to-box-{{id}}" class="long-text">{{name}}</div>
         </div>
 
-        <div class="p-0 pr-1">
-            <div id="remove-box-button-{{id}}" class="ttt h-100">
-                <i class="fa fa-remove box-button"></i>
+        <div class="layout horizontal ml-1 mr-1 end">
+            <div id="box-tabs-count-{{id}}" class="box-tabs-count">
+                [ {{getTabsCount}} ]
+            </div>
+            <div id="remove-box-button-{{id}}">
+                <i class="fa fa-remove box-button ml-1"></i>
             </div>
         </div>
     </div>
-    <!--<div id="box-content-{{id}}" class="box-content collapse connected">-->
     <div id="box-content-{{id}}" class="box-content collapse">
     </div>
 </div>

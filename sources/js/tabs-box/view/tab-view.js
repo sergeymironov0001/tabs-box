@@ -1,42 +1,50 @@
 class TabView extends View {
 
-    constructor(box, tab) {
-        super(tab);
+    constructor(model, parent) {
+        super(model);
+
+        this.tabTitleElementId = "#tab-title-" + this.id;
+        this.editTabButtonElementId = "#edit-tab-" + this.id;
+        this.removeTabButtonElementId = "#remove-tab-" + this.id;
+    }
+
+    getHtml() {
+        return HtmlTemplateUtils.generateTabHtml(this.model);
     }
 
     getElement() {
-        return $('#tab-' + this.getData().id);
+        return $("#tab-" + this.id);
     }
 
-    _generateElement() {
-        return Mustache.to_html(TabView.elementTemplate, this.getData());
+    init() {
+        this.model.addListener(event => this._updateView(event));
+
+        this._addSelectTabAction();
+        this._addEditTabAction();
+        this._addRemoveTabAction();
     }
 
-    _updateTitle() {
-        $("#tab-title-" + this.getData().id).text(this.getData().title);
+    _updateView(event) {
+        switch (event.type) {
+            case "titleChanged":
+                $(this.tabTitleElementId).text(this.model.title);
+                break;
+        }
     }
 
-    _addButtonsListeners() {
-        var self = this;
-        $("#boxes")
-            .on("click", "#tab-title-" + this.getData().id, function () {
-                Tabs.selectTabByUrl(self.getData().url);
-                self._notifyListeners("select");
-            })
-            .on("click", "#edit-tab-" + this.getData().id, function () {
-                ModalDialogFactory.createDialog('editTab', self.getData(), function (tab) {
-                    self.data = tab;
-                    self._updateTitle();
-                    self._notifyListeners("edit");
-                }).show();
-            })
-            .on("click", "#remove-tab-" + this.getData().id, function () {
-                self.deleteElement();
-                self._notifyListeners("delete");
-            });
+    _addSelectTabAction() {
+        $("#boxes").on("click", this.tabTitleElementId, () =>
+            this._notifyListeners("tabView/selectTabAction"));
+    }
+
+    _addEditTabAction() {
+        $("#boxes").on("click", this.editTabButtonElementId, () =>
+            this._notifyListeners("tabView/editTabAction"));
+    }
+
+    _addRemoveTabAction() {
+        $("#boxes").on("click", this.removeTabButtonElementId, () =>
+            this._notifyListeners("tabView/removeTabAction")
+        );
     }
 }
-
-Templates.loadPopupTabTemplate(function (template) {
-    TabView.elementTemplate = template;
-});

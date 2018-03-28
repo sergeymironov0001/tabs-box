@@ -1,17 +1,26 @@
 <!doctype html>
 
-<div id="tab-{{id}}" class="row m-0 pl-4 tab">
-    <div class="tab-controls p-0 pr-1">
-        <div id="edit-tab-{{id}}" class="h-100 ttt">
-            <i class="fa fa-pencil tab-button" data-toggle="modal" data-target="#edit-tab-modal"></i>
+<div id="tab-{{id}}" class="layout horizontal pl-3 tab vertical-center">
+    <div class="tab-controls">
+        <div id="edit-tab-{{id}}" class="ml-1">
+            <i class="fa fa-pencil tab-button" data-toggle="modal"
+               data-target="#edit-tab-modal"></i>
         </div>
         <!--<button type="button" class="btn btn-info btn-lg">Open Modal</button>-->
     </div>
-    <div id="tab-title-{{id}}" class="tab-title ttt">
+
+    <div id="tab-icon-{{id}}" class="tab-favicon ml-1">
+        {{#favIconUrl}}
+        <img src="{{favIconUrl}}"/>
+        {{/favIconUrl}}
+    </div>
+
+    <div id="tab-title-{{id}}" class="tab-title long-text ml-1">
         {{title}}
     </div>
-    <div class="tab-controls p-0 pl-1">
-        <div id="remove-tab-{{id}}" class="h-100 ttt">
+
+    <div class="ml-1 mr-1 end">
+        <div id="remove-tab-{{id}}" class="">
             <i class="fa fa-remove tab-button"></i>
         </div>
     </div>

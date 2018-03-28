@@ -33,14 +33,14 @@ Theme.CHOME = new Theme('Chrome', 'chrome');
 class Themes {
     static changeTheme(themeName) {
         var theme = Theme.getThemeByName(themeName);
-        LocalStorage.saveTheme(theme.name);
-        Notifications.sendThemeChanged(themeName);
+        LocalStorageUtils.saveTheme(theme.name);
+        NotificationUtils.sendThemeChanged(themeName);
         Themes.selectedTheme = themeName;
         Themes.applyThemeToCurrentPage(themeName);
     }
 
     static loadTheme(callback) {
-        LocalStorage.loadTheme(function (themeName) {
+        LocalStorageUtils.loadTheme(function (themeName) {
             if (themeName) {
                 Themes.selectedTheme = themeName;
             } else {
@@ -72,7 +72,7 @@ class Themes {
     }
 
     static init(callback) {
-        Notifications.addThemeChangedListener(function (themeName) {
+        NotificationUtils.addThemeChangedListener(function (themeName) {
             Themes.applyThemeToCurrentPage(themeName);
         });
         Themes.loadTheme(callback);

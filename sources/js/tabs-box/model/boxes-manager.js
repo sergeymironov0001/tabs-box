@@ -1,0 +1,95 @@
+class BoxesManager extends Observable {
+
+    static loadBoxes(callback) {
+        LocalStorageUtils.loadBoxes(boxesInfo => {
+            let boxesManger = new BoxesManager(boxesInfo);
+            callback(boxesManger);
+        });
+    }
+
+    static saveBoxes(boxesManager, callback) {
+        LocalStorageUtils.saveBoxes(boxesManager.getBoxes(), callback);
+    }
+
+    static _createBox(boxInfo) {
+        return new Box(boxInfo.id, boxInfo.name,
+            boxInfo.showContent, boxInfo.tabs);
+    }
+
+    constructor(boxesInfo) {
+        console.log(boxesInfo);
+        super();
+        this.boxes = [];
+
+        if (boxesInfo) {
+            boxesInfo.forEach(boxInfo => {
+                let box = BoxesManager._createBox(boxInfo);
+                ArrayUtils.addItem(this.boxes, box);
+            });
+        }
+    }
+
+    getBoxById(id) {
+        return ArrayUtils.getItemById(this.boxes, id);
+    }
+
+    getBoxes() {
+        return this.boxes;
+    }
+
+    addBox(boxInfo) {
+        let box = boxInfo
+            ? new Box(boxInfo.id, boxInfo.name, boxInfo.showContent, boxInfo.tab)
+            : new Box();
+        if (ArrayUtils.addItem(this.boxes, box)) {
+            this._notifyListeners("boxAdded", box);
+            return box;
+        }
+        return undefined;
+    }
+
+    removeBox(id) {
+        console.log(id);
+        console.log(this.boxes);
+        if (ArrayUtils.removeItemById(this.boxes, id)) {
+            this._notifyListeners("boxRemoved", id);
+        }
+    }
+
+    changeBoxPosition(boxId, newPosition) {
+        if (ArrayUtils.changeItemPosition(this.boxes, boxId, newPosition)) {
+            this._notifyListeners("boxPositionChanged", {
+                boxId: boxId,
+                newPosition: newPosition
+            });
+        }
+    }
+
+    filterBoxesByTabs(filterQuery) {
+        if (!filterQuery || filterQuery.length === 0) {
+            return this.getBoxes();
+        }
+        filterQuery = filterQuery.toLowerCase();
+        return this.getBoxes().filter(box =>
+            box.filterTabs(filterQuery).length > 0);
+    }
+
+    // searchBoxesByName(searchQuery) {
+    //     searchQuery = searchQuery.toLowerCase();
+    //     return this.getBoxes().filter(box =>
+    //         box.name.toLowerCase().indexOf(searchQuery) !== -1);
+    // }
+    //
+    // searchBoxesByNameAndTabs(searchQuery) {
+    //     searchQuery = searchQuery.toLowerCase();
+    //     return this.getBoxes().filter(box =>
+    //         box.name.toLowerCase().indexOf(searchQuery) !== -1
+    //         || box.searchTabs(searchQuery).length > 0);
+    // }
+
+    toString() {
+        return `{\n` +
+            `\t"boxes": [${this.boxes}]\n` +
+            `}`;
+    }
+}

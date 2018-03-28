@@ -13,21 +13,36 @@
 <script src="../js/mustache/mustache.js"></script>
 <script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
 
-<script src="../js/tabs-box/notifications.js"></script>
-<script src="../js/tabs-box/tab.js"></script>
-<script src="../js/tabs-box/box.js"></script>
-<script src="../js/tabs-box/local-storage.js"></script>
-<script src="../js/themes.js"></script>
-<script src="../js/tabs-box/boxes.js"></script>
-<script src="../js/tabs-box/tabs.js"></script>
 <script src="../js/templates.js"></script>
-<script src="../js/modal-dialogs.js"></script>
+
+<script src="../js/tabs-box/utils/array-utils.js"></script>
+<script src="../js/tabs-box/utils/common-utils.js"></script>
+<script src="../js/tabs-box/utils/html-template-utils.js"></script>
+<script src="../js/tabs-box/utils/local-storage-utils.js"></script>
+<script src="../js/tabs-box/utils/notification-utils.js"></script>
+<script src="../js/tabs-box/utils/tab-utils.js"></script>
+<script src="../js/tabs-box/utils/html-utils.js"></script>
+
+<script src="../js/tabs-box/model/observable.js"></script>
+<script src="../js/tabs-box/model/tab.js"></script>
+<script src="../js/tabs-box/model/box.js"></script>
+<script src="../js/tabs-box/model/boxes-manager.js"></script>
 
 <script src="../js/tabs-box/view/view.js"></script>
 <script src="../js/tabs-box/view/list-view.js"></script>
 <script src="../js/tabs-box/view/tab-view.js"></script>
 <script src="../js/tabs-box/view/box-view.js"></script>
-<script src="../js/tabs-box/view/boxes-view.js"></script>
+<script src="../js/tabs-box/view/boxes-manager-view.js"></script>
+
+<script src="../js/tabs-box/controllers/controller.js"></script>
+<script src="../js/tabs-box/controllers/tab-controller.js"></script>
+<script src="../js/tabs-box/controllers/box-controller.js"></script>
+<script src="../js/tabs-box/controllers/boxes-manager-controller.js"></script>
+
+<script src="../js/tabs-box/mvc-resolver.js"></script>
+
+<script src="../js/themes.js"></script>
+<script src="../js/modal-dialogs.js"></script>
 
 <script src="../js/popup-new.js"></script>
 <!--<script src="../js/popup.js"></script>-->
@@ -40,33 +55,24 @@
 
 <link rel="icon" type="image/png" href="../icons/icon32.png"/>
 
-<div id="main-container" class="container-fluid">
-    <div class="container p-1">
-        <div class="boxes-controls row m-0 pb-1">
-            <div class="col-5 text-center p-0 pr-1">
-                <button id="put-tab-to-new-box-button" type="button" class="btn btn-defaults pr-1">
-                    Add current tab to new box
-                </button>
-            </div>
-            <div class="col-5 text-center p-0 pr-1">
-                <button id="create-empty-tab-box-button" type="button" class="btn btn-defaults">
-                    Create empty box
-                </button>
-            </div>
-            <div class="col-2 text-center p-0">
-                <button id="open-options-button" type="button" class="btn btn-defaults">
-                    <i class="fa fa-wrench"></i>
-                </button>
-            </div>
+<div id="main-container" class="layout vertical m-1">
+    <div class="layout vertical">
+        <div class="layout horizontal boxes-controls m-0 pb-1">
+            <button id="create-empty-tab-box-button" type="button"
+                    class="btn">
+                Create box
+            </button>
+            <button id="open-options-button" type="button" class="btn ml-1">
+                <i class="fa fa-wrench"></i>
+            </button>
         </div>
-        <div class="row">
-            <div class="search-boxes col-12">
-                <input id="search-input" type="text" class="form-control" placeholder="Search tabs"
-                       title="Boxes search"/>
-            </div>
+        <div class="search-boxes">
+            <input id="search-input" type="text" class="form-control"
+                   placeholder="Search tabs"
+                   title="Boxes search"/>
         </div>
     </div>
-    <div id="boxes" class="container-fluid p-1 sortable">
+    <div id="boxes" class="layout vertical sortable mt-1">
         <!--Place for box templates-->
     </div>
 </div>

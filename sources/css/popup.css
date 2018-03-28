@@ -1,12 +1,15 @@
 body {
-    height: 514px;
-    width: 450px;
+    height: 597px;
+    width: 380px;
     overflow-x: hidden;
     font-size: 14px;
+    padding: 0;
+    margin: 0;
 }
 
 #main-container {
     padding: 0;
+    justify-content: space-between;
 }
 
 .btn {
@@ -17,46 +20,48 @@ body {
 }
 
 .tab-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
+    width: 83%;
 }
 
-.box {
-    display: flex;
-    flex-wrap: nowrap;
+.box-header {
     width: 100%;
-    justify-content: space-between;
     margin: 0;
 }
 
 .box-controls {
-    min-width: 50px;
+    /*min-width: 50px;*/
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
 }
 
 .box-name {
-    width: 100%;
+    width: 75%;
 }
 
-.ttt {
+.boxes-controls {
+    justify-content: space-between;
+}
+
+#create-empty-tab-box-button {
+    width: auto;
+    flex-grow: 1;
+}
+
+#open-options-button {
+    width: auto;
+}
+
+.vertical-center {
     padding: .375rem 0 .375rem 0;
 }
 
 .tab {
-    display: flex;
-    flex-wrap: nowrap;
-    width: 100%;
-    justify-content: space-between;
-    margin: 0;
-
-    /*border-bottom: 1px dotted black;*/
+    border-bottom: 1px solid black;
 }
 
 .tab-controls {
-    min-width: 19px;
+    min-width: 15px;
     display: flex;
     justify-content: space-between;
 }
@@ -74,6 +79,54 @@ input[type="text"] {
     font-size: 14px;
 }
 
-.box-content{
-    /*min-height: 30px;*/
+.box-content {
+    /*margin-bottom: 5px;*/
+}
+
+.tab-favicon {
+    width: 16px;
+}
+
+.tab-favicon img {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+    border-radius: 60px;
+    /*padding: 0.2em 0.2em;*/
+}
+
+.layout {
+    display: flex;
+}
+
+.layout.horizontal {
+    flex-direction: row;
+}
+
+.layout.vertical {
+    flex-direction: column;
+}
+
+.long-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.search-boxes {
+    flex: 1;
+}
+
+.box-tabs-count {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.end {
+    margin-left: auto !important;
+}
+
+.box {
 }
