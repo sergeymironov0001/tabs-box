@@ -4,6 +4,7 @@ class MVCResolver {
         this.tabController = new TabController();
         this.boxController = new BoxController();
         this.boxesManagerController = new BoxesManagerController();
+        this.themesManagerController = new ThemesManagerController();
     }
 
     createView(model) {
@@ -11,13 +12,14 @@ class MVCResolver {
         if (model instanceof Tab) view = new TabView(model);
         if (model instanceof Box) view = new BoxView(model, this);
         if (model instanceof BoxesManager) view = new BoxesManagerView(model, this);
+        if (model instanceof ThemesManager) view = new ThemesManagerView(model);
 
         view.addListener(action => this.actionsResolver(action));
         return view;
     }
 
     actionsResolver(action) {
-        // console.log(action);
+        console.log(action);
 
         switch (action.type) {
             case "tabView/selectTabAction":
@@ -53,11 +55,14 @@ class MVCResolver {
             case "boxesManagerView/removeBoxAction":
                 this.boxesManagerController.processRemoveBoxesAction(action);
                 break;
-            // case "boxesManagerView/filterBoxesAction":
-            //     this.boxesManagerController.processFilterBoxesAction(action);
-            //     break;
             case "boxManagerView/boxPositionChangedAction":
                 this.boxesManagerController.processBoxPositionChangedAction(action);
+                break;
+            case "boxesManagerView/openOptionsButton":
+                this.boxesManagerController.processOpenOptionsAction(action);
+                break;
+            case "themesManagerView/themeChangedAction":
+                this.themesManagerController.processChangeThemeAction(action);
                 break;
         }
     }

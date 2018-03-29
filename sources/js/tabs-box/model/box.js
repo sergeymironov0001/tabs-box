@@ -75,6 +75,10 @@ class Box extends Observable {
             tab.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
     }
 
+    getTabsCount() {
+        return this.tabs.length;
+    }
+
     toString() {
         return `{\n` +
             `\t"id": ${this.id},\n` +

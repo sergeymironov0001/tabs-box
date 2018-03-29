@@ -1,5 +1,6 @@
-function fillThemesSelect() {
-    Theme.getThemes().forEach(function (theme) {
+// TODO refactor it
+function fillThemesSelect(themesManager) {
+    themesManager.getThemes().forEach(theme => {
         $('#theme-select')
             .append($("<option></option>")
                 .attr("value", theme.name)
@@ -8,25 +9,26 @@ function fillThemesSelect() {
     });
 }
 
-function getSelectedTheme() {
-    return $("#theme-select option:selected").val();
-}
-
 function selectTheme(themeName) {
-    console.log(themeName);
     $("#theme-select").val(themeName);
 }
 
 $(document).ready(function () {
-    Themes.init(function (themeName) {
-        Themes.applySavedThemeToCurrentPage();
-
-        fillThemesSelect();
-        $('#theme-select').change(function () {
-            console.log("Change theme:" + getSelectedTheme());
-            Themes.changeTheme(getSelectedTheme());
+    ThemesManager.loadTheme(themeName => {
+        let themesManager = new ThemesManager(themeName);
+        themesManager.addListener(event => {
+            if (event.type === "themeChanged") {
+                ThemesManager.saveTheme(event.data.name);
+            }
         });
-        selectTheme(themeName);
+
+        let mvcResolver = new MVCResolver();
+        let view = mvcResolver.createView(themesManager);
+
+        $("#themes").append(view.getHtml());
+        fillThemesSelect(themesManager);
+        selectTheme(themesManager.getSelectedTheme().name);
+
+        view.init();
     });
 });
-

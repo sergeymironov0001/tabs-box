@@ -4,40 +4,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 
-<title>Tabs-box popup</title>
+<title>Options</title>
 
 <script src="../js/jquery/jquery-3.2.1.min.js"></script>
 <script src="../js/html5sortable/html.sortable.min.js"></script>
 <script src="../js/mustache/mustache.js"></script>
 <script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="../js/bootstrap-select/bootstrap-select.min.js"></script>
 
+<script src="../js/templates.js"></script>
+
+<script src="../js/tabs-box/utils/array-utils.js"></script>
+<script src="../js/tabs-box/utils/common-utils.js"></script>
+<script src="../js/tabs-box/utils/html-template-utils.js"></script>
+<script src="../js/tabs-box/utils/local-storage-utils.js"></script>
 <script src="../js/tabs-box/utils/notification-utils.js"></script>
+<script src="../js/tabs-box/utils/tab-utils.js"></script>
+<script src="../js/tabs-box/utils/html-utils.js"></script>
+<script src="../js/tabs-box/utils/theme-utils.js"></script>
+
+<script src="../js/tabs-box/model/observable.js"></script>
 <script src="../js/tabs-box/model/tab.js"></script>
 <script src="../js/tabs-box/model/box.js"></script>
-<script src="../js/tabs-box/utils/local-storage-utils.js"></script>
-<script src="../js/themes.js"></script>
 <script src="../js/tabs-box/model/boxes-manager.js"></script>
-<script src="../js/tabs-box/utils/tab-utils.js"></script>
-<script src="../js/templates.js"></script>
+<script src="../js/tabs-box/model/theme.js"></script>
+<script src="../js/tabs-box/model/themes-manager.js"></script>
+
+<script src="../js/tabs-box/view/view.js"></script>
+<script src="../js/tabs-box/view/list-view.js"></script>
+<script src="../js/tabs-box/view/tab-view.js"></script>
+<script src="../js/tabs-box/view/box-view.js"></script>
+<script src="../js/tabs-box/view/boxes-manager-view.js"></script>
+<script src="../js/tabs-box/view/themes-manager-view.js"></script>
+
+<script src="../js/tabs-box/controllers/controller.js"></script>
+<script src="../js/tabs-box/controllers/tab-controller.js"></script>
+<script src="../js/tabs-box/controllers/box-controller.js"></script>
+<script src="../js/tabs-box/controllers/boxes-manager-controller.js"></script>
+<script src="../js/tabs-box/controllers/themes-manager-controller.js"></script>
+
+<script src="../js/tabs-box/mvc-resolver.js"></script>
+
+<script src="../js/modal-dialogs.js"></script>
 
 <script src="../js/options.js"></script>
 
 <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" href="../css/bootstrap-select/bootstrap-select.min.css">
 <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/commons.css">
 <link rel="stylesheet" href="../css/options.css">
+<link rel="stylesheet" href="../css/themes/porn-hub-style.css">
+<link rel="stylesheet" href="../css/themes/chrome-style.css">
 
 <link rel="icon" type="image/png" href="../icons/icon32.png"/>
 
 <div class="container-fluid text-center">
     Tabs box options
 </div>
-<div class="container-fluid">
-    <div class="row m-1">
-        <label for="theme-select" class="col-1 m-0 ttt">Theme:</label>
-        <select id="theme-select" class="col-11 select ">
-        </select>
-    </div>
+<div id="themes">
 </div>
 </html>

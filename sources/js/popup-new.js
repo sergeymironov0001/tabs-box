@@ -1,11 +1,16 @@
 $(document).ready(function () {
-    Themes.init();
-    Themes.applySavedThemeToCurrentPage();
+    ThemesManager.loadTheme(themeName => {
+        let themesManager = new ThemesManager(themeName);
+        themesManager.addListener(event => {
+            if (event.type === "themeChanged") {
+                ThemesManager.saveTheme(event.data.name);
+            }
+        });
+    });
 
     ModalDialogFactory.initModals($("#boxes"));
 
-    BoxesManager.loadBoxes(function (boxesManager) {
-
+    BoxesManager.loadBoxes(boxesManager => {
         Observable.addGlobalListener((event, className) => {
             console.log(event);
             console.log("class = " + className);

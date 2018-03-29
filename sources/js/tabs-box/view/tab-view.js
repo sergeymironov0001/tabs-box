@@ -1,6 +1,6 @@
 class TabView extends View {
 
-    constructor(model, parent) {
+    constructor(model) {
         super(model);
 
         this.tabTitleElementId = "#tab-title-" + this.id;

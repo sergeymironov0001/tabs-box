@@ -1,4 +1,5 @@
 class Templates {
+
     static loadPopupBoxTemplate(callback) {
         Templates._loadTemplate("../templates/popup-box.html", callback);
     };
@@ -13,11 +14,15 @@ class Templates {
 
     static loadEditTabTemplate(callback) {
         Templates._loadTemplate("../templates/edit-tab-dialog.html", callback);
-    }
+    };
 
     static loadEditBoxTemplate(callback) {
         Templates._loadTemplate("../templates/edit-box-dialog.html", callback);
-    }
+    };
+
+    static loadThemesTemplate(callback) {
+        Templates._loadTemplate("../templates/themes.html", callback);
+    };
 
     static _loadTemplate(templateName, callback) {
         $.get(chrome.extension.getURL(templateName), function (template) {

@@ -26,6 +26,10 @@ class BoxesManagerController extends Controller {
         action.source.model.removeBox(action.data.model.id);
     }
 
+    processOpenOptionsAction(action) {
+        TabUtils.selectOptionsTab();
+    }
+
     // processFilterBoxesAction(action) {
     //     let boxes = action.source.model.searchBoxesByTabs(action.data);
     //     console.log(boxes);
