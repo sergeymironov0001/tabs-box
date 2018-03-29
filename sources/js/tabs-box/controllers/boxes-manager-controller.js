@@ -7,13 +7,10 @@ class BoxesManagerController extends Controller {
     processAddBoxAction(action) {
         let newBox = action.source.model.addBox();
         TabUtils.getCurrentTab(tabInfo => {
-            TabUtils.getCurrentTabPicture(pictureUrl => {
-                newBox.addTab({
-                    title: tabInfo.title,
-                    url: tabInfo.url,
-                    favIconUrl: tabInfo.favIconUrl,
-                    thumbImgUrl: pictureUrl
-                });
+            newBox.addTab({
+                title: tabInfo.title,
+                url: tabInfo.url,
+                favIconUrl: tabInfo.favIconUrl
             });
         });
     }

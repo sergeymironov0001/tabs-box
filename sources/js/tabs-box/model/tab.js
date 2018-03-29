@@ -1,13 +1,12 @@
 class Tab extends Observable {
 
-    constructor(id, tabInfo, thumbImgUrl) {
+    constructor(id, tabInfo) {
         super();
 
         this.id = id || CommonUtils.generateUniqueId();
         this.url = tabInfo.url;
         this.title = tabInfo.title;
         this.favIconUrl = tabInfo.favIconUrl;
-        this.thumbImgUrl = thumbImgUrl || tabInfo.thumbImgUrl;
         this._init();
     }
 

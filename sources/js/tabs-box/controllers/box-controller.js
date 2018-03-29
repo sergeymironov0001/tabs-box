@@ -6,13 +6,10 @@ class BoxController extends Controller {
 
     processAddTabAction(action) {
         TabUtils.getCurrentTab(tabInfo => {
-            TabUtils.getCurrentTabPicture(pictureUrl => {
-                action.source.model.addTab({
-                    title: tabInfo.title,
-                    url: tabInfo.url,
-                    favIconUrl: tabInfo.favIconUrl,
-                    thumbImgUrl: pictureUrl
-                });
+            action.source.model.addTab({
+                title: tabInfo.title,
+                url: tabInfo.url,
+                favIconUrl: tabInfo.favIconUrl
             });
         });
     }
