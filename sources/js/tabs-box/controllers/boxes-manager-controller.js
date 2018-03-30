@@ -19,6 +19,20 @@ class BoxesManagerController extends Controller {
         action.source.model.addBox();
     }
 
+    processPutOpenedTabsToNewBoxAction(action) {
+        let newBox = action.source.model.addBox();
+        TabUtils.getCurrentWindowTabs(tabs => {
+            tabs = tabs || [];
+            tabs.forEach(tabInfo => {
+                newBox.addTab({
+                    title: tabInfo.title,
+                    url: tabInfo.url,
+                    favIconUrl: tabInfo.favIconUrl
+                });
+            });
+        });
+    }
+
     processRemoveBoxesAction(action) {
         action.source.model.removeBox(action.data.model.id);
     }

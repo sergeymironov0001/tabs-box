@@ -16,6 +16,16 @@ body {
     width: 83%;
 }
 
+#create-new-box-button {
+    width: auto;
+    flex-grow: 1;
+}
+
+#put-opened-tabs-to-new-box-button {
+    width: auto;
+    flex-grow: 1;
+}
+
 .box-header {
     width: 100%;
     margin: 0;
@@ -36,13 +46,9 @@ body {
     justify-content: space-between;
 }
 
-#create-empty-tab-box-button {
-    width: auto;
-    flex-grow: 1;
-}
-
 #open-options-button {
     width: auto;
+    /*width: 11%;*/
 }
 
 .tab {

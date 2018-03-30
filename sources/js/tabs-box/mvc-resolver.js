@@ -49,6 +49,9 @@ class MVCResolver {
             case "boxesManagerView/addBoxAction":
                 this.boxesManagerController.processAddBoxAction(action);
                 break;
+            case "boxesManagerView/putOpenedTabsToNewBoxAction":
+                this.boxesManagerController.processPutOpenedTabsToNewBoxAction(action);
+                break;
             case "boxesManagerView/addEmptyBoxAction":
                 this.boxesManagerController.processAddEmptyBoxAction(action);
                 break;

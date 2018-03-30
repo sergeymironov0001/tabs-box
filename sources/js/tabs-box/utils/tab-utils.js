@@ -58,6 +58,10 @@ class TabUtils {
             callback(tabs[0]));
     }
 
+    static getCurrentWindowTabs(callback) {
+        chrome.tabs.query({currentWindow: true}, tabs => callback(tabs));
+    }
+
     static getCurrentTabPicture(callback) {
         chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,
             dataUrl => callback(dataUrl));

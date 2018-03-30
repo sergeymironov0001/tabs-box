@@ -27,7 +27,7 @@ class BoxesManagerView extends ListView {
     init() {
         this.model.addListener(event => this._updateView(event));
 
-        this._addAddBoxAction();
+        this._addPutOpenedTabsToNewBoxAction();
         this._addAddEmptyBoxAction();
         this._addOpenOptionsAction();
         this._changeBoxesFilterAction();
@@ -83,13 +83,14 @@ class BoxesManagerView extends ListView {
         return dom.html();
     }
 
-    _addAddBoxAction() {
-        $('#put-tab-to-new-box-button').click(e =>
-            this._notifyListeners("boxesManagerView/addBoxAction"));
+    _addPutOpenedTabsToNewBoxAction() {
+        $('#put-opened-tabs-to-new-box-button').click(e =>
+            this._notifyListeners(
+                "boxesManagerView/putOpenedTabsToNewBoxAction"));
     }
 
     _addAddEmptyBoxAction() {
-        $('#create-empty-tab-box-button').click(e => {
+        $('#create-new-box-button').click(e => {
             this._notifyListeners("boxesManagerView/addEmptyBoxAction")
         });
     }
