@@ -45,4 +45,8 @@ class BoxController extends Controller {
         action.source.model.changeTabPosition(action.data.tabId,
             action.data.newPosition);
     }
+
+    processToggleBoxAction(action) {
+        action.source.model.toggle();
+    }
 }

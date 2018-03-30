@@ -24,6 +24,7 @@ class BoxView extends ListView {
         this._addRenameBoxAction();
         this._addExpandBoxAction();
         this._addCollapseBoxAction();
+        this._addToggleBoxAction();
         this._addRemoveBoxAction();
 
         this.items.forEach(item => item.init());
@@ -173,6 +174,12 @@ class BoxView extends ListView {
     _addRemoveBoxAction() {
         $("#boxes").on("click", "#remove-box-button-" + this.id, () => {
             this._notifyListeners("boxView/removeBoxAction")
+        });
+    }
+
+    _addToggleBoxAction() {
+        $("#boxes").on("click", "#box-name-" + this.id, () => {
+            this._notifyListeners("boxView/toggleBoxAction")
         });
     }
 }

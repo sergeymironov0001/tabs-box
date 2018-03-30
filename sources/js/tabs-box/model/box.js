@@ -70,6 +70,14 @@ class Box extends Observable {
         }
     }
 
+    toggle() {
+        if (this.showContent) {
+            this.collapse();
+        } else {
+            this.expand();
+        }
+    }
+
     filterTabs(query) {
         return this.tabs.filter(tab =>
             tab.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);

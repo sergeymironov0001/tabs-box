@@ -46,6 +46,9 @@ class MVCResolver {
             case "boxView/tabPositionChangedAction":
                 this.boxController.processTabPositionChangedAction(action);
                 break;
+            case "boxView/toggleBoxAction":
+                this.boxController.processToggleBoxAction(action);
+                break;
             case "boxesManagerView/addBoxAction":
                 this.boxesManagerController.processAddBoxAction(action);
                 break;
