@@ -28,6 +28,7 @@ class TabView extends View {
         switch (event.type) {
             case "titleChanged":
                 $(this.tabTitleElementId).text(this.model.title);
+                $(this.tabTitleElementId).prop('title', this.model.title);
                 break;
         }
     }

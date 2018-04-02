@@ -124,7 +124,9 @@ class BoxView extends ListView {
                 break;
             }
             case "nameChanged":
-                $("#switch-to-box-" + this.id).text(event.data);
+                $("#box-name-" + this.id)
+                    .text(event.data)
+                    .prop('title', event.data);
                 break;
             case "boxExpanded":
                 this.expand();

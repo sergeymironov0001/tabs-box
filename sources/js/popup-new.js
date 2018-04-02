@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     BoxesManager.loadBoxes(boxesManager => {
         Observable.addGlobalListener((event, className) => {
-            console.log(event);
+            // console.log(event);
             // console.log("class = " + className);
             BoxesManager.saveBoxes(boxesManager, () =>{
                 // console.log("Boxes saved");
