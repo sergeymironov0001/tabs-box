@@ -19,22 +19,32 @@
         </div>
 
         <div class="layout horizontal ml-1 mr-1 end">
-            <div id="box-tabs-count-{{id}}" class="box-tabs-count">
-                [ {{getTabsCount}} ]
+            <div>
+                <div id="box-tabs-count-{{id}}" class="box-tabs-count">
+                    [ {{getTabsCount}} ]
+                </div>
             </div>
-            <div id="open-all-tabs-button-{{id}}" class="ml-1">
-                <i class="fa fa-eject box-button"
-                   title="Open all tabs from the box"></i>
-            </div>
-            <div id="close-all-tabs-button-{{id}}" class="ml-1">
-                <i class="fa fa-eject fa-rotate-180 box-button"
-                   title="Close all tabs from the box"></i>
-            </div>
-            <div id="rename-box-button-{{id}}" class="ml-1">
-                <i class="fa fa-pencil box-button" title="Rename the box"></i>
-            </div>
-            <div id="remove-box-button-{{id}}" class="ml-1">
-                <i class="fa fa-remove box-button" title="Remove the box"></i>
+
+            <div id="toolbar-{{id}}" class="layout horizontal">
+                <div id="open-all-tabs-button-{{id}}" class="pl-1 d-none">
+                    <i class="fa fa-eject box-button"
+                       title="Open all tabs from the box"></i>
+                </div>
+                <div id="close-all-tabs-button-{{id}}" class="pl-1 d-none">
+                    <i class="fa fa-eject fa-rotate-180 box-button"
+                       title="Close all tabs from the box"></i>
+                </div>
+                <div id="rename-box-button-{{id}}" class="pl-1 d-none">
+                    <i class="fa fa-pencil box-button"
+                       title="Rename the box"></i>
+                </div>
+                <div id="remove-box-button-{{id}}" class="pl-1 d-none">
+                    <i class="fa fa-remove box-button"
+                       title="Remove the box"></i>
+                </div>
+                <div id="show-toolbar-{{id}}" class="ml-1">
+                    <i class="fa fa-gear box-button" title="Toolbar"></i>
+                </div>
             </div>
         </div>
     </div>

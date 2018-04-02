@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    let themesManager;
     ThemesManager.loadTheme(themeName => {
         let themesManager = new ThemesManager(themeName);
         themesManager.addListener(event => {
@@ -9,11 +8,11 @@ $(document).ready(function () {
         });
     });
 
-    ModalDialogFactory.initModals($("#boxes"));
+    ModalDialogFactory.initModals($("body"));
 
     BoxesManager.loadBoxes(boxesManager => {
         Observable.addGlobalListener((event, className) => {
-            // console.log(event);
+            console.log(event);
             // console.log("class = " + className);
             BoxesManager.saveBoxes(boxesManager, () =>{
                 // console.log("Boxes saved");

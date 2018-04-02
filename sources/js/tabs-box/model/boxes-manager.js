@@ -22,8 +22,10 @@ class BoxesManager extends Observable {
 
         if (boxesInfo) {
             boxesInfo.forEach(boxInfo => {
-                let box = BoxesManager._createBox(boxInfo);
-                ArrayUtils.addItem(this.boxes, box);
+                if (boxInfo && boxInfo != null) {
+                    let box = BoxesManager._createBox(boxInfo);
+                    ArrayUtils.addItem(this.boxes, box);
+                }
             });
         }
     }

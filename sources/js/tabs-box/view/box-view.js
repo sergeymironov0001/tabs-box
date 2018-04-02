@@ -31,6 +31,7 @@ class BoxView extends ListView {
 
         this.items.forEach(item => item.init());
         this._initDragAndDrop();
+        this._initToolBar();
     }
 
     filterItems(filterQuery) {
@@ -69,6 +70,20 @@ class BoxView extends ListView {
                 //     boxes.moveTabToBox(oldBoxId, newBoxId, tabIdToMove, e.detail.index)
                 // }
             });
+    }
+
+    _initToolBar() {
+        $("#toolbar-" + this.model.id).hover(() => {
+            $("#open-all-tabs-button-" + this.model.id).removeClass("d-none");
+            $("#close-all-tabs-button-" + this.model.id).removeClass("d-none");
+            $("#rename-box-button-" + this.model.id).removeClass("d-none");
+            $("#remove-box-button-" + this.model.id).removeClass("d-none");
+        }, () => {
+            $("#open-all-tabs-button-" + this.model.id).addClass("d-none");
+            $("#close-all-tabs-button-" + this.model.id).addClass("d-none");
+            $("#rename-box-button-" + this.model.id).addClass("d-none");
+            $("#remove-box-button-" + this.model.id).addClass("d-none");
+        });
     }
 
     _syncHtmlWithModel(html) {
@@ -127,9 +142,6 @@ class BoxView extends ListView {
         $("#box-content-" + this.id)
             .removeClass('collapse')
             .addClass('show');
-        // $("#collapse-box-icon-" + this.id)
-        //     .removeClass("fa-toggle-down")
-        //     .addClass("fa-toggle-up");
         $("#collapse-box-icon-" + this.id)
             .removeClass("fa-chevron-down")
             .addClass("fa-chevron-up");
