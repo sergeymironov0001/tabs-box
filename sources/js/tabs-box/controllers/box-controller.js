@@ -49,4 +49,14 @@ class BoxController extends Controller {
     processToggleBoxAction(action) {
         action.source.model.toggle();
     }
+
+    processOpenAllTabsAction(action) {
+        let urls = $.map(action.source.model.getTabs(), tab => tab.url);
+        TabUtils.createTabsIfDoNotExist(urls);
+    }
+
+    processCloseAllTabsAction(action) {
+        let urls = $.map(action.source.model.getTabs(), tab => tab.url);
+        TabUtils.closeTabsByUrls(urls);
+    }
 }

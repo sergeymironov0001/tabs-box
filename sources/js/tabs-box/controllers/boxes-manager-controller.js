@@ -50,4 +50,12 @@ class BoxesManagerController extends Controller {
         action.source.model.changeBoxPosition(action.data.boxId,
             action.data.newPosition);
     }
+
+    processCollapseBoxes(action) {
+        action.source.model.collapseBoxes();
+    }
+
+    processExpandBoxes(action) {
+        action.source.model.expandBoxes();
+    }
 }

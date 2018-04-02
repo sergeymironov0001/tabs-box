@@ -26,6 +26,8 @@ class BoxView extends ListView {
         this._addCollapseBoxAction();
         this._addToggleBoxAction();
         this._addRemoveBoxAction();
+        this._addOpenAllTabsAction();
+        this._addCloseAllTabsAction();
 
         this.items.forEach(item => item.init());
         this._initDragAndDrop();
@@ -76,8 +78,8 @@ class BoxView extends ListView {
                 .removeClass('collapse')
                 .addClass('show');
             dom.find("#collapse-box-icon-" + this.id)
-                .removeClass("fa-toggle-down")
-                .addClass("fa-toggle-up");
+                .removeClass("fa-chevron-down")
+                .addClass("fa-chevron-up");
         }
         return dom.html();
     }
@@ -125,9 +127,12 @@ class BoxView extends ListView {
         $("#box-content-" + this.id)
             .removeClass('collapse')
             .addClass('show');
+        // $("#collapse-box-icon-" + this.id)
+        //     .removeClass("fa-toggle-down")
+        //     .addClass("fa-toggle-up");
         $("#collapse-box-icon-" + this.id)
-            .removeClass("fa-toggle-down")
-            .addClass("fa-toggle-up");
+            .removeClass("fa-chevron-down")
+            .addClass("fa-chevron-up");
     }
 
     collapse() {
@@ -135,8 +140,8 @@ class BoxView extends ListView {
             .removeClass('show')
             .addClass('collapse');
         $("#collapse-box-icon-" + this.id)
-            .removeClass("fa-toggle-up")
-            .addClass("fa-toggle-down");
+            .removeClass("fa-chevron-up")
+            .addClass("fa-chevron-down");
     }
 
     _updateTabsCount(tabsCount) {
@@ -181,5 +186,15 @@ class BoxView extends ListView {
         $("#boxes").on("click", "#box-name-" + this.id, () => {
             this._notifyListeners("boxView/toggleBoxAction")
         });
+    }
+
+    _addOpenAllTabsAction() {
+        $("#boxes").on("click", "#open-all-tabs-button-" + this.id, () =>
+            this._notifyListeners("boxView/openAllTabsAction"));
+    }
+
+    _addCloseAllTabsAction() {
+        $("#boxes").on("click", "#close-all-tabs-button-" + this.id, () =>
+            this._notifyListeners("boxView/closeAllTabsAction"));
     }
 }

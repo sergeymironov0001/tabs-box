@@ -17,7 +17,6 @@ class BoxesManager extends Observable {
     }
 
     constructor(boxesInfo) {
-        console.log(boxesInfo);
         super();
         this.boxes = [];
 
@@ -49,8 +48,6 @@ class BoxesManager extends Observable {
     }
 
     removeBox(id) {
-        console.log(id);
-        console.log(this.boxes);
         if (ArrayUtils.removeItemById(this.boxes, id)) {
             this._notifyListeners("boxRemoved", id);
         }
@@ -72,6 +69,14 @@ class BoxesManager extends Observable {
         filterQuery = filterQuery.toLowerCase();
         return this.getBoxes().filter(box =>
             box.filterTabs(filterQuery).length > 0);
+    }
+
+    collapseBoxes() {
+        this.boxes.forEach(box => box.collapse());
+    }
+
+    expandBoxes() {
+        this.boxes.forEach(box => box.expand());
     }
 
     // searchBoxesByName(searchQuery) {

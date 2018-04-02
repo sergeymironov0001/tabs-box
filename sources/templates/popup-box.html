@@ -4,21 +4,17 @@
     <div class="box-header layout horizontal m-0 vertical-center">
         <div class="layout horizontal">
             <div id="add-to-box-button-{{id}}" class="ml-1">
-                <i class="fa fa-plus box-button"></i>
+                <i class="fa fa-plus box-button" title="Add tab to box"></i>
             </div>
-
-            <div id="rename-box-button-{{id}}" class="ml-1">
-                <i class="fa fa-pencil box-button"></i>
-            </div>
-
             <div id="collapse-box-button-{{id}}" class="ml-1"
                  data-toggle="collapse" data-target="#box-content-{{id}}">
                 <i id="collapse-box-icon-{{id}}"
-                   class="fa fa-toggle-down box-button"></i>
+                   class="fa fa-chevron-down box-button"></i>
             </div>
         </div>
 
-        <div id="box-name-{{id}}" class="box-name layout horizontal ml-1">
+        <div id="box-name-{{id}}" class="box-name layout horizontal ml-1"
+             title="{{name}}">
             <div id="switch-to-box-{{id}}" class="long-text">{{name}}</div>
         </div>
 
@@ -26,8 +22,19 @@
             <div id="box-tabs-count-{{id}}" class="box-tabs-count">
                 [ {{getTabsCount}} ]
             </div>
-            <div id="remove-box-button-{{id}}">
-                <i class="fa fa-remove box-button ml-1"></i>
+            <div id="open-all-tabs-button-{{id}}" class="ml-1">
+                <i class="fa fa-eject box-button"
+                   title="Open all tabs from the box"></i>
+            </div>
+            <div id="close-all-tabs-button-{{id}}" class="ml-1">
+                <i class="fa fa-eject fa-rotate-180 box-button"
+                   title="Close all tabs from the box"></i>
+            </div>
+            <div id="rename-box-button-{{id}}" class="ml-1">
+                <i class="fa fa-pencil box-button" title="Rename the box"></i>
+            </div>
+            <div id="remove-box-button-{{id}}" class="ml-1">
+                <i class="fa fa-remove box-button" title="Remove the box"></i>
             </div>
         </div>
     </div>

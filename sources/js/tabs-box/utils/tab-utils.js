@@ -93,8 +93,7 @@ class TabUtils {
     }
 
     static getTabsByUrl(url, callback) {
-        chrome.tabs.query({url: url},
-            tabs => callback(tabs));
+        chrome.tabs.query({url: url}, tabs => callback(tabs));
     }
 
     static createBoxTab(boxId, callback) {
@@ -115,5 +114,33 @@ class TabUtils {
                 'selected': false
             },
             callback);
+    }
+
+    static createTabs(urls) {
+        urls.forEach(url => {
+            TabUtils.createTab(url)
+        });
+    }
+
+    static createTabsIfDoNotExist(urls) {
+        urls.forEach(url => {
+            TabUtils.getTabByUrl(url, tab => {
+                if (!tab) {
+                    TabUtils.createTab(url);
+                }
+            });
+        });
+    }
+
+    static closeTabsByUrl(url) {
+        this.getTabsByUrl(url, tabs => {
+            if (tabs) {
+                tabs.forEach(tab => TabUtils.closeTab(tab.id))
+            }
+        });
+    }
+
+    static closeTabsByUrls(urls) {
+        urls.forEach(url => TabUtils.closeTabsByUrl(url));
     }
 }

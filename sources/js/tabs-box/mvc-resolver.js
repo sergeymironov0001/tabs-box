@@ -19,8 +19,6 @@ class MVCResolver {
     }
 
     actionsResolver(action) {
-        console.log(action);
-
         switch (action.type) {
             case "tabView/selectTabAction":
                 this.tabController.processSelectTabAction(action);
@@ -49,6 +47,12 @@ class MVCResolver {
             case "boxView/toggleBoxAction":
                 this.boxController.processToggleBoxAction(action);
                 break;
+            case "boxView/openAllTabsAction":
+                this.boxController.processOpenAllTabsAction(action);
+                break;
+            case "boxView/closeAllTabsAction":
+                this.boxController.processCloseAllTabsAction(action);
+                break;
             case "boxesManagerView/addBoxAction":
                 this.boxesManagerController.processAddBoxAction(action);
                 break;
@@ -64,8 +68,14 @@ class MVCResolver {
             case "boxManagerView/boxPositionChangedAction":
                 this.boxesManagerController.processBoxPositionChangedAction(action);
                 break;
-            case "boxesManagerView/openOptionsButton":
+            case "boxesManagerView/openOptionsAction":
                 this.boxesManagerController.processOpenOptionsAction(action);
+                break;
+            case "boxesManagerView/collapseBoxesAction":
+                this.boxesManagerController.processCollapseBoxes(action);
+                break;
+            case "boxesManagerView/expandBoxesAction":
+                this.boxesManagerController.processExpandBoxes(action);
                 break;
             case "themesManagerView/themeChangedAction":
                 this.themesManagerController.processChangeThemeAction(action);

@@ -97,7 +97,7 @@ class BoxesManagerView extends ListView {
 
     _addOpenOptionsAction() {
         $('#open-options-button').click(e => {
-            this._notifyListeners("boxesManagerView/openOptionsButton")
+            this._notifyListeners("boxesManagerView/openOptionsAction")
         });
     }
 
