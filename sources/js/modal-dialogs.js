@@ -1,6 +1,6 @@
-class EditModalDialog {
+class ModalDialog {
     constructor() {
-        this._addListeners();
+        this._addActions();
     }
 
     setData(data) {
@@ -23,16 +23,42 @@ class EditModalDialog {
         // subclass have to implement this
     }
 
-    _addListeners() {
-        var self = this;
-        this._getOkButton().click(function (e) {
-            self._updateData();
-            self.okAction(self.data);
+    _addActions() {
+        this._getOkButton().click(e => {
+            this._updateData();
+            this.okAction(this.data);
         });
     }
 }
 
-class EditTabModalDialog extends EditModalDialog {
+class ConfirmBoxRemoveModalDialog extends ModalDialog {
+
+    constructor() {
+        super();
+    }
+
+    show() {
+        this._setText();
+        $('#confirm-box-remove-modal').modal();
+    }
+
+    _getOkButton() {
+        return $('#confirm-box-remove-button');
+    }
+
+    _updateData() {
+    }
+
+    _getBoxNameField() {
+        return $('#box-name');
+    }
+
+    _setText() {
+        this._getBoxNameField().text(this.data.name);
+    }
+}
+
+class EditTabModalDialog extends ModalDialog {
 
     constructor() {
         super();
@@ -70,7 +96,7 @@ class EditTabModalDialog extends EditModalDialog {
     }
 }
 
-class EditBoxModalDialog extends EditModalDialog {
+class EditBoxModalDialog extends ModalDialog {
 
     constructor() {
         super();
@@ -109,8 +135,14 @@ class ModalDialogFactory {
             ModalDialogFactory.editBoxModalDialogTemplate, {});
         parentElement.append(editBoxDialogHtml);
 
+        let confirmBoxRemoveModalDialogHtml = Mustache.to_html(
+            ModalDialogFactory.confirmBoxRemoveModalDialogTemplate, {});
+        parentElement.append(confirmBoxRemoveModalDialogHtml);
+
         ModalDialogFactory.editTabModalDialog = new EditTabModalDialog();
         ModalDialogFactory.editBoxModalDialog = new EditBoxModalDialog();
+        ModalDialogFactory.confirmBoxRemoveModalDialog =
+            new ConfirmBoxRemoveModalDialog();
     }
 
     static createDialog(dialogType, data, okAction) {
@@ -123,16 +155,21 @@ class ModalDialogFactory {
                 ModalDialogFactory.editBoxModalDialog.setData(data);
                 ModalDialogFactory.editBoxModalDialog.setOkAction(okAction);
                 return ModalDialogFactory.editBoxModalDialog;
+            case "confirmBoxRemove":
+                ModalDialogFactory.confirmBoxRemoveModalDialog.setData(data);
+                ModalDialogFactory.confirmBoxRemoveModalDialog.setOkAction(okAction);
+                return ModalDialogFactory.confirmBoxRemoveModalDialog;
             default:
                 return null
         }
     }
 }
 
-Templates.loadEditTabTemplate(function (template) {
-    ModalDialogFactory.editTabModalDialogTemplate = template;
-});
+Templates.loadEditTabDialogTemplate(template =>
+    ModalDialogFactory.editTabModalDialogTemplate = template);
 
-Templates.loadEditBoxTemplate(function (template) {
-    ModalDialogFactory.editBoxModalDialogTemplate = template;
-});
+Templates.loadEditBoxDialogTemplate(template =>
+    ModalDialogFactory.editBoxModalDialogTemplate = template);
+
+Templates.loadConfirmBoxRemoveDialogTemplate(template =>
+    ModalDialogFactory.confirmBoxRemoveModalDialogTemplate = template);

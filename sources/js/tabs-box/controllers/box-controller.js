@@ -52,7 +52,7 @@ class BoxController extends Controller {
 
     processOpenAllTabsAction(action) {
         let urls = $.map(action.source.model.getTabs(), tab => tab.url);
-        TabUtils.createTabsIfDoNotExist(urls);
+        TabUtils.createTabs(urls);
     }
 
     processCloseAllTabsAction(action) {

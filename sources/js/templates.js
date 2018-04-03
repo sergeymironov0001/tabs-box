@@ -12,11 +12,15 @@ class Templates {
         Templates._loadTemplate("../templates/tab-snapshot.html", callback);
     };
 
-    static loadEditTabTemplate(callback) {
+    static loadConfirmBoxRemoveDialogTemplate(callback) {
+        Templates._loadTemplate("../templates/confirm-box-remove-dialog.html", callback);
+    };
+
+    static loadEditTabDialogTemplate(callback) {
         Templates._loadTemplate("../templates/edit-tab-dialog.html", callback);
     };
 
-    static loadEditBoxTemplate(callback) {
+    static loadEditBoxDialogTemplate(callback) {
         Templates._loadTemplate("../templates/edit-box-dialog.html", callback);
     };
 

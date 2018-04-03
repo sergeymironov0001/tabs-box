@@ -34,7 +34,9 @@ class BoxesManagerController extends Controller {
     }
 
     processRemoveBoxesAction(action) {
-        action.source.model.removeBox(action.data.model.id);
+        ModalDialogFactory.createDialog('confirmBoxRemove', action.data.model,
+            removingBox => action.source.model.removeBox(removingBox.id)
+        ).show();
     }
 
     processOpenOptionsAction(action) {
