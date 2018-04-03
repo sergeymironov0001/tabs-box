@@ -7,6 +7,17 @@ body {
     margin: 0;
 }
 
+/*To fix bootstrap modal right padding*/
+body.modal-open {
+    overflow-y: auto !important;
+    padding-right: 0 !important;
+}
+
+/*To fix bootstrap modal right padding*/
+.modal-scrollbar-measure {
+    overflow: hidden;
+}
+
 #main-container {
     padding: 0;
     justify-content: space-between;
