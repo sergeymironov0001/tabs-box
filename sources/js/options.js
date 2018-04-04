@@ -1,18 +1,3 @@
-// TODO refactor it
-function fillThemesSelect(themesManager) {
-    themesManager.getThemes().forEach(theme => {
-        $('#theme-select')
-            .append($("<option></option>")
-                .attr("value", theme.name)
-                .text(theme.name)
-            );
-    });
-}
-
-function selectTheme(themeName) {
-    $("#theme-select").val(themeName);
-}
-
 $(document).ready(function () {
     ThemesManager.loadTheme(themeName => {
         let themesManager = new ThemesManager(themeName);
@@ -25,10 +10,7 @@ $(document).ready(function () {
         let mvcResolver = new MVCResolver();
         let view = mvcResolver.createView(themesManager);
 
-        $("#themes").append(view.getHtml());
-        fillThemesSelect(themesManager);
-        selectTheme(themesManager.getSelectedTheme().name);
-
+        $("#theme-selector").append(view.getHtml());
         view.init();
     });
 });

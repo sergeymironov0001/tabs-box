@@ -49,3 +49,17 @@
 .porn-hub .modal-footer {
     border-top: 1px solid #555;
 }
+
+.porn-hub select {
+    border: 1px solid #181818;
+    background-color: #181818;
+    color: #cacaca;
+}
+
+.porn-hub select:focus {
+    color: #cacaca;
+}
+
+.porn-hub select option {
+    color: #cacaca;
+}

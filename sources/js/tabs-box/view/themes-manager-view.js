@@ -7,6 +7,8 @@ class ThemesManagerView extends View {
     init() {
         this.model.addListener(event => this._updateView(event));
 
+        this._outputAvailableThemes();
+        this._selectTheme(this.model.getSelectedTheme().name);
         this._addChangeThemeAction();
     }
 
@@ -22,10 +24,23 @@ class ThemesManagerView extends View {
     }
 
     _addChangeThemeAction() {
-        $('#theme-select').change(() => {
-            let selectedThemeName = $("#theme-select option:selected").val();
+        $('#theme-selector').change(() => {
+            let selectedThemeName = $("#theme-selector option:selected").val();
             this._notifyListeners("themesManagerView/themeChangedAction",
                 selectedThemeName)
         });
+    }
+
+    _outputAvailableThemes() {
+        this.model.getThemes().forEach(theme => {
+            $('#theme-selector')
+                .append($("<option></option>")
+                    .attr("value", theme.name)
+                    .text(theme.name)
+                );
+        });
+    }
+    _selectTheme(themeName) {
+        $("#theme-select").val(themeName);
     }
 }

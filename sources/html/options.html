@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 
-<title>Options</title>
+<title>Tabs box extension options</title>
 
 <script src="../js/jquery/jquery-3.2.1.min.js"></script>
 <script src="../js/html5sortable/html.sortable.min.js"></script>
@@ -57,9 +57,17 @@
 
 <link rel="icon" type="image/png" href="../icons/icon32.png"/>
 
-<div class="container-fluid text-center">
-    Tabs box options
-</div>
-<div id="themes">
+<div class="main-container">
+    <div class="title text-center">
+        Tabs box
+        <div class="sub-title text-center">Extension Options</div>
+    </div>
+    <div id="themes" class="option layout horizontal">
+        <div class="option-name">Theme:</div>
+        <div class="option-value">
+            <select id="theme-selector" title="Select a theme">
+            </select>
+        </div>
+    </div>
 </div>
 </html>

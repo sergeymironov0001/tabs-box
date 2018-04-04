@@ -23,7 +23,6 @@ $(document).ready(function () {
         let view = mvcResolver.createView(boxesManager);
 
         $("#boxes").append(view.getHtml());
-
         view.init();
     });
 });
