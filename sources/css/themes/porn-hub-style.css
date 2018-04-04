@@ -63,3 +63,12 @@
 .porn-hub select option {
     color: #cacaca;
 }
+
+.porn-hub .btn:focus {
+    box-shadow: none;
+}
+.porn-hub .btn:active {
+    /*box-shadow: 0 0 0 0.2rem #FFA31A;*/
+
+    background-color: #BD8912;
+}
