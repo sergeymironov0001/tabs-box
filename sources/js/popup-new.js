@@ -1,3 +1,14 @@
+(function($){
+    $(window).on("load",function(){
+        // $("body").mCustomScrollbar({
+        $("#main-container").mCustomScrollbar({
+            // theme:"light-3",
+            theme:"inset",
+            alwaysShowScrollbar: 2
+        });
+    });
+})(jQuery);
+
 $(document).ready(function () {
     ThemesManager.loadTheme(themeName => {
         let themesManager = new ThemesManager(themeName);

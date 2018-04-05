@@ -1,6 +1,5 @@
 body {
-    /*height: 597px;*/
-    height: 500px;
+    height: 596px;
     width: 450px;
     overflow-x: hidden;
     font-size: 14px;
@@ -22,6 +21,7 @@ body.modal-open {
 #main-container {
     padding: 0;
     justify-content: space-between;
+    height: 590px;
 }
 
 .tab-title {
@@ -114,4 +114,8 @@ input[type="text"] {
 }
 
 .box {
+}
+
+.mCSB_inside > .mCSB_container {
+    margin-right: 17px !important;
 }

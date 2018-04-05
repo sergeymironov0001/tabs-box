@@ -7,9 +7,11 @@
 <title>Tabs-box popup</title>
 
 <script src="../js/jquery/jquery-3.2.1.min.js"></script>
+<script src="../js/jquery/jquery.mousewheel.min.js"></script>
 <script src="../js/html5sortable/html.sortable.min.js"></script>
 <script src="../js/mustache/mustache.js"></script>
 <script src="../js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../js/mCustomScrollbar/jquery.mCustomScrollbar.js"></script>
 
 <script src="../js/templates.js"></script>
 
@@ -51,6 +53,8 @@
 
 <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
 <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+      href="../css/mCustomScrollbar/jquery.mCustomScrollbar.css">
 <link rel="stylesheet" href="../css/commons.css">
 <link rel="stylesheet" href="../css/popup.css">
 <link rel="stylesheet" href="../css/themes/porn-hub-style.css">
@@ -58,6 +62,8 @@
 
 <link rel="icon" type="image/png" href="../icons/icon32.png"/>
 
+<!--<body class="mCustomScrollbar" data-mcs-theme="dark">-->
+<body>
 <div id="main-container" class="layout vertical m-1">
     <div class="layout vertical">
         <div class="layout horizontal boxes-controls m-0 pb-1">
@@ -79,8 +85,11 @@
                    title="Boxes search"/>
         </div>
     </div>
+    <div id="boxes-1">
     <div id="boxes" class="layout vertical sortable mt-1">
         <!--Place for box templates-->
     </div>
+    </div>
 </div>
+</body>
 </html>

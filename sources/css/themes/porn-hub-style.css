@@ -10,17 +10,17 @@
 
 
 .porn-hub .btn:focus{
-    background-color: #e98a18;
+    background-color: #c56d00;
 }
 
 .porn-hub .btn:hover{
-    background-color: #e98a18;
+    background-color: #c56d00;
 }
 
 .porn-hub .btn:active {
     /*box-shadow: 0 0 0 0.2rem #FFA31A;*/
 
-    background-color: #BD8912;
+    background-color: #995c00;
 }
 
 .porn-hub .tab-button {
@@ -28,7 +28,7 @@
 }
 
 .porn-hub .tab-button:hover {
-    color: #e98a18;
+    color: #c56d00;
 }
 
 .porn-hub .box-button {
@@ -36,7 +36,7 @@
 }
 
 .porn-hub .box-button:hover {
-    color: #e98a18;
+    color: #c56d00;
 }
 
 .porn-hub .box-header {
@@ -90,4 +90,9 @@
 
 .porn-hub .btn:focus {
     box-shadow: none;
+}
+
+.porn-hub .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+    background-color: #666;
+    /*background-color: #F90;*/
 }
