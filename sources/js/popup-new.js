@@ -1,9 +1,7 @@
-(function($){
-    $(window).on("load",function(){
-        // $("body").mCustomScrollbar({
+(function ($) {
+    $(window).on("load", function () {
         $("#main-container").mCustomScrollbar({
-            // theme:"light-3",
-            theme:"inset",
+            theme: "light-thin",
             alwaysShowScrollbar: 2
         });
     });
@@ -25,7 +23,7 @@ $(document).ready(function () {
         Observable.addGlobalListener((event, className) => {
             // console.log(event);
             // console.log("class = " + className);
-            BoxesManager.saveBoxes(boxesManager, () =>{
+            BoxesManager.saveBoxes(boxesManager, () => {
                 // console.log("Boxes saved");
             });
         }, ["Tab", "Box", "BoxesManager"]);
