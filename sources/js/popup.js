@@ -239,7 +239,8 @@ function addTabListeners(boxes, box, tab) {
             tabToEdit = tab;
             $("#tab-title-input").val(tab.title);
             $("#tab-url-input").val(tab.url);
-        });
+        })
+    ;
 }
 
 $(document).ready(function () {

@@ -35,6 +35,10 @@ class ConfirmBoxRemoveModalDialog extends ModalDialog {
 
     constructor() {
         super();
+
+        $('#confirm-box-remove-modal').on('shown.bs.modal', e => {
+            this._getOkButton().trigger('focus');
+        });
     }
 
     show() {
@@ -62,12 +66,21 @@ class EditTabModalDialog extends ModalDialog {
 
     constructor() {
         super();
+
+        $('#edit-tab-modal').on('shown.bs.modal', e => {
+            this._getTitleInputField().trigger('focus');
+        });
     }
 
     show() {
         this._setTitle();
         this._setUrl();
         $('#edit-tab-modal').modal();
+
+        let input = this._getTitleInputField();
+        input.focus();
+        let position = input.value.length;
+        input.setSelectionRange(position, position)
     }
 
     _getOkButton() {
@@ -100,6 +113,10 @@ class EditBoxModalDialog extends ModalDialog {
 
     constructor() {
         super();
+
+        $('#edit-box-modal').on('shown.bs.modal', e => {
+            this._getBoxNameInputField().trigger('focus');
+        });
     }
 
     show() {

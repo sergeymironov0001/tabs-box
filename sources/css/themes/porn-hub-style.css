@@ -4,15 +4,31 @@
 }
 
 .porn-hub .btn {
-    background-color: #FFA31A;
+    background-color: #F90;
+    /*border: 2px solid #FFA31A;*/
 }
 
+
+.porn-hub .btn:focus{
+    background-color: #e98a18;
+}
+
+.porn-hub .btn:hover{
+    background-color: #e98a18;
+}
+
+/*.porn-hub .btn:active {*/
+    /*!*box-shadow: 0 0 0 0.2rem #FFA31A;*!*/
+
+    /*background-color: #BD8912;*/
+/*}*/
+
 .porn-hub .tab-button {
-    color: #FFA31A;
+    color: #F90;
 }
 
 .porn-hub .box-button {
-    color: #FFA31A;
+    color: #F90;
 }
 
 .porn-hub .box-header {
@@ -66,9 +82,4 @@
 
 .porn-hub .btn:focus {
     box-shadow: none;
-}
-.porn-hub .btn:active {
-    /*box-shadow: 0 0 0 0.2rem #FFA31A;*/
-
-    background-color: #BD8912;
 }
