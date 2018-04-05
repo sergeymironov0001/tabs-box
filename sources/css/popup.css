@@ -119,3 +119,7 @@ input[type="text"] {
 .mCSB_inside > .mCSB_container {
     margin-right: 17px !important;
 }
+
+#box-name{
+    font-weight: bold;
+}
