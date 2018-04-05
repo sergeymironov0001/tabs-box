@@ -36,9 +36,9 @@ class ConfirmBoxRemoveModalDialog extends ModalDialog {
     constructor() {
         super();
 
-        $('#confirm-box-remove-modal').on('shown.bs.modal', e => {
-            this._getOkButton().trigger('focus');
-        });
+        // $('#confirm-box-remove-modal').on('shown.bs.modal', e => {
+        //     this._getOkButton().trigger('focus');
+        // });
     }
 
     show() {
