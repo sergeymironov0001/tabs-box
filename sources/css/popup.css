@@ -120,6 +120,14 @@ input[type="text"] {
     margin-right: 14px !important;
 }
 
-#box-name{
+#box-name {
+    font-weight: bold;
+}
+
+.field-name {
+    width: 60px;
+}
+
+#tab-title {
     font-weight: bold;
 }

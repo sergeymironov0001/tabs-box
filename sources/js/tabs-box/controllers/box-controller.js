@@ -14,19 +14,11 @@ class BoxController extends Controller {
         });
     }
 
-    processSelectBoxAction(action) {
-        TabUtils.selectBoxTab(action.source.model.id);
-    }
-
     processRenameBoxAction(action) {
         ModalDialogFactory.createDialog('editBox', action.source.model,
             editedBox =>
                 action.source.model.changeName(editedBox.name)
         ).show();
-    }
-
-    processRemoveBoxAction(action) {
-        TabUtils.closeBoxTab(action.source.model.id);
     }
 
     processExpandBoxAction(action) {
@@ -38,7 +30,9 @@ class BoxController extends Controller {
     }
 
     processRemoveTabAction(action) {
-        action.source.model.removeTab(action.data.model.id);
+        ModalDialogFactory.createDialog('confirmTabRemove', action.data.model,
+            removingTab => action.source.model.removeTab(removingTab.id)
+        ).show();
     }
 
     processTabPositionChangedAction(action) {
@@ -52,7 +46,7 @@ class BoxController extends Controller {
 
     processOpenAllTabsAction(action) {
         let urls = $.map(action.source.model.getTabs(), tab => tab.url);
-        TabUtils.createTabs(urls);
+        TabUtils.createTabs();
     }
 
     processCloseAllTabsAction(action) {

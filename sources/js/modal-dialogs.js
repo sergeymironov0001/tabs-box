@@ -58,7 +58,38 @@ class ConfirmBoxRemoveModalDialog extends ModalDialog {
     }
 
     _setText() {
-        this._getBoxNameField().text(this.data.name);
+        this._getBoxNameField()
+            .text(this.data.name)
+            .prop('title', this.data.name);
+    }
+}
+
+class ConfirmTabRemoveModalDialog extends ModalDialog {
+
+    constructor() {
+        super();
+    }
+
+    show() {
+        this._setText();
+        $('#confirm-tab-remove-modal').modal();
+    }
+
+    _getOkButton() {
+        return $('#confirm-tab-remove-button');
+    }
+
+    _updateData() {
+    }
+
+    _getTabTitleField() {
+        return $('#tab-title');
+    }
+
+    _setText() {
+        this._getTabTitleField()
+            .text(this.data.title)
+            .prop('title', this.data.title);
     }
 }
 
@@ -156,10 +187,16 @@ class ModalDialogFactory {
             ModalDialogFactory.confirmBoxRemoveModalDialogTemplate, {});
         parentElement.append(confirmBoxRemoveModalDialogHtml);
 
+        let confirmTabRemoveModalDialogHtml = Mustache.to_html(
+            ModalDialogFactory.confirmTabRemoveModalDialogTemplate, {});
+        parentElement.append(confirmTabRemoveModalDialogHtml);
+
         ModalDialogFactory.editTabModalDialog = new EditTabModalDialog();
         ModalDialogFactory.editBoxModalDialog = new EditBoxModalDialog();
         ModalDialogFactory.confirmBoxRemoveModalDialog =
             new ConfirmBoxRemoveModalDialog();
+        ModalDialogFactory.confirmTabRemoveModalDialog =
+            new ConfirmTabRemoveModalDialog();
     }
 
     static createDialog(dialogType, data, okAction) {
@@ -176,6 +213,10 @@ class ModalDialogFactory {
                 ModalDialogFactory.confirmBoxRemoveModalDialog.setData(data);
                 ModalDialogFactory.confirmBoxRemoveModalDialog.setOkAction(okAction);
                 return ModalDialogFactory.confirmBoxRemoveModalDialog;
+            case "confirmTabRemove":
+                ModalDialogFactory.confirmTabRemoveModalDialog.setData(data);
+                ModalDialogFactory.confirmTabRemoveModalDialog.setOkAction(okAction);
+                return ModalDialogFactory.confirmTabRemoveModalDialog;
             default:
                 return null
         }
@@ -190,3 +231,6 @@ Templates.loadEditBoxDialogTemplate(template =>
 
 Templates.loadConfirmBoxRemoveDialogTemplate(template =>
     ModalDialogFactory.confirmBoxRemoveModalDialogTemplate = template);
+
+Templates.loadConfirmTabRemoveDialogTemplate(template =>
+    ModalDialogFactory.confirmTabRemoveModalDialogTemplate = template);

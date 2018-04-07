@@ -13,7 +13,13 @@ class Templates {
     };
 
     static loadConfirmBoxRemoveDialogTemplate(callback) {
-        Templates._loadTemplate("../templates/confirm-box-remove-dialog.html", callback);
+        Templates._loadTemplate("../templates/confirm-box-remove-dialog.html",
+            callback);
+    };
+
+    static loadConfirmTabRemoveDialogTemplate(callback) {
+        Templates._loadTemplate("../templates/confirm-tab-remove-dialog.html",
+            callback);
     };
 
     static loadEditTabDialogTemplate(callback) {
