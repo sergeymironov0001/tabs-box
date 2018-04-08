@@ -71,8 +71,17 @@ class BoxesManager extends Observable {
             return;
         }
         let tab = oldBox.getTabById(tabId);
+        if (!tab) {
+            return;
+        }
         if (newBox.addTab(tab, newTabPosition)) {
             oldBox.removeTab(tab.id);
+        } else {
+            this._notifyListeners("tabCanNotBeMovedToBox", {
+                tabId: tabId,
+                oldBoxId: oldBoxId,
+                newBoxId: newBoxId
+            });
         }
     }
 

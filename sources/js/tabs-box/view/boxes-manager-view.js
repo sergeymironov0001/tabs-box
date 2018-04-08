@@ -22,13 +22,15 @@ class BoxesManagerView extends ListView {
         this._addPutOpenedTabsToNewBoxAction();
         this._addAddEmptyBoxAction();
         this._addOpenOptionsAction();
+        this._addExpandAllBoxesAction();
+        this._addCollapseAllBoxesAction();
+
         this._changeBoxesFilterAction();
 
         this.items.forEach(item => item.init());
         this._initBoxesDragAndDrop();
         this.model.getBoxes().forEach(
             box => this._initTabsDragAndDrop(box.id));
-
     }
 
     _initBoxesDragAndDrop() {
@@ -128,6 +130,18 @@ class BoxesManagerView extends ListView {
         $('#open-options-button').click(e => {
             this._notifyListeners("boxesManagerView/openOptionsAction")
         });
+    }
+
+    _addExpandAllBoxesAction() {
+        $('#expand-all-boxes-button').click(e =>
+            this._notifyListeners(
+                "boxesManagerView/expandAllBoxesAction"));
+    }
+
+    _addCollapseAllBoxesAction() {
+        $('#collapse-all-boxes-button').click(e =>
+            this._notifyListeners(
+                "boxesManagerView/collapseAllBoxesAction"));
     }
 
     _changeBoxesFilterAction() {

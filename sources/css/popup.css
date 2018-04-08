@@ -51,7 +51,7 @@ body.modal-open {
 }
 
 .box-name {
-    width: 79%;
+    width: auto;
 }
 
 .boxes-controls {
@@ -61,6 +61,14 @@ body.modal-open {
 #open-options-button {
     width: auto;
     /*width: 11%;*/
+}
+
+#collapse-all-boxes-button {
+    width: 45px;
+}
+
+#expand-all-boxes-button {
+    width: 45px;
 }
 
 .tab {

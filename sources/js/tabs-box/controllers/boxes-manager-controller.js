@@ -54,11 +54,11 @@ class BoxesManagerController extends Controller {
             action.data.newPosition);
     }
 
-    processCollapseBoxes(action) {
+    processCollapseAllBoxes(action) {
         action.source.model.collapseBoxes();
     }
 
-    processExpandBoxes(action) {
+    processExpandAllBoxes(action) {
         action.source.model.expandBoxes();
     }
 
