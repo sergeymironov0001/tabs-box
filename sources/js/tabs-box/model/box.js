@@ -20,6 +20,10 @@ class Box extends Observable {
         return ArrayUtils.getItemById(this.tabs, tabId);
     }
 
+    getTabByUrl(url) {
+        return ArrayUtils.getItemByField(this.tabs, "url", url);
+    }
+
     changeName(name) {
         this.name = name;
         this._notifyListeners("nameChanged", name);

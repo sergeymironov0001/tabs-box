@@ -9,6 +9,7 @@ class Observable {
             listener: listener,
             eventType: eventType
         });
+        return this;
     }
 
     removeListener(listener) {

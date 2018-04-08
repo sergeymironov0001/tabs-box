@@ -27,10 +27,39 @@ class BoxesManagerView extends ListView {
 
         this._changeBoxesFilterAction();
 
-        this.items.forEach(item => item.init());
+        this.items.forEach(item => {
+            item.init();
+            this._addStarTabDragAndDropListener(item);
+            this._addStopTabDragAndDropListener(item);
+        });
         this._initBoxesDragAndDrop();
         this.model.getBoxes().forEach(
             box => this._initTabsDragAndDrop(box.id));
+    }
+
+    _addStarTabDragAndDropListener(boxView) {
+        boxView.addListener(event => {
+            this.items.forEach(item => {
+                if (event.source === item) {
+                    return;
+                }
+                let tab = item.model.getTabByUrl(event.data.tabUrl);
+                if (tab) {
+                    item.disableDragAndDrop();
+                }
+            }, "boxView/sortStarted");
+        });
+    }
+
+    _addStopTabDragAndDropListener(boxView) {
+        boxView.addListener(event => {
+            this.items.forEach(item => {
+                if (event.source === item) {
+                    return;
+                }
+                item.enableDragAndDrop();
+            });
+        }, "boxView/sortStopped");
     }
 
     _initBoxesDragAndDrop() {
@@ -54,6 +83,10 @@ class BoxesManagerView extends ListView {
                 let item = this._addItem(event.data);
                 this._addItemToHtml(item);
                 item.init();
+
+                this._addStarTabDragAndDropListener(item);
+                this._addStopTabDragAndDropListener(item);
+
                 this._updateBoxesDragAndDrop();
                 this._initTabsDragAndDrop(event.data.id);
                 break;

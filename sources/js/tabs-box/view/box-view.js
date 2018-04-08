@@ -48,11 +48,32 @@ class BoxView extends ListView {
     _initTabsDragAndDrop() {
         sortable('#box-content-' + this.id, {
             handle: '.tab-title',
-            connectWith: 'box-content',
-            forcePlaceholderSize: true
+            connectWith: '.box-content',
+            forcePlaceholderSize: true,
+            items: ":not(.noDrop)"
         });
 
-        sortable('#box-content-' + this.id)[0].addEventListener('sortupdate',
+        let sortableContainer = sortable('#box-content-' + this.id)[0];
+
+        sortableContainer.addEventListener('sortstart', event => {
+            let tabId = event.detail.item.id.substr(4);
+            let tab = this.model.getTabById(tabId);
+            if (tab) {
+                this._notifyListeners("boxView/sortStarted", {
+                    tabUrl: tab.url
+                });
+            }
+        });
+        sortableContainer.addEventListener('sortstop', event => {
+            let tabId = event.detail.item.id.substr(4);
+            let tab = this.model.getTabById(tabId);
+            if (tab) {
+                this._notifyListeners("boxView/sortStopped", {
+                    tabUrl: tab.url
+                });
+            }
+        });
+        sortableContainer.addEventListener('sortupdate',
             event => {
                 let oldBoxId = $("#" + event.detail.startparent.id)
                     .parent()
@@ -116,7 +137,6 @@ class BoxView extends ListView {
     _updateView(event) {
         switch (event.type) {
             case "tabAdded": {
-                console.log(event);
                 let item = this._addItem(event.data.tab, event.data.position);
                 this._addItemToHtml(item, undefined, event.data.position);
                 item.init();
@@ -234,5 +254,13 @@ class BoxView extends ListView {
     _addCloseAllTabsAction() {
         $("#boxes").on("click", "#close-all-tabs-button-" + this.id, () =>
             this._notifyListeners("boxView/closeAllTabsAction"));
+    }
+
+    disableDragAndDrop(){
+        sortable('#box-content-' + this.id, 'disable');
+    }
+
+    enableDragAndDrop(){
+        sortable('#box-content-' + this.id, 'enable');
     }
 }
