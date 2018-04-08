@@ -5,21 +5,27 @@
 
 .porn-hub .btn {
     background-color: #F90;
-    /*border: 2px solid #FFA31A;*/
+    border: 2px solid #F90;
 }
 
-
-.porn-hub .btn:focus{
-    background-color: #c56d00;
+.porn-hub .btn:focus {
+    /*background-color: #c56d00;*/
+    border: 2px solid #c56d00;
 }
 
-.porn-hub .btn:hover{
+.porn-hub .btn:focus-within {
+    /*background-color: #F90;*/
+    /*background-color: #c56d00;*/
+}
+
+.porn-hub .btn:hover {
     background-color: #c56d00;
+    border: 2px solid #c56d00;
 }
 
 .porn-hub .btn:active {
     /*box-shadow: 0 0 0 0.2rem #FFA31A;*/
-
+    border: 2px solid #995c00;
     background-color: #995c00;
 }
 

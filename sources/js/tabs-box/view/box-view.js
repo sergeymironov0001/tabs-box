@@ -45,57 +45,6 @@ class BoxView extends ListView {
         }
     }
 
-    _initTabsDragAndDrop() {
-        sortable('#box-content-' + this.id, {
-            handle: '.tab-title',
-            connectWith: '.box-content',
-            forcePlaceholderSize: true,
-            items: ":not(.noDrop)"
-        });
-
-        let sortableContainer = sortable('#box-content-' + this.id)[0];
-
-        sortableContainer.addEventListener('sortstart', event => {
-            let tabId = event.detail.item.id.substr(4);
-            let tab = this.model.getTabById(tabId);
-            if (tab) {
-                this._notifyListeners("boxView/sortStarted", {
-                    tabUrl: tab.url
-                });
-            }
-        });
-        sortableContainer.addEventListener('sortstop', event => {
-            let tabId = event.detail.item.id.substr(4);
-            let tab = this.model.getTabById(tabId);
-            if (tab) {
-                this._notifyListeners("boxView/sortStopped", {
-                    tabUrl: tab.url
-                });
-            }
-        });
-        sortableContainer.addEventListener('sortupdate',
-            event => {
-                let oldBoxId = $("#" + event.detail.startparent.id)
-                    .parent()
-                    .attr('id')
-                    .substr(4);
-                let newBoxId = $("#" + event.detail.endparent.id)
-                    .parent()
-                    .attr('id')
-                    .substr(4);
-                if (this.model.id !== oldBoxId) {
-                    return;
-                }
-                if (oldBoxId === newBoxId) {
-                    let tabId = event.detail.item.id.substr(4);
-                    this._notifyListeners("boxView/tabPositionChangedAction", {
-                        tabId: tabId,
-                        newPosition: event.detail.index
-                    });
-                }
-            });
-    }
-
     _initToolBar() {
         $("#toolbar-" + this.model.id).hover(() => {
             $("#open-all-tabs-button-" + this.model.id).removeClass("d-none");
@@ -163,10 +112,6 @@ class BoxView extends ListView {
                 this._updateTabsCount(event.data);
                 break;
         }
-    }
-
-    _updateDragAndDrop() {
-        sortable('#box-content-' + this.id);
     }
 
     expand() {
@@ -263,4 +208,59 @@ class BoxView extends ListView {
     enableDragAndDrop(){
         sortable('#box-content-' + this.id, 'enable');
     }
+
+    _initTabsDragAndDrop() {
+        sortable('#box-content-' + this.id, {
+            handle: '.tab-title',
+            connectWith: '.box-content',
+            forcePlaceholderSize: true
+        });
+
+        let sortableContainer = sortable('#box-content-' + this.id)[0];
+
+        sortableContainer.addEventListener('sortstart', event => {
+            let tabId = event.detail.item.id.substr(4);
+            let tab = this.model.getTabById(tabId);
+            if (tab) {
+                this._notifyListeners("boxView/sortStarted", {
+                    tabUrl: tab.url
+                });
+            }
+        });
+        sortableContainer.addEventListener('sortstop', event => {
+            let tabId = event.detail.item.id.substr(4);
+            let tab = this.model.getTabById(tabId);
+            if (tab) {
+                this._notifyListeners("boxView/sortStopped", {
+                    tabUrl: tab.url
+                });
+            }
+        });
+        sortableContainer.addEventListener('sortupdate',
+            event => {
+                let oldBoxId = $("#" + event.detail.startparent.id)
+                    .parent()
+                    .attr('id')
+                    .substr(4);
+                let newBoxId = $("#" + event.detail.endparent.id)
+                    .parent()
+                    .attr('id')
+                    .substr(4);
+                if (this.model.id !== oldBoxId) {
+                    return;
+                }
+                if (oldBoxId === newBoxId) {
+                    let tabId = event.detail.item.id.substr(4);
+                    this._notifyListeners("boxView/tabPositionChangedAction", {
+                        tabId: tabId,
+                        newPosition: event.detail.index
+                    });
+                }
+            });
+    }
+
+    _updateDragAndDrop() {
+        sortable('#box-content-' + this.id);
+    }
+
 }
