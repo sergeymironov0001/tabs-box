@@ -2,14 +2,6 @@ class BoxesManagerView extends ListView {
 
     constructor(model, mvcResolver) {
         super(model, model.getBoxes(), mvcResolver);
-
-        this.addListener(function (event) {
-            switch (event.type) {
-                case 'addBox':
-                    sortable('#boxes');
-                    break;
-            }
-        });
     }
 
     getHtml() {
@@ -33,10 +25,13 @@ class BoxesManagerView extends ListView {
         this._changeBoxesFilterAction();
 
         this.items.forEach(item => item.init());
-        this._initDragAndDrop();
+        this._initBoxesDragAndDrop();
+        this.model.getBoxes().forEach(
+            box => this._initTabsDragAndDrop(box.id));
+
     }
 
-    _initDragAndDrop() {
+    _initBoxesDragAndDrop() {
         sortable('#boxes', {
             handle: '.box-name',
             forcePlaceholderSize: true
@@ -57,6 +52,8 @@ class BoxesManagerView extends ListView {
                 let item = this._addItem(event.data);
                 this._addItemToHtml(item);
                 item.init();
+                this._updateBoxesDragAndDrop();
+                this._initTabsDragAndDrop(event.data.id);
                 break;
             }
             case "boxRemoved": {
@@ -65,6 +62,38 @@ class BoxesManagerView extends ListView {
                 break;
             }
         }
+    }
+
+    _updateBoxesDragAndDrop() {
+        sortable('#boxes');
+    }
+
+    _initTabsDragAndDrop(boxId) {
+        sortable('#box-content-' + boxId)[0].addEventListener('sortupdate',
+            event => {
+                let oldBoxId = $("#" + event.detail.startparent.id)
+                    .parent()
+                    .attr('id')
+                    .substr(4);
+                let newBoxId = $("#" + event.detail.endparent.id)
+                    .parent()
+                    .attr('id')
+                    .substr(4);
+                if (oldBoxId === newBoxId) {
+                    return;
+                }
+                if (boxId !== oldBoxId) {
+                    return;
+                }
+                let tabId = event.detail.item.id.substr(4);
+                this._notifyListeners("boxesManagerView/tabMovedToAnotherBox", {
+                    oldBoxId: oldBoxId,
+                    newBoxId: newBoxId,
+                    tabId: tabId,
+                    tabPosition: event.detail.index,
+                    boxesManager: this.model,
+                });
+            });
     }
 
     _addItem(itemModel) {

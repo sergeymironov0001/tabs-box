@@ -9,10 +9,14 @@ class ArrayUtils {
         return ArrayUtils.getItemByField(items, "id", id);
     }
 
-    static addItem(items, item) {
+    static addItem(items, item, position) {
         let foundItem = ArrayUtils.getItemById(items, item.id);
         if (!foundItem) {
-            items.push(item);
+            if (position === undefined) {
+                items.push(item);
+            } else {
+                items.splice(position, 0, item)
+            }
             return true;
         }
         return false;

@@ -64,6 +64,18 @@ class BoxesManager extends Observable {
         }
     }
 
+    moveTabToAnotherBox(tabId, oldBoxId, newBoxId, newTabPosition) {
+        let oldBox = this.getBoxById(oldBoxId);
+        let newBox = this.getBoxById(newBoxId);
+        if (!oldBox || !newBox) {
+            return;
+        }
+        let tab = oldBox.getTabById(tabId);
+        if (newBox.addTab(tab, newTabPosition)) {
+            oldBox.removeTab(tab.id);
+        }
+    }
+
     filterBoxesByTabs(filterQuery) {
         if (!filterQuery || filterQuery.length === 0) {
             return this.getBoxes();

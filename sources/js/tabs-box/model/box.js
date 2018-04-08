@@ -25,13 +25,16 @@ class Box extends Observable {
         this._notifyListeners("nameChanged", name);
     }
 
-    addTab(tabInfo) {
+    addTab(tabInfo, position) {
         if (ArrayUtils.getItemByField(this.tabs, "url", tabInfo.url)) {
             return false;
         }
         let tab = new Tab(tabInfo.id, tabInfo);
-        if (ArrayUtils.addItem(this.tabs, tab)) {
-            this._notifyListeners("tabAdded", tab);
+        if (ArrayUtils.addItem(this.tabs, tab, position)) {
+            this._notifyListeners("tabAdded", {
+                tab: tab,
+                position: position
+            });
             this._notifyListeners("tabsCountChanged", this.tabs.length);
             return true;
         }

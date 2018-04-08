@@ -49,7 +49,8 @@ class BoxesManagerController extends Controller {
     // }
 
     processBoxPositionChangedAction(action) {
-        action.source.model.changeBoxPosition(action.data.boxId,
+        action.source.model.changeBoxPosition(
+            action.data.boxId,
             action.data.newPosition);
     }
 
@@ -59,5 +60,13 @@ class BoxesManagerController extends Controller {
 
     processExpandBoxes(action) {
         action.source.model.expandBoxes();
+    }
+
+    processTabMovedToAnotherBoxAction(action) {
+        action.data.boxesManager.moveTabToAnotherBox(
+            action.data.tabId,
+            action.data.oldBoxId,
+            action.data.newBoxId,
+            action.data.tabPosition);
     }
 }

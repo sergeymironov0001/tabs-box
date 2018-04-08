@@ -30,7 +30,7 @@ class BoxView extends ListView {
         this._addCloseAllTabsAction();
 
         this.items.forEach(item => item.init());
-        this._initDragAndDrop();
+        this._initTabsDragAndDrop();
         this._initToolBar();
     }
 
@@ -45,30 +45,33 @@ class BoxView extends ListView {
         }
     }
 
-    _initDragAndDrop() {
+    _initTabsDragAndDrop() {
         sortable('#box-content-' + this.id, {
             handle: '.tab-title',
-            // connectWith: 'connected',
+            connectWith: 'box-content',
             forcePlaceholderSize: true
         });
 
         sortable('#box-content-' + this.id)[0].addEventListener('sortupdate',
             event => {
-                let tabId = event.detail.item.id.substr(4);
-                this._notifyListeners("boxView/tabPositionChangedAction", {
-                    tabId: tabId,
-                    newPosition: event.detail.index
-                });
-                // if (e.detail.startparent === e.detail.endparent) {
-                //     var boxId = $("#" + e.detail.endparent.id).parent().attr('id');
-                //     var tabId = e.detail.item.id.substr(4);
-                //     boxes.changeTabPosition(boxId, tabId, e.detail.index)
-                // } else {
-                //     var oldBoxId = $("#" + e.detail.startparent.id).parent().attr('id');
-                //     var newBoxId = $("#" + e.detail.endparent.id).parent().attr('id');
-                //     var tabIdToMove = e.detail.item.id.substr(4);
-                //     boxes.moveTabToBox(oldBoxId, newBoxId, tabIdToMove, e.detail.index)
-                // }
+                let oldBoxId = $("#" + event.detail.startparent.id)
+                    .parent()
+                    .attr('id')
+                    .substr(4);
+                let newBoxId = $("#" + event.detail.endparent.id)
+                    .parent()
+                    .attr('id')
+                    .substr(4);
+                if (this.model.id !== oldBoxId) {
+                    return;
+                }
+                if (oldBoxId === newBoxId) {
+                    let tabId = event.detail.item.id.substr(4);
+                    this._notifyListeners("boxView/tabPositionChangedAction", {
+                        tabId: tabId,
+                        newPosition: event.detail.index
+                    });
+                }
             });
     }
 
@@ -99,8 +102,8 @@ class BoxView extends ListView {
         return dom.html();
     }
 
-    _addItem(itemModel) {
-        let item = super._addItem(itemModel);
+    _addItem(itemModel, position) {
+        let item = super._addItem(itemModel, position);
         if (item) {
             item.addListener(
                 event =>
@@ -113,9 +116,11 @@ class BoxView extends ListView {
     _updateView(event) {
         switch (event.type) {
             case "tabAdded": {
-                let item = this._addItem(event.data);
-                this._addItemToHtml(item);
+                console.log(event);
+                let item = this._addItem(event.data.tab, event.data.position);
+                this._addItemToHtml(item, undefined, event.data.position);
                 item.init();
+                this._updateDragAndDrop();
                 break;
             }
             case "tabRemoved": {
@@ -138,6 +143,10 @@ class BoxView extends ListView {
                 this._updateTabsCount(event.data);
                 break;
         }
+    }
+
+    _updateDragAndDrop() {
+        sortable('#box-content-' + this.id);
     }
 
     expand() {
@@ -164,9 +173,24 @@ class BoxView extends ListView {
     }
 
 
-    _addItemToHtml(item, html) {
+    _addItemToHtml(item, html, position) {
         let dom = html ? HtmlUtils.htmlToDom(html) : $('body');
-        dom.find("#box-content-" + this.id).append(item.getHtml());
+        if (position !== undefined) {
+            if (position > 0) {
+                dom.find("#box-content-" + this.id)
+                    .find(".tab")
+                    .eq(position - 1)
+                    .after(item.getHtml());
+            }
+            else if (position === 0) {
+                dom.find("#box-content-" + this.id)
+                    .find(".tab")
+                    .eq(position)
+                    .before(item.getHtml());
+            }
+        } else {
+            dom.find("#box-content-" + this.id).append(item.getHtml());
+        }
         return dom.html();
     }
 

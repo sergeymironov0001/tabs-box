@@ -8,9 +8,9 @@ class ListView extends View {
         this._addItems(itemModels);
     }
 
-    _addItem(itemModel) {
+    _addItem(itemModel, position) {
         let view = this.mvcResoler.createView(itemModel);
-        if (ArrayUtils.addItem(this.items, view)) {
+        if (ArrayUtils.addItem(this.items, view, position)) {
             return view;
         }
         return undefined;

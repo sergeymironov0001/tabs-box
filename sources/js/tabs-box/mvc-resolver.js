@@ -19,6 +19,7 @@ class MVCResolver {
     }
 
     actionsResolver(action) {
+        console.log(action);
         switch (action.type) {
             case "tabView/selectTabAction":
                 this.tabController.processSelectTabAction(action);
@@ -73,6 +74,9 @@ class MVCResolver {
                 break;
             case "boxesManagerView/collapseBoxesAction":
                 this.boxesManagerController.processCollapseBoxes(action);
+                break;
+            case "boxesManagerView/tabMovedToAnotherBox":
+                this.boxesManagerController.processTabMovedToAnotherBoxAction(action);
                 break;
             case "boxesManagerView/expandBoxesAction":
                 this.boxesManagerController.processExpandBoxes(action);
