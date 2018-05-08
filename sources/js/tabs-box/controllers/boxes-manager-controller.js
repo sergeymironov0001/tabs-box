@@ -62,8 +62,8 @@ class BoxesManagerController extends Controller {
         action.source.model.expandBoxes();
     }
 
-    processTabMovedToAnotherBoxAction(action) {
-        action.data.boxesManager.moveTabToAnotherBox(
+    processTabMovedAction(action) {
+        action.source.model.moveTab(
             action.data.tabId,
             action.data.oldBoxId,
             action.data.newBoxId,

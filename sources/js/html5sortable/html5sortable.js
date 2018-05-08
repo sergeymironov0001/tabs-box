@@ -26,6 +26,7 @@ var sortable = (function () {
             element.h5s.data[key] = value;
         }
     }
+
     /**
      * Remove data from element
      * @param {HTMLElement} element
@@ -36,14 +37,16 @@ var sortable = (function () {
         }
     }
 
-    function _filter (nodes, selector) {
+    function _filter(nodes, selector) {
         if (!(nodes instanceof NodeList || nodes instanceof HTMLCollection || nodes instanceof Array)) {
             throw new Error('You must provide a nodeList/HTMLCollection/Array of elements to be filtered.');
         }
         if (typeof selector !== 'string') {
             return Array.from(nodes);
         }
-        return Array.from(nodes).filter(function (item) { return item.nodeType === 1 && item.matches(selector); });
+        return Array.from(nodes).filter(function (item) {
+            return item.nodeType === 1 && item.matches(selector);
+        });
     }
 
     /* eslint-env browser */
@@ -58,6 +61,7 @@ var sortable = (function () {
             this._placeholder = undefined; // eslint-disable-line no-undef
             this._data = new Map(); // eslint-disable-line no-undef
         }
+
         Object.defineProperty(Store.prototype, "config", {
             /**
              * get the configuration map of a class instance
@@ -179,7 +183,8 @@ var sortable = (function () {
         };
         return Store;
     }());
-    function store (sortableElement) {
+
+    function store(sortableElement) {
         // if sortableElement is wrong type
         if (!(sortableElement instanceof HTMLElement)) {
             throw new Error('Please provide a sortable to the store function.');
@@ -207,6 +212,7 @@ var sortable = (function () {
         element.addEventListener(eventName, callback);
         store(element).setData("event" + eventName, callback);
     }
+
     /**
      * @param {Array<HTMLElement>|HTMLElement} element
      * @param {string} eventName
@@ -236,6 +242,7 @@ var sortable = (function () {
         }
         element.setAttribute(attribute, value);
     }
+
     /**
      * @param {Array|HTMLElement} element
      * @param {string} attribute
@@ -250,7 +257,7 @@ var sortable = (function () {
         element.removeAttribute(attribute);
     }
 
-    function offset (element) {
+    function offset(element) {
         if (!element.parentElement) {
             throw new Error('target element must be part of the dom');
         }
@@ -263,8 +270,10 @@ var sortable = (function () {
         };
     }
 
-    function _debounce (func, wait) {
-        if (wait === void 0) { wait = 0; }
+    function _debounce(func, wait) {
+        if (wait === void 0) {
+            wait = 0;
+        }
         var timeout;
         return function () {
             var args = [];
@@ -278,14 +287,14 @@ var sortable = (function () {
         };
     }
 
-    function index (element, elementList) {
+    function index(element, elementList) {
         if (!(element instanceof HTMLElement) || !(elementList instanceof NodeList || elementList instanceof HTMLCollection || elementList instanceof Array)) {
             throw new Error('You must provide an element and a list of elements.');
         }
         return Array.from(elementList).indexOf(element);
     }
 
-    function isInDom (element) {
+    function isInDom(element) {
         if (!(element instanceof HTMLElement)) {
             throw new Error('Element is not a node element.');
         }
@@ -310,17 +319,29 @@ var sortable = (function () {
      * @param {HTMLElement} target
      * @param {HTMLElement} element
      */
-    var insertBefore = function (target, element) { return insertNode(target, element, 'before'); };
+    var insertBefore = function (target, element) {
+        return insertNode(target, element, 'before');
+    };
     /**
      * Insert after target
      * @param {HTMLElement} target
      * @param {HTMLElement} element
      */
-    var insertAfter = function (target, element) { return insertNode(target, element, 'after'); };
+    var insertAfter = function (target, element) {
+        return insertNode(target, element, 'after');
+    };
 
-    function _serialize (sortableContainer, customItemSerializer, customContainerSerializer) {
-        if (customItemSerializer === void 0) { customItemSerializer = function (serializedItem, sortableContainer) { return serializedItem; }; }
-        if (customContainerSerializer === void 0) { customContainerSerializer = function (serializedContainer) { return serializedContainer; }; }
+    function _serialize(sortableContainer, customItemSerializer, customContainerSerializer) {
+        if (customItemSerializer === void 0) {
+            customItemSerializer = function (serializedItem, sortableContainer) {
+                return serializedItem;
+            };
+        }
+        if (customContainerSerializer === void 0) {
+            customContainerSerializer = function (serializedContainer) {
+                return serializedContainer;
+            };
+        }
         // check for valid sortableContainer
         if (!(sortableContainer instanceof HTMLElement) || !sortableContainer.isSortable === true) {
             throw new Error('You need to provide a sortableContainer to be serialized.');
@@ -349,12 +370,16 @@ var sortable = (function () {
         };
         return {
             container: customContainerSerializer(container),
-            items: serializedItems.map(function (item) { return customItemSerializer(item, sortableContainer); })
+            items: serializedItems.map(function (item) {
+                return customItemSerializer(item, sortableContainer);
+            })
         };
     }
 
-    function _makePlaceholder (sortableElement, placeholder, placeholderClass) {
-        if (placeholderClass === void 0) { placeholderClass = 'sortable-placeholder'; }
+    function _makePlaceholder(sortableElement, placeholder, placeholderClass) {
+        if (placeholderClass === void 0) {
+            placeholderClass = 'sortable-placeholder';
+        }
         if (!(sortableElement instanceof HTMLElement)) {
             throw new Error('You must provide a valid element as a sortable.');
         }
@@ -384,7 +409,7 @@ var sortable = (function () {
         var _a;
     }
 
-    function _getElementHeight (element) {
+    function _getElementHeight(element) {
         if (!(element instanceof HTMLElement)) {
             throw new Error('You must provide a valid dom element');
         }
@@ -396,10 +421,12 @@ var sortable = (function () {
                 var int = parseInt(style.getPropertyValue(key), 10);
                 return isNaN(int) ? 0 : int;
             })
-            .reduce(function (sum, value) { return sum + value; });
+            .reduce(function (sum, value) {
+                return sum + value;
+            });
     }
 
-    function _getHandles (items, selector) {
+    function _getHandles(items, selector) {
         if (!(items instanceof Array)) {
             throw new Error('You must provide a Array of HTMLElements to be filtered.');
         }
@@ -429,7 +456,8 @@ var sortable = (function () {
             posY: event.pageY - elementOffset.top
         };
     };
-    function setDragImage (event, draggedElement, customDragImage) {
+
+    function setDragImage(event, draggedElement, customDragImage) {
         // check if event is provided
         if (!(event instanceof Event)) {
             throw new Error('setDragImage requires a DragEvent as the first argument.');
@@ -461,7 +489,7 @@ var sortable = (function () {
         }
     }
 
-    function _listsConnected (destination, origin) {
+    function _listsConnected(destination, origin) {
         // check if valid sortable
         if (destination.isSortable === true) {
             var acceptFrom = store(destination).getConfig('acceptFrom');
@@ -486,6 +514,11 @@ var sortable = (function () {
         return false;
     }
 
+    function _isDropZoneElement(targetElement, sortableElement) {
+        let dropZoneClass = store(sortableElement).getConfig('dropZoneClass');
+        return dropZoneClass && targetElement.classList.contains(dropZoneClass);
+    }
+
     var defaultConfiguration = {
         items: null,
         // deprecated
@@ -503,7 +536,8 @@ var sortable = (function () {
         maxItems: 0,
         itemSerializer: undefined,
         containerSerializer: undefined,
-        customDragImage: null
+        customDragImage: null,
+        dropZoneClass: undefined
     };
 
     /**
@@ -512,9 +546,11 @@ var sortable = (function () {
      * @param {number} threshold time limit for throttling
      */
 // must use function to keep this context
-    function _throttle (fn, threshold) {
+    function _throttle(fn, threshold) {
         var _this = this;
-        if (threshold === void 0) { threshold = 250; }
+        if (threshold === void 0) {
+            threshold = 250;
+        }
         // check function
         if (typeof fn !== 'function') {
             throw new Error('You must provide a function as the first argument for throttle.');
@@ -537,7 +573,7 @@ var sortable = (function () {
         };
     }
 
-    function enableHoverClass (sortableContainer, enable) {
+    function enableHoverClass(sortableContainer, enable) {
         if (typeof store(sortableContainer).getConfig('hoverClass') === 'string') {
             var hoverClasses_1 = store(sortableContainer).getConfig('hoverClass').split(' ');
             // add class on hover
@@ -637,6 +673,7 @@ var sortable = (function () {
         removeAttribute(items, 'draggable');
         removeAttribute(items, 'role');
     };
+
     /**
      * find sortable from element. travels up parent element until found or null.
      * @param {HTMLElement} element a single sortable
@@ -647,6 +684,24 @@ var sortable = (function () {
         }
         return element;
     }
+
+    function findSortableChild(element) {
+        let children = element.children;
+        console.log(children);
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].isSortable === true) {
+                return children[i];
+            }
+        }
+        for (let i = 0; i < children.length; i++) {
+            let sortable = findSortableChild(children[i]);
+            if (sortable) {
+                return sortable;
+            }
+        }
+        return undefined;
+    }
+
     /**
      * Dragging event is on the sortable element. finds the top child that
      * contains the element.
@@ -661,6 +716,7 @@ var sortable = (function () {
         });
         return itemlist.length > 0 ? itemlist[0] : element;
     }
+
     /**
      * Destroy the sortable
      * @param {HTMLElement} sortableElement a single sortable
@@ -744,6 +800,7 @@ var sortable = (function () {
         removeEventListener(sortableElement, 'dragenter');
         removeEventListener(sortableElement, 'drop');
     };
+
     /**
      * Public sortable object
      * @param {Array|NodeList} sortableElements
@@ -767,24 +824,30 @@ var sortable = (function () {
             itemSerializer: undefined,
             containerSerializer: undefined,
             customDragImage: null,
-            items: null
+            items: null,
+            dropZoneClass: undefined
         }, (typeof options === 'object') ? options : {});
         // check if the user provided a selector instead of an element
         if (typeof sortableElements === 'string') {
             sortableElements = document.querySelectorAll(sortableElements);
         }
+
         // if the user provided an element, return it in an array to keep the return value consistant
         if (sortableElements instanceof HTMLElement) {
             sortableElements = [sortableElements];
         }
-        sortableElements = Array.prototype.slice.call(sortableElements);
         if (/serialize/.test(method)) {
             return sortableElements.map(function (sortableContainer) {
                 var opts = addData(sortableContainer, 'opts');
                 return _serialize(sortableContainer, opts.itemSerializer, opts.containerSerializer);
             });
         }
-        sortableElements.forEach(function (sortableElement) {
+        let dropZoneElements = [];
+        if (options.dropZoneClass) {
+            dropZoneElements = document.querySelectorAll("." + options.dropZoneClass);
+        }
+        sortableElements.forEach(function (sortableElement, i) {
+            console.log(index);
             if (/enable|disable|destroy/.test(method)) {
                 return sortable[method](sortableElement);
             }
@@ -823,11 +886,21 @@ var sortable = (function () {
             else if (options.connectWith) {
                 addData(sortableElement, 'connectWith', options.connectWith);
             }
+            if (options.dropZoneClass) {
+                addData(sortableElement, 'dropZoneClass', options.dropZoneClass);
+            }
+            if(dropZoneElements && dropZoneElements[i]){
+                let dropZoneElement = dropZoneElements[i];
+                store(sortableElement).dropZone = dropZoneElement;
+                store(dropZoneElement).relaitedSortable = sortableElement;
+            }
+
             _enableSortable(sortableElement);
             addAttribute(listItems, 'role', 'option');
             addAttribute(listItems, 'aria-grabbed', 'false');
             // enable hover class
             enableHoverClass(sortableElement, true);
+
             /*
              Handle drag events on draggable items
              Handle is set at the sortableElement level as it will bubble up
@@ -877,7 +950,9 @@ var sortable = (function () {
                 }
                 var sortableContainer = findSortable(e.target);
                 destinationItemsBeforeUpdate = _filter(sortableContainer.children, addData(sortableContainer, 'items'))
-                    .filter(function (item) { return item !== store(sortableElement).placeholder; });
+                    .filter(function (item) {
+                        return item !== store(sortableElement).placeholder;
+                    });
             });
             /*
              * Dragend Event - https://developer.mozilla.org/en-US/docs/Web/Events/dragend
@@ -895,8 +970,12 @@ var sortable = (function () {
                 }
                 dragging.style.display = dragging.oldDisplay;
                 delete dragging.oldDisplay;
-                var visiblePlaceholder = Array.from(stores.values()).map(function (data) { return data.placeholder; })
-                    .filter(function (placeholder) { return placeholder instanceof HTMLElement; })
+                var visiblePlaceholder = Array.from(stores.values()).map(function (data) {
+                    return data.placeholder;
+                })
+                    .filter(function (placeholder) {
+                        return placeholder instanceof HTMLElement;
+                    })
                     .filter(isInDom)[0];
                 if (visiblePlaceholder) {
                     visiblePlaceholder.remove();
@@ -920,7 +999,9 @@ var sortable = (function () {
              * Fires when valid drop target area is hit
              */
             addEventListener(sortableElement, 'drop', function (e) {
-                if (!_listsConnected(sortableElement, dragging.parentElement)) {
+                let isDropZone = _isDropZoneElement(e.target, originContainer);
+                // let isDropZone = _isDropZoneElement(e.target, sortableElement);
+                if (!isDropZone && !_listsConnected(sortableElement, dragging.parentElement)) {
                     return;
                 }
                 e.preventDefault();
@@ -930,12 +1011,18 @@ var sortable = (function () {
                 var visiblePlaceholder = Array.from(stores.values()).map(function (data) {
                     return data.placeholder;
                 })
-                    .filter(function (placeholder) { return placeholder instanceof HTMLElement; })
+                    .filter(function (placeholder) {
+                        return placeholder instanceof HTMLElement;
+                    })
                     .filter(isInDom)[0];
                 // attach element after placeholder
-                insertAfter(visiblePlaceholder, dragging);
+                if (!isDropZone) {
+                    insertAfter(visiblePlaceholder, dragging);
+                }
+
                 // remove placeholder from dom
                 visiblePlaceholder.remove();
+
                 /*
                  * Fires Custom Event - 'sortstop'
                  */
@@ -951,41 +1038,73 @@ var sortable = (function () {
                 }));
                 var placeholder = store(sortableElement).placeholder;
                 var originItems = _filter(originContainer.children, options.items)
-                    .filter(function (item) { return item !== placeholder; });
-                var destinationContainer = this.isSortable === true ? this : this.parentElement;
-                var destinationItems = _filter(destinationContainer.children, addData(destinationContainer, 'items'))
-                    .filter(function (item) { return item !== placeholder; });
-                var destinationElementIndex = index(dragging, Array.from(dragging.parentElement.children)
-                    .filter(function (item) { return item !== placeholder; }));
-                var destinationIndex = index(dragging, destinationItems);
-                /*
-                 * When a list item changed container lists or index within a list
-                 * Fires Custom Event - 'sortupdate'
-                 */
-                if (originElementIndex !== destinationElementIndex || originContainer !== destinationContainer) {
-                    sortableElement.dispatchEvent(new CustomEvent('sortupdate', {
-                        detail: {
-                            origin: {
-                                elementIndex: originElementIndex,
-                                index: originIndex,
-                                container: originContainer,
-                                itemsBeforeUpdate: originItemsBeforeUpdate,
-                                items: originItems
-                            },
-                            destination: {
-                                index: destinationIndex,
-                                elementIndex: destinationElementIndex,
-                                container: destinationContainer,
-                                itemsBeforeUpdate: destinationItemsBeforeUpdate,
-                                items: destinationItems
-                            },
-                            item: dragging
-                        }
-                    }));
+                    .filter(function (item) {
+                        return item !== placeholder;
+                    });
+                if (!isDropZone) {
+                    let destinationContainer = this.isSortable === true ? this : this.parentElement;
+                    let destinationItems = _filter(destinationContainer.children, addData(destinationContainer, 'items'))
+                        .filter(function (item) {
+                            return item !== placeholder;
+                        });
+                    let destinationElementIndex = index(dragging, Array.from(dragging.parentElement.children)
+                        .filter(function (item) {
+                            return item !== placeholder;
+                        }));
+                    let destinationIndex = index(dragging, destinationItems);
+                    /*
+                     * When a list item changed container lists or index within a list
+                     * Fires Custom Event - 'sortupdate'
+                     */
+
+                    if (originElementIndex !== destinationElementIndex || originContainer !== destinationContainer) {
+                        sortableElement.dispatchEvent(new CustomEvent('sortupdate', {
+                            detail: {
+                                origin: {
+                                    elementIndex: originElementIndex,
+                                    index: originIndex,
+                                    container: originContainer,
+                                    itemsBeforeUpdate: originItemsBeforeUpdate,
+                                    items: originItems
+                                },
+                                destination: {
+                                    index: destinationIndex,
+                                    elementIndex: destinationElementIndex,
+                                    container: destinationContainer,
+                                    itemsBeforeUpdate: destinationItemsBeforeUpdate,
+                                    items: destinationItems
+                                },
+                                item: dragging
+                            }
+                        }));
+                    }
+                } else {
+                    let destinationContainer = store(e.target).relaitedSortable;
+                    if (originContainer !== destinationContainer) {
+                        destinationContainer.dispatchEvent(new CustomEvent('sortupdate', {
+                            detail: {
+                                origin: {
+                                    elementIndex: originElementIndex,
+                                    index: originIndex,
+                                    container: originContainer,
+                                    itemsBeforeUpdate: originItemsBeforeUpdate,
+                                    items: originItems
+                                },
+                                destination: {
+                                    container: destinationContainer,
+                                    itemsBeforeUpdate: destinationItemsBeforeUpdate,
+                                },
+                                item: dragging
+                            }
+                        }));
+                    }
                 }
             });
-            var debouncedDragOverEnter = _debounce(function (sortableElement, element, pageY) {
+            var debouncedDragOverEnter = _debounce(function (sortableElement, element, pageY, isDropZone) {
                 if (!dragging) {
+                    return;
+                }
+                if (isDropZone) {
                     return;
                 }
                 // set placeholder height if forcePlaceholderSize option is set
@@ -1025,7 +1144,9 @@ var sortable = (function () {
                     }
                     // get placeholders from all stores & remove all but current one
                     Array.from(stores.values())
-                        .filter(function (data) { return data.placeholder !== undefined; })
+                        .filter(function (data) {
+                            return data.placeholder !== undefined;
+                        })
                         .forEach(function (data) {
                             if (data.placeholder !== store(sortableElement).placeholder) {
                                 data.placeholder.remove();
@@ -1035,13 +1156,17 @@ var sortable = (function () {
                 else {
                     // get all placeholders from store
                     var placeholders = Array.from(stores.values())
-                        .filter(function (data) { return data.placeholder !== undefined; })
+                        .filter(function (data) {
+                            return data.placeholder !== undefined;
+                        })
                         .map(function (data) {
                             return data.placeholder;
                         });
                     // check if element is not in placeholders
                     if (placeholders.indexOf(element) === -1 && sortableElement === element && !_filter(element.children, options.items).length) {
-                        placeholders.forEach(function (element) { return element.remove(); });
+                        placeholders.forEach(function (element) {
+                            return element.remove();
+                        });
                         element.appendChild(store(sortableElement).placeholder);
                     }
                 }
@@ -1051,7 +1176,10 @@ var sortable = (function () {
                 var element = e.target;
                 var sortableElement = element.isSortable === true ? element : findSortable(element);
                 element = findDragElement(sortableElement, element);
-                if (!dragging || !_listsConnected(sortableElement, dragging.parentElement) || addData(sortableElement, '_disabled') === 'true') {
+                let isDropZone = _isDropZoneElement(e.target, originContainer);
+                if (!dragging
+                    || (!_listsConnected(sortableElement, dragging.parentElement) && !isDropZone)
+                    || addData(sortableElement, '_disabled') === 'true') {
                     return;
                 }
                 var options = addData(sortableElement, 'opts');
@@ -1061,13 +1189,14 @@ var sortable = (function () {
                 e.preventDefault();
                 e.stopPropagation();
                 e.dataTransfer.dropEffect = store(sortableElement).getConfig('copy') === true ? 'copy' : 'move';
-                debouncedDragOverEnter(sortableElement, element, e.pageY);
+                debouncedDragOverEnter(sortableElement, element, e.pageY, isDropZone);
             };
             addEventListener(listItems.concat(sortableElement), 'dragover', onDragOverEnter);
             addEventListener(listItems.concat(sortableElement), 'dragenter', onDragOverEnter);
         });
         return sortableElements;
     }
+
     sortable.destroy = function (sortableElement) {
         _destroySortable(sortableElement);
     };

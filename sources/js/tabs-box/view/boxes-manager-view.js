@@ -29,12 +29,9 @@ class BoxesManagerView extends ListView {
 
         this.items.forEach(item => {
             item.init();
-            this._addStarTabDragAndDropListener(item);
-            this._addStopTabDragAndDropListener(item);
         });
         this._initBoxesDragAndDrop();
-        this.model.getBoxes().forEach(
-            box => this._initTabsDragAndDrop(box.id));
+        this._initTabsDragAndDrop();
     }
 
     _addStarTabDragAndDropListener(boxView) {
@@ -62,30 +59,12 @@ class BoxesManagerView extends ListView {
         }, "boxView/sortStopped");
     }
 
-    _initBoxesDragAndDrop() {
-        sortable('#boxes', {
-            handle: '.box-name',
-            forcePlaceholderSize: true
-        });
-
-        sortable('#boxes')[0].addEventListener('sortupdate', event => {
-            let boxId = event.detail.item.id.substr(4);
-            this._notifyListeners("boxManagerView/boxPositionChangedAction", {
-                boxId: boxId,
-                newPosition: event.detail.index
-            });
-        });
-    }
-
     _updateView(event) {
         switch (event.type) {
             case "boxAdded": {
                 let item = this._addItem(event.data);
                 this._addItemToHtml(item);
                 item.init();
-
-                this._addStarTabDragAndDropListener(item);
-                this._addStopTabDragAndDropListener(item);
 
                 this._updateBoxesDragAndDrop();
                 this._initTabsDragAndDrop(event.data.id);
@@ -103,32 +82,46 @@ class BoxesManagerView extends ListView {
         sortable('#boxes');
     }
 
-    _initTabsDragAndDrop(boxId) {
-        sortable('#box-content-' + boxId)[0].addEventListener('sortupdate',
-            event => {
-                let oldBoxId = $("#" + event.detail.startparent.id)
-                    .parent()
-                    .attr('id')
-                    .substr(4);
-                let newBoxId = $("#" + event.detail.endparent.id)
-                    .parent()
-                    .attr('id')
-                    .substr(4);
-                if (oldBoxId === newBoxId) {
-                    return;
-                }
-                if (boxId !== oldBoxId) {
-                    return;
-                }
-                let tabId = event.detail.item.id.substr(4);
-                this._notifyListeners("boxesManagerView/tabMovedToAnotherBox", {
-                    oldBoxId: oldBoxId,
-                    newBoxId: newBoxId,
-                    tabId: tabId,
-                    tabPosition: event.detail.index,
-                    boxesManager: this.model,
+    _initBoxesDragAndDrop() {
+        sortable('#boxes', {
+            handle: '.box-name',
+            forcePlaceholderSize: true
+        }).forEach(item =>
+            item.addEventListener('sortupdate', event => {
+                let boxId = event.detail.item.id.substr(4);
+                this._notifyListeners("boxManagerView/boxPositionChangedAction", {
+                    boxId: boxId,
+                    newPosition: event.detail.destination.index
                 });
-            });
+            }));
+    }
+
+    _initTabsDragAndDrop() {
+        sortable('.box-content', {
+            handle: '.tab-title',
+            connectWith: '.box-content',
+            forcePlaceholderSize: true,
+            dropZoneClass: "drop-zone"
+        }).forEach(item =>
+            item.addEventListener('sortupdate',
+                event => {
+                    console.log(event);
+                    let oldBoxId = $("#" + event.detail.origin.container.id)
+                        .parent()
+                        .attr('id')
+                        .substr(4);
+                    let newBoxId = $("#" + event.detail.destination.container.id)
+                        .parent()
+                        .attr('id')
+                        .substr(4);
+                    let tabId = event.detail.item.id.substr(4);
+                    this._notifyListeners("boxesManagerView/tabMovedAction", {
+                        oldBoxId: oldBoxId,
+                        newBoxId: newBoxId,
+                        tabId: tabId,
+                        tabPosition: event.detail.destination.index
+                    });
+                }));
     }
 
     _addItem(itemModel) {

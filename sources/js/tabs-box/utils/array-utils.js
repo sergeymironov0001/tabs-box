@@ -23,6 +23,9 @@ class ArrayUtils {
     }
 
     static changeItemPosition(items, itemId, newIndex) {
+        if (newIndex === undefined || newIndex < 0) {
+            return false;
+        }
         let item = ArrayUtils.getItemById(items, itemId);
         if (item) {
             let oldIndex = items.indexOf(item);

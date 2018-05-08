@@ -64,7 +64,7 @@ class BoxesManager extends Observable {
         }
     }
 
-    moveTabToAnotherBox(tabId, oldBoxId, newBoxId, newTabPosition) {
+    moveTab(tabId, oldBoxId, newBoxId, newTabPosition) {
         let oldBox = this.getBoxById(oldBoxId);
         let newBox = this.getBoxById(newBoxId);
         if (!oldBox || !newBox) {
@@ -74,8 +74,15 @@ class BoxesManager extends Observable {
         if (!tab) {
             return;
         }
-        if (newBox.addTab(tab, newTabPosition)) {
-            oldBox.removeTab(tab.id);
+        if (oldBoxId === newBoxId) {
+            if (newTabPosition !== undefined) {
+                oldBox.changeTabPosition(tabId, newTabPosition);
+            }
+            return;
+        }
+
+        if (!newBox.getTabById(tab.url) && oldBox.removeTab(tab.id)) {
+            newBox.addTab(tab, newTabPosition);
         } else {
             this._notifyListeners("tabCanNotBeMovedToBox", {
                 tabId: tabId,

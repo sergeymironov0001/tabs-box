@@ -30,7 +30,6 @@ class BoxView extends ListView {
         this._addCloseAllTabsAction();
 
         this.items.forEach(item => item.init());
-        this._initTabsDragAndDrop();
         this._initToolBar();
     }
 
@@ -89,7 +88,6 @@ class BoxView extends ListView {
                 let item = this._addItem(event.data.tab, event.data.position);
                 this._addItemToHtml(item, undefined, event.data.position);
                 item.init();
-                this._updateDragAndDrop();
                 break;
             }
             case "tabRemoved": {
@@ -201,7 +199,7 @@ class BoxView extends ListView {
             this._notifyListeners("boxView/closeAllTabsAction"));
     }
 
-    disableDragAndDrop(){
+    /*disableDragAndDrop(){
         sortable('#box-content-' + this.id, 'disable');
     }
 
@@ -261,6 +259,5 @@ class BoxView extends ListView {
 
     _updateDragAndDrop() {
         sortable('#box-content-' + this.id);
-    }
-
+    }*/
 }

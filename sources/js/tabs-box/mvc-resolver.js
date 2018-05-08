@@ -78,8 +78,8 @@ class MVCResolver {
             case "boxesManagerView/collapseAllBoxesAction":
                 this.boxesManagerController.processCollapseAllBoxes(action);
                 break;
-            case "boxesManagerView/tabMovedToAnotherBox":
-                this.boxesManagerController.processTabMovedToAnotherBoxAction(action);
+            case "boxesManagerView/tabMovedAction":
+                this.boxesManagerController.processTabMovedAction(action);
                 break;
             case "themesManagerView/themeChangedAction":
                 this.themesManagerController.processChangeThemeAction(action);
