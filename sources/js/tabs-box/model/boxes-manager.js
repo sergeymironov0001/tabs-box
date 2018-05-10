@@ -81,7 +81,7 @@ class BoxesManager extends Observable {
             return;
         }
 
-        if (!newBox.getTabById(tab.url) && oldBox.removeTab(tab.id)) {
+        if (!newBox.getTabByUrl(tab.url) && oldBox.removeTab(tab.id)) {
             newBox.addTab(tab, newTabPosition);
         } else {
             this._notifyListeners("tabCanNotBeMovedToBox", {
