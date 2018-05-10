@@ -187,6 +187,8 @@ var sortable = (function () {
     function store(sortableElement) {
         // if sortableElement is wrong type
         if (!(sortableElement instanceof HTMLElement)) {
+            console.log("Not sortable");
+            console.log(sortableElement);
             throw new Error('Please provide a sortable to the store function.');
         }
         // create new instance if not avilable
@@ -514,9 +516,12 @@ var sortable = (function () {
         return false;
     }
 
-    function _isDropZoneElement(targetElement, sortableElement) {
-        let dropZoneClass = store(sortableElement).getConfig('dropZoneClass');
-        return dropZoneClass && targetElement.classList.contains(dropZoneClass);
+    function _isDropZoneElement(targetElement, originContainer) {
+        if (stores.has(targetElement) && store(targetElement).isDropZone) {
+            let relatedSortable = store(targetElement).relaitedSortable;
+            return _listsConnected(relatedSortable, originContainer);
+        }
+        return false;
     }
 
     var defaultConfiguration = {
@@ -847,14 +852,13 @@ var sortable = (function () {
             dropZoneElements = document.querySelectorAll("." + options.dropZoneClass);
         }
         sortableElements.forEach(function (sortableElement, i) {
-            console.log(index);
             if (/enable|disable|destroy/.test(method)) {
                 return sortable[method](sortableElement);
             }
             // log deprecation
             ['connectWith', 'disableIEFix'].forEach(function (configKey) {
                 if (options.hasOwnProperty(configKey) && options[configKey] !== null) {
-                    console.warn("HTML5Sortable: You are using the deprecated configuration \"" + configKey + "\". This will be removed in an upcoming version, make sure to migrate to the new options when updating.");
+                    // console.warn("HTML5Sortable: You are using the deprecated configuration \"" + configKey + "\". This will be removed in an upcoming version, make sure to migrate to the new options when updating.");
                 }
             });
             // merge options with default options
@@ -889,10 +893,11 @@ var sortable = (function () {
             if (options.dropZoneClass) {
                 addData(sortableElement, 'dropZoneClass', options.dropZoneClass);
             }
-            if(dropZoneElements && dropZoneElements[i]){
+            if (dropZoneElements && dropZoneElements[i]) {
                 let dropZoneElement = dropZoneElements[i];
                 store(sortableElement).dropZone = dropZoneElement;
                 store(dropZoneElement).relaitedSortable = sortableElement;
+                store(dropZoneElement).isDropZone = true;
             }
 
             _enableSortable(sortableElement);

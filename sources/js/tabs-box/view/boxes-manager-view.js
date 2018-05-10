@@ -29,6 +29,10 @@ class BoxesManagerView extends ListView {
 
         this.items.forEach(item => {
             item.init();
+            item.addListener(action => {
+                console.log(action);
+                this._updateTabsDragAndDrop();
+            }, "boxVew/tabAddedAction");
         });
         this._initBoxesDragAndDrop();
         this._initTabsDragAndDrop();
@@ -66,8 +70,12 @@ class BoxesManagerView extends ListView {
                 this._addItemToHtml(item);
                 item.init();
 
+                item.addListener(action => {
+                    this._updateTabsDragAndDrop();
+                }, "boxVew/tabAddedAction");
+
                 this._updateBoxesDragAndDrop();
-                this._initTabsDragAndDrop(event.data.id);
+                this._updateTabsDragAndDrop();
                 break;
             }
             case "boxRemoved": {
@@ -76,10 +84,6 @@ class BoxesManagerView extends ListView {
                 break;
             }
         }
-    }
-
-    _updateBoxesDragAndDrop() {
-        sortable('#boxes');
     }
 
     _initBoxesDragAndDrop() {
@@ -94,6 +98,10 @@ class BoxesManagerView extends ListView {
                     newPosition: event.detail.destination.index
                 });
             }));
+    }
+
+    _updateBoxesDragAndDrop() {
+        this._initBoxesDragAndDrop();
     }
 
     _initTabsDragAndDrop() {
@@ -122,6 +130,10 @@ class BoxesManagerView extends ListView {
                         tabPosition: event.detail.destination.index
                     });
                 }));
+    }
+
+    _updateTabsDragAndDrop() {
+        this._initTabsDragAndDrop();
     }
 
     _addItem(itemModel) {

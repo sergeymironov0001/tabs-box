@@ -88,6 +88,7 @@ class BoxView extends ListView {
                 let item = this._addItem(event.data.tab, event.data.position);
                 this._addItemToHtml(item, undefined, event.data.position);
                 item.init();
+                this._notifyListeners("boxVew/tabAddedAction");
                 break;
             }
             case "tabRemoved": {
@@ -134,7 +135,6 @@ class BoxView extends ListView {
         $("#box-tabs-count-" + this.id)
             .text("[ " + tabsCount + " ]");
     }
-
 
     _addItemToHtml(item, html, position) {
         let dom = html ? HtmlUtils.htmlToDom(html) : $('body');
