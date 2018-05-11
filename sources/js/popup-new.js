@@ -2,7 +2,8 @@
     $(window).on("load", function () {
         $("#main-container").mCustomScrollbar({
             theme: "light-thin",
-            alwaysShowScrollbar: 2
+            alwaysShowScrollbar: 2,
+            advanced: {autoScrollOnFocus: ".btn"}
         });
     });
 })(jQuery);
