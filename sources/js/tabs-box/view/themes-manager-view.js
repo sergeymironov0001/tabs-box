@@ -8,6 +8,7 @@ class ThemesManagerView extends View {
         this.model.addListener(event => this._updateView(event));
 
         this._outputAvailableThemes();
+        console.log(this.model.getSelectedTheme().name);
         this._selectTheme(this.model.getSelectedTheme().name);
         this._addChangeThemeAction();
     }
@@ -41,6 +42,6 @@ class ThemesManagerView extends View {
         });
     }
     _selectTheme(themeName) {
-        $("#theme-select").val(themeName);
+        $("#theme-selector").val(themeName);
     }
 }
