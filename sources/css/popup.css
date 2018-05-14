@@ -1,10 +1,10 @@
 body {
-    height: 596px;
-    width: 450px;
-    overflow-x: hidden;
     font-size: 14px;
     padding: 0;
     margin: 0;
+
+    min-height: 600px;
+    width: 450px;
 }
 
 /*To fix bootstrap modal right padding*/
@@ -20,8 +20,8 @@ body.modal-open {
 
 #main-container {
     padding: 0;
-    justify-content: space-between;
-    height: 590px;
+    /*justify-content: space-between;*/
+    /*min-height: 600px;*/
 }
 
 .tab-title {
@@ -125,10 +125,6 @@ input[type="text"] {
 .box {
 }
 
-.mCSB_inside > .mCSB_container {
-    margin-right: 14px !important;
-}
-
 #box-name {
     font-weight: bold;
 }
@@ -139,4 +135,25 @@ input[type="text"] {
 
 #tab-title {
     font-weight: bold;
+}
+
+::-webkit-scrollbar-track-piece {
+    -webkit-border-radius: 0;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    margin-left: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 50px;
+    -webkit-border-radius: 4px;
+    outline-offset: -2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    height: 50px;
+    -webkit-border-radius: 4px;
 }

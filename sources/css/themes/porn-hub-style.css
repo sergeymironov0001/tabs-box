@@ -98,7 +98,16 @@
     box-shadow: none;
 }
 
-.porn-hub .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-    background-color: #666;
-    /*background-color: #F90;*/
+.porn-hub::-webkit-scrollbar-track-piece {
+    background-color: #363636;
+}
+
+.porn-hub::-webkit-scrollbar-thumb {
+    background-color: #565656;
+    outline: 2px solid #565656;
+    border: 2px solid #565656;
+}
+
+.porn-hub::-webkit-scrollbar-thumb:hover {
+    background-color: #565656;
 }
