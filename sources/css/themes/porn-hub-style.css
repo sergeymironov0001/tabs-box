@@ -4,8 +4,8 @@
 }
 
 .porn-hub .btn {
-    background-color: #F90;
-    border: 2px solid #F90;
+    background-color: #f90;
+    border: 2px solid #f90;
 }
 
 .porn-hub .btn:focus {
@@ -14,7 +14,7 @@
 }
 
 .porn-hub .btn:focus-within {
-    /*background-color: #F90;*/
+    /*background-color: #f90;*/
     /*background-color: #c56d00;*/
 }
 
@@ -24,13 +24,13 @@
 }
 
 .porn-hub .btn:active {
-    /*box-shadow: 0 0 0 0.2rem #FFA31A;*/
+    /*box-shadow: 0 0 0 0.2rem #ffa31a;*/
     border: 2px solid #995c00;
     background-color: #995c00;
 }
 
 .porn-hub .tab-button {
-    color: #F90;
+    color: #f90;
 }
 
 .porn-hub .tab-button:hover {
@@ -38,7 +38,7 @@
 }
 
 .porn-hub .box-button {
-    color: #F90;
+    color: #f90;
 }
 
 .porn-hub .box-button:hover {
@@ -110,4 +110,12 @@
 
 .porn-hub::-webkit-scrollbar-thumb:hover {
     background-color: #565656;
+}
+
+.porn-hub .tab {
+    /*border-bottom: 1px solid black;*/
+}
+
+.porn-hub .options-container {
+    background-color: #363636;
 }
