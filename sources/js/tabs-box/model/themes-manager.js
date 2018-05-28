@@ -46,6 +46,6 @@ class ThemesManager extends Observable {
 }
 
 ThemesManager.themes = [
-    new Theme('PornHub', 'porn-hub'),
-    new Theme('Chrome', 'chrome')
+    new Theme('Chrome', 'chrome'),
+    new Theme('PornHub', 'porn-hub')
 ];
