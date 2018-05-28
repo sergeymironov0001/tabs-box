@@ -3,7 +3,7 @@ body {
     padding: 0;
     margin: 0;
 
-    min-height: 600px;
+    min-height: 596px;
     width: 450px;
 }
 
@@ -137,23 +137,20 @@ input[type="text"] {
     font-weight: bold;
 }
 
-::-webkit-scrollbar-track-piece {
-    -webkit-border-radius: 0;
-}
+/*::-webkit-scrollbar-track-piece {*/
+    /*-webkit-border-radius: 0;*/
+/*}*/
 
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    margin-left: 0;
-}
+/*::-webkit-scrollbar {*/
+    /*width: 8px;*/
+    /*!*margin-left: 0;*!*/
+/*}*/
 
-::-webkit-scrollbar-thumb {
-    height: 50px;
-    -webkit-border-radius: 4px;
-    outline-offset: -2px;
-}
+/*::-webkit-scrollbar-thumb {*/
+    /*-webkit-border-radius: 4px;*/
+    /*outline-offset: -2px;*/
+/*}*/
 
-::-webkit-scrollbar-thumb:hover {
-    height: 50px;
-    -webkit-border-radius: 4px;
-}
+/*::-webkit-scrollbar-thumb:hover {*/
+    /*-webkit-border-radius: 4px;*/
+/*}*/
