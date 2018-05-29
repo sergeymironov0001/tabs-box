@@ -46,7 +46,7 @@ class BoxController extends Controller {
 
     processOpenAllTabsAction(action) {
         let urls = $.map(action.source.model.getTabs(), tab => tab.url);
-        TabUtils.createTabs();
+        TabUtils.createTabs(urls);
     }
 
     processCloseAllTabsAction(action) {
