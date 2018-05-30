@@ -5,6 +5,7 @@ body {
 
     min-height: 596px;
     width: 450px;
+    margin-right: 2px;
 }
 
 /*To fix bootstrap modal right padding*/
