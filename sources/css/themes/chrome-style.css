@@ -1,14 +1,19 @@
 .chrome {
+    /*font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;*/
 }
 
 .chrome #controls {
-    background-color: #f1f1f1;
+    /*background-color: #f1f1f1;*/
 }
 
 .chrome .btn {
     background-color: #48e;
     border: 2px solid #48e;
     color: #fff;
+
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+    /*border-radius: 50%;*/
+    /*border-radius: 24px;*/
 }
 
 .chrome .btn:focus {
@@ -33,23 +38,23 @@
 }
 
 .chrome .tab-button {
-    color: #6E6E6E;
+    color: #CCCFCF;
 }
 
 .chrome .tab-button:hover {
-    color: #333333;
+    color: #202124;
 }
 
 .chrome .box-button {
-    color: #6E6E6E;
+    color: #CCCFCF;
 }
 
 .chrome .box-button:hover {
-    color: #333333;
+    color: #202124;
 }
 
 .chrome .box-header {
-    background-color: #f1f1f1;
+    background-color: #F4F7F7;
     border-bottom: 1px #e5e5e5 solid;
 }
 
@@ -89,7 +94,7 @@
 }
 
 .chrome .options-container {
-    background-color: #f1f1f1;
+    background-color: #F4F7F7;
 }
 
 .chrome::-webkit-scrollbar {
